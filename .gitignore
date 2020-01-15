@@ -35,6 +35,9 @@ build/
 # Compiled class file
 *.class
 
+#mockup lock files
+files/.~lock.*
+
 # Log file
 *.log
 
