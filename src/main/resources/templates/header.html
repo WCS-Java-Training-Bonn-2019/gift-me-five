@@ -1,16 +1,24 @@
 <header th:fragment="header">
-   	<nav class="nav nav-pills nav-justified">
-  		<a class="nav-link" href="#">Friend's Wishes</a>
-  		<a class="nav-link active" href="#">My Wishes</a>
-  		<!--  todo: set active dynamic -->
-<!--
-  		<a class="nav-link" href="#">Short nav links</a>
-  		<a class="nav-link" href="#">Longer nav link</a>
-  		<a class="nav-link disabled" href="#">Disabled</a>
--->
+
+	<nav class="navbar navbar-expand-sm navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link" href="#">Friend's Wishes</a> <a
+					class="nav-item nav-link active" href="#">My Wishes</a>
+				<!-- 
+      			<a class="nav-item nav-link disabled" href="#">Disabled</a>
+      			-->
+			</div>
+		</div>
 	</nav>
-    <span>Gift Me Five</span>
-    <span>M. Mustermann</span>
-    <img src="pics/User_account_Login_free_icon_1.png">
-    <img src="pics/XBox-Controller.png">
+ 
 </header>
+
+<!--
+.navbar-toggler:not(:disabled):not(.disabled)
+--> 
