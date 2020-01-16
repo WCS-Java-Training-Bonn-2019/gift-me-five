@@ -13,8 +13,8 @@
 		background-color: #cfe7f5 !important;
 		padding: 0px 10px 10px 10px;
 		margin: 10px;
-		width: fit-content;
-		height: fit-content;
+		width: max-content;
+		height: max-content;
     	position: absolute;
     	top: 0;
     	left: 75px;
@@ -63,7 +63,7 @@ header ul {
 }
 
 .login_frame {
-	height: fit-content;
+	height: max-content;
 	background-color: transparent;
 	color: black;
 }
@@ -76,24 +76,43 @@ main {
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	display: flex;
+	flex-wrap: wrap;
+}
+
+#friends_wish_list {
+ 	min-width: 350px;
+ 	max-width: 350px;	
+ 	margin-right: auto;
 }
 
 #friends_wish_list div{
 	border-color: #c8d6e4;	
 	border-style: solid;
 	margin: 10px;
+	background-color: #cfe7f57a;
+}
+
+#friend_wish_list_details li {
+	background-color: #e2f2ff;
+	margin: 15px;
 }
 
 #friend_wish_list_details {
-	border-color: #c8d6e4;
-	border-radius: 25px;
-	border-style: solid;
-	border-width: 1px;
-	background-color: aliceblue;
-	padding: 0px 10px 10px 10px;
-	margin: 10px;
-	width: fit-content;
-	height: fit-content;
+    border-color: #c8d6e4;
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #f1f5ff;
+    margin: 10px;
+    width: max-content;
+    min-width: 60%;
+    background-image: url(../pics/christmas-2946698_1920_mod.png);
+    background-size: 30% 30%;
+    background-repeat: no-repeat;
+    padding-left: 100px;
+    padding-top: 35px;
+    padding-right: 40px;
+    padding-bottom: 35px;
 }
 
 #friend_wish_list_details ul {
