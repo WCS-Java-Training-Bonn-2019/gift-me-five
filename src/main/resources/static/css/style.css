@@ -62,6 +62,11 @@ header ul {
 	list-style-type: none;
 }
 
+.login_frame {
+	height: fit-content;
+	background-color: transparent;
+	color: black;
+}
 main {
 	padding-bottom: 60px;
 	/*
