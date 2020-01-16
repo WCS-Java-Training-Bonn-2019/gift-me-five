@@ -37,6 +37,8 @@ main {
 	background-image: url("../pics/gift-548290_1920.jpg");
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 #friend_wish_list_details {
