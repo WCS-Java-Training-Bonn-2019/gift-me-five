@@ -141,6 +141,11 @@ main {
 	margin: 10px;
 }
 
+/* Bootstrap Button Class, maybe change in future releases */
+.btn-success {
+	width: max-content;
+}
+
 footer {
 	position: absolute;
 	bottom: 0;
