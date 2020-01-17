@@ -61,6 +61,7 @@ header img {
 
 header ul, section ul {
 	display: flex;
+	flex-direction: column;
 	flex-wrap: wrap;
 	list-style-type: none;
 }
@@ -134,6 +135,10 @@ main {
 #friend_wish_list_details ul {
 	display: flex;
 	flex-direction: column;
+}
+
+#friend_wish_list_details .description {
+	margin: 10px;
 }
 
 footer {
