@@ -110,6 +110,10 @@ main {
 	padding-left: 20px;
 }
 
+#friend_wish_list_details li {
+	padding-left: 10px;
+}
+
 #friend_wish_list_details h1 {
 	font-size: 180%;
 }
@@ -150,9 +154,14 @@ main {
 	margin: 10px;
 }
 
-/* Bootstrap Button Class, maybe change in future releases */
-.btn-success {
+.button_list_element {
+	background-color: #f1f5ff !important;
 	width: max-content;
+	font-family: initial;
+}
+
+.input-group-text {
+	background-color: #d9e8fb;
 }
 
 footer {
