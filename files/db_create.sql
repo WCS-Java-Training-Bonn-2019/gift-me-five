@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`user` (
   `lastname` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
   `create_date` DATE NULL,
+  `modify_date` DATE NULL,
   PRIMARY KEY (`idUser`),
   UNIQUE INDEX `login_UNIQUE` (`login` ASC),
   UNIQUE INDEX `iduser_UNIQUE` (`idUser` ASC))
@@ -53,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`wishlist` (
   `update_date` DATE NULL,
   `unique_url_giver` VARCHAR(45) NULL,
   `unique_url_receiver` VARCHAR(45) NULL,
+  `modify_date` DATE NULL,
   PRIMARY KEY (`idwishlist`),
   INDEX `fk_wishlist_theme1_idx` (`theme_idTheme` ASC),
   CONSTRAINT `fk_wishlist_theme1`
@@ -74,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`wish` (
   `link` VARCHAR(45) NULL,
   `image` VARCHAR(45) NULL,
   `create_date` DATE NULL,
+  `modify_date` DATE NULL,
   `giver_id_foreign` INT NOT NULL,
   `wishlist_idwishlist` INT NOT NULL,
   PRIMARY KEY (`idWish`),
