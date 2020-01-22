@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class WishList {
+public class Wishlist {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -17,7 +17,7 @@ public class WishList {
 	private Date create_date;
 	private Date modify_date;
 
-	public WishList() {
+	public Wishlist() {
 	}
 
 	public Long getId() {
