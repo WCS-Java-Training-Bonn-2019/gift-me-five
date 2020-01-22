@@ -13,7 +13,7 @@ public class Theme {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String backgroundpicture;
+	private String backgroundPicture;
 	private String category;
 	private Date modifyDate;
 	
@@ -29,11 +29,11 @@ public class Theme {
 	}
 
 	public String getBackgroundPicture() {
-		return backgroundpicture;
+		return backgroundPicture;
 	}
 
 	public void setBackgroundPicture(String backgroundPicture) {
-		this.backgroundpicture = backgroundPicture;
+		this.backgroundPicture = backgroundPicture;
 	}
 
 	public String getCategory() {

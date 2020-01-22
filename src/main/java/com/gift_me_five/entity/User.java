@@ -2,6 +2,7 @@ package com.gift_me_five.entity;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +14,9 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(nullable=false)
 	private String login;
+	@Column(nullable=false)
 	private String password;
 	private String firstname;
 	private String lastname;

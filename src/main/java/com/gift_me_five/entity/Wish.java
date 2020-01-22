@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Wish {
@@ -20,6 +22,14 @@ public class Wish {
 	private Date createDate;
 	private Date modifyDate;
 
+	@ManyToOne
+    @JoinColumn(name = "giverId")
+    private  User user;
+
+	@ManyToOne
+    @JoinColumn(name = "wishlistId", nullable=false)
+    private  Wishlist wishlist;
+	
 	public Wish() {
 	}
 
