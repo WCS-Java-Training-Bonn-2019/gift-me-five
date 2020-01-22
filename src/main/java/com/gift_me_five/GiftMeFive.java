@@ -1,4 +1,4 @@
-package src.main.java.com.gift_me_five;
+package com.gift_me_five;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
