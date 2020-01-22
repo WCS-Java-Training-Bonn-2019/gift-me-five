@@ -37,7 +37,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gift_me_five`.`theme` (
   `id` BIGINT NOT NULL,
-  `backgroupdPicture` VARCHAR(45) NOT NULL,
+  `backgroundPicture` VARCHAR(45) NOT NULL,
   `category` VARCHAR(45) NULL COMMENT 'defaults (spring, summer, autumn, winter)\n		',
   `modify_date` DATETIME NULL,
   PRIMARY KEY (`id`),
