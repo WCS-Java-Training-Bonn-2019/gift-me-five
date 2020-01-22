@@ -17,8 +17,8 @@ public class Wish {
 	private String description;
 	private String link;
 	private String image;
-	private Date create_date;
-	private Date modify_date;
+	private Date createDate;
+	private Date modifyDate;
 
 	public Wish() {
 	}
@@ -72,19 +72,19 @@ public class Wish {
 	}
 
 	public Date getCreate_date() {
-		return create_date;
+		return createDate;
 	}
 
 	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
+		this.createDate = create_date;
 	}
 
 	public Date getModify_date() {
-		return modify_date;
+		return modifyDate;
 	}
 
 	public void setModify_date(Date modify_date) {
-		this.modify_date = modify_date;
+		this.modifyDate = modify_date;
 	}
 	
 }

@@ -15,7 +15,7 @@ public class Theme {
 	private Long id;
 	private String backgroundpicture;
 	private String category;
-	private Date modify_date;
+	private Date modifyDate;
 	
 	public Theme() {
 	}
@@ -45,10 +45,10 @@ public class Theme {
 	}
 
 	public Date getModify_date() {
-		return modify_date;
+		return modifyDate;
 	}
 
 	public void setModify_date(Date modify_date) {
-		this.modify_date = modify_date;
+		this.modifyDate = modify_date;
 	}
 }

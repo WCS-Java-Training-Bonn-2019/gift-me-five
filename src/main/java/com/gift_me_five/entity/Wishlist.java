@@ -12,10 +12,10 @@ public class Wishlist {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String unique_url_giver;
-	private String unique_url_receiver;
-	private Date create_date;
-	private Date modify_date;
+	private String uniqueUrlGiver;
+	private String uniqueUrlReceiver;
+	private Date createDate;
+	private Date modifyDate;
 
 	public Wishlist() {
 	}
@@ -29,35 +29,35 @@ public class Wishlist {
 	}
 
 	public String getUnique_url_giver() {
-		return unique_url_giver;
+		return uniqueUrlGiver;
 	}
 
 	public void setUnique_url_giver(String unique_url_giver) {
-		this.unique_url_giver = unique_url_giver;
+		this.uniqueUrlGiver = unique_url_giver;
 	}
 
 	public String getUnique_url_receiver() {
-		return unique_url_receiver;
+		return uniqueUrlReceiver;
 	}
 
 	public void setUnique_url_receiver(String unique_url_receiver) {
-		this.unique_url_receiver = unique_url_receiver;
+		this.uniqueUrlReceiver = unique_url_receiver;
 	}
 
 	public Date getCreate_date() {
-		return create_date;
+		return createDate;
 	}
 
 	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
+		this.createDate = create_date;
 	}
 
 	public Date getModify_date() {
-		return modify_date;
+		return modifyDate;
 	}
 
 	public void setModify_date(Date modify_date) {
-		this.modify_date = modify_date;
+		this.modifyDate = modify_date;
 	}
 	
 }

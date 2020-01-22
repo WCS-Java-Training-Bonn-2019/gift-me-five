@@ -18,8 +18,8 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String email;
-	private Date create_date;
-	private Date modify_date;
+	private Date createDate;
+	private Date modifyDate;
 
 	public User() {
 	}
@@ -73,19 +73,19 @@ public class User {
 	}
 
 	public Date getCreate_date() {
-		return create_date;
+		return createDate;
 	}
 
 	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
+		this.createDate = create_date;
 	}
 
 	public Date getModify_date() {
-		return modify_date;
+		return modifyDate;
 	}
 
 	public void setModify_date(Date modify_date) {
-		this.modify_date = modify_date;
+		this.modifyDate = modify_date;
 	}
 
 }
