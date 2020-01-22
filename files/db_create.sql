@@ -18,7 +18,7 @@ USE `gift_me_five` ;
 -- Table `gift_me_five`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gift_me_five`.`user` (
-  `idUser` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL,
   `login` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   `firstname` VARCHAR(45) NULL,
@@ -26,9 +26,9 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`user` (
   `email` VARCHAR(45) NULL,
   `create_date` DATETIME NULL,
   `modify_date` DATETIME NULL,
-  PRIMARY KEY (`idUser`),
+  PRIMARY KEY (`id`),
   UNIQUE INDEX `login_UNIQUE` (`login` ASC),
-  UNIQUE INDEX `iduser_UNIQUE` (`idUser` ASC))
+  UNIQUE INDEX `iduser_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
 
@@ -36,11 +36,12 @@ ENGINE = InnoDB;
 -- Table `gift_me_five`.`theme`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gift_me_five`.`theme` (
-  `idTheme` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL,
   `backgroupdPicture` VARCHAR(45) NOT NULL,
-  `category` VARCHAR(45) NULL COMMENT 'defaults (spring, summer, autumn, winter)\n',
-  PRIMARY KEY (`idTheme`),
-  UNIQUE INDEX `idTheme_UNIQUE` (`idTheme` ASC))
+  `category` VARCHAR(45) NULL COMMENT 'defaults (spring, summer, autumn, winter)\n		',
+  `modify_date` DATETIME NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `idTheme_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
 
@@ -48,17 +49,17 @@ ENGINE = InnoDB;
 -- Table `gift_me_five`.`wishlist`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gift_me_five`.`wishlist` (
-  `idwishlist` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL,
   `theme_idTheme` INT NOT NULL,
   `unique_url_giver` VARCHAR(45) NULL,
   `unique_url_receiver` VARCHAR(45) NULL,
   `create_date` DATETIME NULL,
   `modify_date` DATETIME NULL,
-  PRIMARY KEY (`idwishlist`),
+  PRIMARY KEY (`id`),
   INDEX `fk_wishlist_theme1_idx` (`theme_idTheme` ASC),
   CONSTRAINT `fk_wishlist_theme1`
     FOREIGN KEY (`theme_idTheme`)
-    REFERENCES `gift_me_five`.`theme` (`idTheme`)
+    REFERENCES `gift_me_five`.`theme` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -68,7 +69,7 @@ ENGINE = InnoDB;
 -- Table `gift_me_five`.`wish`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gift_me_five`.`wish` (
-  `idWish` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL,
   `title` VARCHAR(45) NULL,
   `item` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
@@ -78,18 +79,18 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`wish` (
   `modify_date` DATETIME NULL,
   `giver_id_foreign` INT NOT NULL,
   `wishlist_idwishlist` INT NOT NULL,
-  PRIMARY KEY (`idWish`),
-  UNIQUE INDEX `idReceiver_UNIQUE` (`idWish` ASC),
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `idReceiver_UNIQUE` (`id` ASC),
   INDEX `fk_wish_user1_idx` (`giver_id_foreign` ASC),
   INDEX `fk_wish_wishlist1_idx` (`wishlist_idwishlist` ASC),
   CONSTRAINT `fk_wish_user1`
     FOREIGN KEY (`giver_id_foreign`)
-    REFERENCES `gift_me_five`.`user` (`idUser`)
+    REFERENCES `gift_me_five`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_wish_wishlist1`
     FOREIGN KEY (`wishlist_idwishlist`)
-    REFERENCES `gift_me_five`.`wishlist` (`idwishlist`)
+    REFERENCES `gift_me_five`.`wishlist` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -104,23 +105,23 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`timestamps` (
 
 
 -- -----------------------------------------------------
--- Table `gift_me_five`.`user_has_wishlist`
+-- Table `gift_me_five`.`user_has_wishlist1`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `gift_me_five`.`user_has_wishlist` (
-  `user_idUser` INT NOT NULL,
-  `wishlist_idwishlist` INT NOT NULL,
-  `giver_receiver` TINYINT(1) NULL,
-  PRIMARY KEY (`user_idUser`, `wishlist_idwishlist`),
-  INDEX `fk_user_has_wishlist_wishlist1_idx` (`wishlist_idwishlist` ASC),
-  INDEX `fk_user_has_wishlist_user1_idx` (`user_idUser` ASC),
-  CONSTRAINT `fk_user_has_wishlist_user1`
-    FOREIGN KEY (`user_idUser`)
-    REFERENCES `gift_me_five`.`user` (`idUser`)
+CREATE TABLE IF NOT EXISTS `gift_me_five`.`user_has_wishlist1` (
+  `user_id` BIGINT NOT NULL,
+  `wishlist_id` BIGINT NOT NULL,
+  `giver_receiver` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`user_id`, `wishlist_id`),
+  INDEX `fk_user_has_wishlist1_wishlist1_idx` (`wishlist_id` ASC),
+  INDEX `fk_user_has_wishlist1_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_user_has_wishlist1_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `gift_me_five`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_wishlist_wishlist1`
-    FOREIGN KEY (`wishlist_idwishlist`)
-    REFERENCES `gift_me_five`.`wishlist` (`idwishlist`)
+  CONSTRAINT `fk_user_has_wishlist1_wishlist1`
+    FOREIGN KEY (`wishlist_id`)
+    REFERENCES `gift_me_five`.`wishlist` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
