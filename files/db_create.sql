@@ -50,15 +50,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gift_me_five`.`wishlist` (
   `id` BIGINT NOT NULL,
-  `theme_idTheme` INT NOT NULL,
+  `theme_id` BIGINT NOT NULL,
   `unique_url_giver` VARCHAR(45) NULL,
   `unique_url_receiver` VARCHAR(45) NULL,
   `create_date` DATETIME NULL,
   `modify_date` DATETIME NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_wishlist_theme1_idx` (`theme_idTheme` ASC),
+  INDEX `fk_wishlist_theme1_idx` (`theme_id` ASC),
   CONSTRAINT `fk_wishlist_theme1`
-    FOREIGN KEY (`theme_idTheme`)
+    FOREIGN KEY (`theme_id`)
     REFERENCES `gift_me_five`.`theme` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -77,19 +77,19 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`wish` (
   `image` VARCHAR(45) NULL,
   `create_date` DATETIME NULL,
   `modify_date` DATETIME NULL,
-  `giver_id_foreign` INT NOT NULL,
-  `wishlist_idwishlist` INT NOT NULL,
+  `giver_id_foreign` BIGINT NULL,
+  `wishlist_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `idReceiver_UNIQUE` (`id` ASC),
   INDEX `fk_wish_user1_idx` (`giver_id_foreign` ASC),
-  INDEX `fk_wish_wishlist1_idx` (`wishlist_idwishlist` ASC),
+  INDEX `fk_wish_wishlist1_idx` (`wishlist_id` ASC),
   CONSTRAINT `fk_wish_user1`
     FOREIGN KEY (`giver_id_foreign`)
     REFERENCES `gift_me_five`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_wish_wishlist1`
-    FOREIGN KEY (`wishlist_idwishlist`)
+    FOREIGN KEY (`wishlist_id`)
     REFERENCES `gift_me_five`.`wishlist` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -97,17 +97,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `gift_me_five`.`timestamps`
+-- Table `gift_me_five`.`user_has_wishlist`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `gift_me_five`.`timestamps` (
-  `create_time`  NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time`  NULL);
-
-
--- -----------------------------------------------------
--- Table `gift_me_five`.`user_has_wishlist1`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `gift_me_five`.`user_has_wishlist1` (
+CREATE TABLE IF NOT EXISTS `gift_me_five`.`user_has_wishlist` (
   `user_id` BIGINT NOT NULL,
   `wishlist_id` BIGINT NOT NULL,
   `giver_receiver` TINYINT(1) NOT NULL,
