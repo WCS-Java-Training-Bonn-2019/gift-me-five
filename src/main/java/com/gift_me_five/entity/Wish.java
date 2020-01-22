@@ -81,20 +81,36 @@ public class Wish {
 		this.image = image;
 	}
 
-	public Date getCreate_date() {
+	public Date getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreate_date(Date create_date) {
-		this.createDate = create_date;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
-	public Date getModify_date() {
+	public Date getModifyDate() {
 		return modifyDate;
 	}
 
-	public void setModify_date(Date modify_date) {
-		this.modifyDate = modify_date;
+	public void setModifyDate(Date modifyDate) {
+		this.modifyDate = modifyDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Wishlist getWishlist() {
+		return wishlist;
+	}
+
+	public void setWishlist(Wishlist wishlist) {
+		this.wishlist = wishlist;
 	}
 	
 }

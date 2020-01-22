@@ -46,38 +46,6 @@ public class Wishlist {
 		this.id = id;
 	}
 
-	public String getUnique_url_giver() {
-		return uniqueUrlGiver;
-	}
-
-	public void setUnique_url_giver(String unique_url_giver) {
-		this.uniqueUrlGiver = unique_url_giver;
-	}
-
-	public String getUnique_url_receiver() {
-		return uniqueUrlReceiver;
-	}
-
-	public void setUnique_url_receiver(String unique_url_receiver) {
-		this.uniqueUrlReceiver = unique_url_receiver;
-	}
-
-	public Date getCreate_date() {
-		return createDate;
-	}
-
-	public void setCreate_date(Date create_date) {
-		this.createDate = create_date;
-	}
-
-	public Date getModify_date() {
-		return modifyDate;
-	}
-
-	public void setModify_date(Date modify_date) {
-		this.modifyDate = modify_date;
-	}
-
 	public String getUniqueUrlGiver() {
 		return uniqueUrlGiver;
 	}
@@ -126,12 +94,13 @@ public class Wishlist {
 		this.theme = theme;
 	}
 
-	public List<Wish> getWishs() {
-		return wishs;
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public void setWishs(List<Wish> wishs) {
-		this.wishs = wishs;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
+	
 	
 }
