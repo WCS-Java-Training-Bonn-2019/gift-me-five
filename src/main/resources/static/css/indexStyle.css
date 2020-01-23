@@ -1,10 +1,16 @@
+main {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	/* justify-content: space-around;  to show content in the middle of the site*/   
+}
+
 #index_info_box {
 	display: flex;
-    flex-direction: column;
-    justify-content: center;
-	min-width: 25em;
+    align-items: center;
+   	min-width: 25em;
 	max-width: 25em;
-	margin-right: auto;
+	margin-right: auto;  /** delete margin-right: auto; for show content in the middle of the site **/
 	padding: 10px;
 }
 
@@ -23,11 +29,9 @@
 	display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-bottom: 1em;
 }
 
-#btn_create_list {
-	margin-bottom: 1em;
-}
 
 
 

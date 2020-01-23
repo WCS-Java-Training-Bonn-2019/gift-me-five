@@ -26,23 +26,29 @@
 <body>
 	<div id="wrapper">
 		<header th:replace="header.html :: header">Header</header>
-		<main>
-
+		
+		<main> 
+		<!-- Info box start page  -->
 		<section id="index_info_box">
 			<div>
 				<h1>Gift me five</h1>
+
 				<p>Creating and sharing wishlists… Your birthday is coming up,
 					tired of lame gifts? Create your wishlist without registering and
 					share it with your friends!</p>
-				<span> <!-- onclick="alert('Hello world!')" -->
-										
-						<a id="btn_create_list" href="/wish" class="btn btn-success">Create a wish</a>
+
+
+				<!-- Button "Create a wish" -->
+				<span> <a href="/wish" class="btn btn-success">Create a
+						wish</a>
 				</span>
 
-
+			
 				<p>If you need to manage multiple wishlists or want to ensure
 					privacy of your wishlists, it is recommended to create an account.
 				</p>
+				
+								
 			</div>
 		</section>
 
