@@ -18,5 +18,4 @@ public class GiverController {
 		System.out.println(repository.findAll());
 		return "giver";
 	}
-
 }

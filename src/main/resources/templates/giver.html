@@ -45,15 +45,21 @@
 			<h1>My Christmas Wishes</h1>
 			<ul>
 				<li th:each="wish : ${wishes}" th:object="${wish}">
+				
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<div class="input-group-text">
-								<button type="button" class="btn btn-success">Pick</button>
+														<a id="btn_create_list" th:href="@{*/giver/pick/' + *{id}}" class="btn btn-success">Pick</a>
+
 							</div>
 						</div>
 						<div class="description">
 							<h2 th:text="*{title}">title</h2>
 							<p th:text="*{description}">description</p>
+							<img th:if="${wish.image != ''} and ${wish.image != null}"
+								th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
+							<a th:if="${wish.link != ''} and ${wish.link != null}"
+								th:href="@{${wish.link}}">Link</a>
 						</div>
 					</div>
 				</li>
