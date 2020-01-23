@@ -19,14 +19,16 @@
 	padding-right: 1em;
 }
 
-#btn_create_list {
-	margin-bottom: 1em;
-}
-
 #index_info_box span {
 	display: flex;
     flex-direction: row;
     justify-content: center;
 }
+
+#btn_create_list {
+	margin-bottom: 1em;
+}
+
+
 
 
