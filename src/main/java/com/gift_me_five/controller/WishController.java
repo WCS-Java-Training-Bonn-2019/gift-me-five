@@ -11,13 +11,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gift_me_five.entity.Wish;
+import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.WishRepository;
+import com.gift_me_five.repository.WishlistRepository;
 
 @Controller
 public class WishController {
 	
 	@Autowired
 	private WishRepository repository;
+	
+	@Autowired
+	private WishlistRepository wlRepository;
 	
 	@GetMapping("/wish")
 	public String upsertWish(Model model, @RequestParam(required = false) Long id) {
@@ -37,6 +42,7 @@ public class WishController {
 	@PostMapping("/wish")
 	public String saveWish(@ModelAttribute Wish wish) {
 		
+		wish.setWishlist(wlRepository.findById(1L).get());
 		System.out.println(repository.save(wish));
 		
 		return "redirect:/wish?id="+wish.getId();
