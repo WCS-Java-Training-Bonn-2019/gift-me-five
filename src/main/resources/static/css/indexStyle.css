@@ -1,0 +1,32 @@
+#index_info_box {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+	min-width: 25em;
+	max-width: 25em;
+	margin-right: auto;
+	padding: 10px;
+}
+
+#index_info_box  div {
+	background-color: #cfe7f57a;
+	border-color: #c8d6e4;
+	border-radius: 10px;
+	border-style: solid;
+	margin: 10px;
+	padding-top: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+#btn_create_list {
+	margin-bottom: 1em;
+}
+
+#index_info_box span {
+	display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
