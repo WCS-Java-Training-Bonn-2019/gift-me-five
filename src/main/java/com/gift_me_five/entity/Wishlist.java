@@ -25,7 +25,7 @@ public class Wishlist {
 
     @ManyToOne
     @JoinColumn(name = "receiverId", nullable=false)
-    private  User user;
+    private  User receiver;
         
     @ManyToOne
     @JoinColumn(name = "themeId")
@@ -33,7 +33,7 @@ public class Wishlist {
     
     @ManyToMany
     @JoinTable(name="GiverSeeWishlist", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns=@JoinColumn(name="wishlist_id"))
-    private List<User> users = new ArrayList<>();
+    private List<User> givers = new ArrayList<>();
     
 	public Wishlist() {
 	}
@@ -78,12 +78,12 @@ public class Wishlist {
 		this.modifyDate = modifyDate;
 	}
 
-	public User getUser() {
-		return user;
+	public User getReceiver() {
+		return receiver;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setReceiver(User receiver) {
+		this.receiver = receiver;
 	}
 
 	public Theme getTheme() {
@@ -94,13 +94,12 @@ public class Wishlist {
 		this.theme = theme;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public List<User> getGivers() {
+		return givers;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setGivers(List<User> givers) {
+		this.givers = givers;
 	}
-	
-	
+
 }
