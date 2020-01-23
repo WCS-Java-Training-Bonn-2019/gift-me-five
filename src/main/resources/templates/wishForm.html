@@ -26,21 +26,26 @@
 		<main>
 		<h1 th:text="${wish.id} ? 'Edit Wish' : 'Create Wish'">My Wish</h1>
 		<form method="post" th:action="@{/wish}" th:object="${wish}">
-			<input name="id" th:field="*{id}" type="hidden"> <label
-				for="wish-title">Short Description:</label> <input id="wish-title"
-				name="title" placeholder="X-Box One" required th:field="*{title}"
-				type="text"> <br> <br> <label
-				for="wish-description">Additional Information:</label> <input
-				id="wish-description" name="description"
+			<input name="id" th:field="*{id}" type="hidden" />
+			<label for="wish-title">Short Description:</label>
+			<input id="wish-title" name="title" placeholder="X-Box One" required
+				th:field="*{title}" type="text" />
+			<br> <br>
+			<label for="wish-description">Additional Information:</label>
+			<input id="wish-description" name="description"
 				placeholder="I would like to get a really cool game console with a lot of memory blablabla..."
-				th:field="*{description}" type="text"> <br> <br> <label
-				for="wish-link">Link:</label> <input id="wish-link" name="link"
+				th:field="*{description}" type="text" />
+			<br> <br>
+			<label for="wish-link">Link:</label>
+			<input id="wish-link" name="link"
 				placeholder="https://www.idealo.de/preisvergleich/OffersOfProduct/3922755_-xbox-one-microsoft.html"
-				th:field="*{link}" type="url"> <br> <br> <label
-				for="wish-image">Image source:</label> <input id="wish-image"
-				name="image" placeholder="file://dummy.jpg" th:field="*{image}"
-				type="url"> <br> <br> <input type="submit"
-				value="Submit">
+				th:field="*{link}" type="url" />
+			<br> <br>
+			<label for="wish-image">Image source:</label>
+			<input id="wish-image" name="image" placeholder="file://dummy.jpg"
+				th:field="*{image}" type="url" />
+			<br> <br>
+			<input type="submit" value="Submit" />
 		</form>
 		<br>
 		<a href="/">Back to startpage</a> </main>

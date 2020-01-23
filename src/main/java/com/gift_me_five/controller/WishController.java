@@ -37,9 +37,9 @@ public class WishController {
 	@PostMapping("/wish")
 	public String saveWish(@ModelAttribute Wish wish) {
 		
-		repository.save(wish);
+		System.out.println(repository.save(wish));
 		
-		return "redirect:/wish?"+wish.getId();
+		return "redirect:/wish?id="+wish.getId();
 	}
 
 	@GetMapping("/wish/delete")
