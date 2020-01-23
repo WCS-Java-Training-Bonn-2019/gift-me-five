@@ -1,22 +1,40 @@
 package com.gift_me_five.entity;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Wishlist {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String unique_url_giver;
-	private String unique_url_receiver;
-	private Date create_date;
-	private Date modify_date;
+	private String uniqueUrlGiver;
+	private String uniqueUrlReceiver;
+	private Date createDate;
+	private Date modifyDate;
 
+    @ManyToOne
+    @JoinColumn(name = "receiverId", nullable=false)
+    private  User user;
+        
+    @ManyToOne
+    @JoinColumn(name = "themeId")
+    private  Theme theme;
+    
+    @ManyToMany
+    @JoinTable(name="GiverSeeWishlist", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns=@JoinColumn(name="wishlist_id"))
+    private List<User> users = new ArrayList<>();
+    
 	public Wishlist() {
 	}
 
@@ -28,36 +46,61 @@ public class Wishlist {
 		this.id = id;
 	}
 
-	public String getUnique_url_giver() {
-		return unique_url_giver;
+	public String getUniqueUrlGiver() {
+		return uniqueUrlGiver;
 	}
 
-	public void setUnique_url_giver(String unique_url_giver) {
-		this.unique_url_giver = unique_url_giver;
+	public void setUniqueUrlGiver(String uniqueUrlGiver) {
+		this.uniqueUrlGiver = uniqueUrlGiver;
 	}
 
-	public String getUnique_url_receiver() {
-		return unique_url_receiver;
+	public String getUniqueUrlReceiver() {
+		return uniqueUrlReceiver;
 	}
 
-	public void setUnique_url_receiver(String unique_url_receiver) {
-		this.unique_url_receiver = unique_url_receiver;
+	public void setUniqueUrlReceiver(String uniqueUrlReceiver) {
+		this.uniqueUrlReceiver = uniqueUrlReceiver;
 	}
 
-	public Date getCreate_date() {
-		return create_date;
+	public Date getCreateDate() {
+		return createDate;
 	}
 
-	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
-	public Date getModify_date() {
-		return modify_date;
+	public Date getModifyDate() {
+		return modifyDate;
 	}
 
-	public void setModify_date(Date modify_date) {
-		this.modify_date = modify_date;
+	public void setModifyDate(Date modifyDate) {
+		this.modifyDate = modifyDate;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Theme getTheme() {
+		return theme;
+	}
+
+	public void setTheme(Theme theme) {
+		this.theme = theme;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+	
 	
 }

@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Wish {
@@ -17,9 +19,17 @@ public class Wish {
 	private String description;
 	private String link;
 	private String image;
-	private Date create_date;
-	private Date modify_date;
+	private Date createDate;
+	private Date modifyDate;
 
+	@ManyToOne
+    @JoinColumn(name = "giverId")
+    private  User user;
+
+	@ManyToOne
+    @JoinColumn(name = "wishlistId", nullable=false)
+    private  Wishlist wishlist;
+	
 	public Wish() {
 	}
 
@@ -71,20 +81,36 @@ public class Wish {
 		this.image = image;
 	}
 
-	public Date getCreate_date() {
-		return create_date;
+	public Date getCreateDate() {
+		return createDate;
 	}
 
-	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
-	public Date getModify_date() {
-		return modify_date;
+	public Date getModifyDate() {
+		return modifyDate;
 	}
 
-	public void setModify_date(Date modify_date) {
-		this.modify_date = modify_date;
+	public void setModifyDate(Date modifyDate) {
+		this.modifyDate = modifyDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Wishlist getWishlist() {
+		return wishlist;
+	}
+
+	public void setWishlist(Wishlist wishlist) {
+		this.wishlist = wishlist;
 	}
 	
 }
