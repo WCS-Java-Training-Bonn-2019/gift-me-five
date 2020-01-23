@@ -44,26 +44,18 @@
 		<section id="friend_wish_list_details">
 			<h1>My Christmas Wishes</h1>
 			<ul>
-
 				<li th:each="wish : ${wishes}" th:object="${wish}">
-					<p th:text="*{id}">0</p>
-				</li>
-				<li>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<div class="input-group-text">
-								<input type="checkbox"
-									aria-label="Checkbox for following text input">
+								<button type="button" class="btn btn-success">Pick</button>
 							</div>
 						</div>
 						<div class="description">
-							<h2>Money</h2>
-							<p>Untold riches!</p>
+							<h2 th:text="*{title}">title</h2>
+							<p th:text="*{description}">description</p>
 						</div>
 					</div>
-				</li>
-				<li class="button_list_element">
-					<button type="button" class="btn btn-success">Confirm</button>
 				</li>
 			</ul>
 		</section>
