@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Gift Me Five</title>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div id="wrapper">
+		<header th:replace="header.html :: header">Header</header>
+		<main>
+		<section id="friends_wish_list">
+			<div>
+				<strong>My Friend's Wishes</strong>
+				<ul>
+					<li><a href="#">Ben's Xmas</a></li>
+					<li><a href="#">Jon's Work Anniversary</a></li>
+					<li><a href="#">Jenny's Silver Wedding</a></li>
+				</ul>
+			</div>
+			<div>
+				<p>
+					Check a checkbox and click ‘Select’ to reserve an item you want to
+					give to your friend.<br> Items displayed in gray font have
+					already been selected by other people!
+				</p>
+			</div>
+		</section>
+		<section id="friend_wish_list_details">
+			<h1>My Christmas Wishes</h1>
+			<ul>
+				<li>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input type="checkbox"
+									aria-label="Checkbox for following text input">
+							</div>
+						</div>
+						<div class="description">
+							<h2>X-Box</h2>
+							<p>1 TB, black, ...(@Amazon)</p>
+						</div>
+					</div>
+
+				</li>
+				<li>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input type="checkbox"
+									aria-label="Checkbox for following text input">
+							</div>
+						</div>
+						<div class="description">
+							<h2>Game(s)</h2>
+							<p>
+								<a href="">Top 10 Games Review</a><br> (I already have #1,
+								#3. Don't like #4 and #9)
+							</p>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input type="checkbox"
+									aria-label="Checkbox for following text input">
+							</div>
+						</div>
+						<div class="description">
+							<h2>Controller</h2>
+							<p>
+								Stable and reactive X Box controller,<br> e.g.
+								<a href="#">www.controller-review.com/123457</a>
+							</p>
+							<img src="pics/XBox-Controller.png">
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input type="checkbox"
+									aria-label="Checkbox for following text input">
+							</div>
+						</div>
+						<div class="description">
+							<h2>Money</h2>
+							<p>Untold riches!</p>
+						</div>
+					</div>
+				</li>
+				<li class="button_list_element">
+					<button type="button" class="btn btn-success">Confirm</button>
+				</li>
+			</ul>
+		</section>
+		</main>
+		<footer th:replace="footer.html :: footer">Footer</footer>
+	</div>
+</body>
+</html>
