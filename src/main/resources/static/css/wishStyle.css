@@ -1,0 +1,49 @@
+main {
+	flex-direction: row;
+	justify-content: center;
+	/* justify-content: space-around;  to show content in the middle of the site*/
+}
+
+div.spacer {
+	flex-growth: 1;
+	flex-shrink: 0;
+}
+
+main section {
+	background-color: #cfe7f57a;
+	border-color: #c8d6e4;
+	border-radius: 10px;
+	border-style: solid;
+	padding-top: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+	min-width: 20em;
+/*	max-width: 55em; */
+	flex-basis: 45em;
+	flex-shrink: 1;
+	flex-growth: 0;
+}
+
+main div {
+	min-width: 100%;
+}
+
+main h1 {
+	font-size: 180%
+}
+
+form {
+	min-width: 100%;
+/*	max-width: 50em; */
+	padding: 10px;
+}
+
+.input {
+	max-width: 50em;
+	min-width: 100%;
+}
+
+.btn {
+	margin-right: 2em;
+}
+}

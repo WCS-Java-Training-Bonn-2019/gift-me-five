@@ -19,6 +19,7 @@
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/giverStyle.css">
 </head>
 <body>
 	<div id="wrapper">
@@ -43,73 +44,42 @@
 		</section>
 		<section id="friend_wish_list_details">
 			<h1>My Christmas Wishes</h1>
+			<!-- 
+			<form method="post" th:action="@{/wish}" th:object="${wish}">
+			<input name="id" th:field="*{id}" type="hidden" />
+<input id="wish-description" name="description"
+				placeholder="I would like to get a really cool game console with a lot of memory blablabla..."
+				th:field="*{description}" type="text" />
+				<input type="submit" value="Submit" />
+			</form>
+			 -->
+			<!--  todo dynamic giver_id (user_id) --> <!--  
+						<input name="giver_id + ' ' + *{giverId}" th:field="2"
+							type="hidden" />
+			-->
 			<ul>
-				<li>
-					<div class="input-group mb-3">
+				<li th:each="wish : ${wishes}" th:object="${wish}" th:class="*{giver} ? 'selected' : 'deselected'">
+					
+			<form method="post" th:action="@{/giver}" >
+			<input th:name="id" th:id="*{id}" th:value="*{id}" type="hidden">
+            <input th:name="giverId" th:id="giverId" type="hidden" th:value="*{giver} ? '0' : '1'">	
+				<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<div class="input-group-text">
-								<input type="checkbox"
-									aria-label="Checkbox for following text input">
+								<input type="submit" th:value="*{giver} ? 'Deselect' : 'Select'" class="btn btn-success"/>
 							</div>
 						</div>
 						<div class="description">
-							<h2>X-Box</h2>
-							<p>1 TB, black, ...(@Amazon)</p>
+							<h2 th:text="*{title}">title</h2>
+							<p th:text="*{description}">description</p>
+							<img th:if="${wish.image != ''} and ${wish.image != null}"
+								th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
+							<a th:if="${wish.link != ''} and ${wish.link != null}"
+								th:href="@{${wish.link}}">Link</a>
 						</div>
 					</div>
-
-				</li>
-				<li>
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<div class="input-group-text">
-								<input type="checkbox"
-									aria-label="Checkbox for following text input">
-							</div>
-						</div>
-						<div class="description">
-							<h2>Game(s)</h2>
-							<p>
-								<a href="">Top 10 Games Review</a><br> (I already have #1,
-								#3. Don't like #4 and #9)
-							</p>
-						</div>
-					</div>
-				</li>
-				<li>
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<div class="input-group-text">
-								<input type="checkbox"
-									aria-label="Checkbox for following text input">
-							</div>
-						</div>
-						<div class="description">
-							<h2>Controller</h2>
-							<p>
-								Stable and reactive X Box controller,<br> e.g.
-								<a href="#">www.controller-review.com/123457</a>
-							</p>
-							<img src="pics/XBox-Controller.png">
-						</div>
-					</div>
-				</li>
-				<li>
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<div class="input-group-text">
-								<input type="checkbox"
-									aria-label="Checkbox for following text input">
-							</div>
-						</div>
-						<div class="description">
-							<h2>Money</h2>
-							<p>Untold riches!</p>
-						</div>
-					</div>
-				</li>
-				<li class="button_list_element">
-					<button type="button" class="btn btn-success">Confirm</button>
+					
+			</form>
 				</li>
 			</ul>
 		</section>
