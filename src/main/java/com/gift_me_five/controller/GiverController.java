@@ -25,8 +25,18 @@ public class GiverController {
 
 	@PostMapping("/giver")
 	public String updateWish(@ModelAttribute Wish wish) {
-		System.out.println(repository.save(wish));
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
 		System.out.println("ID:" + wish.getId());
+		System.out.println("all: " + wish.toString());
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println(repository.save(wish));
 		return "redirect:/giver";
 	}
 }

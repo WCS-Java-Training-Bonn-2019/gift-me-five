@@ -122,5 +122,12 @@ public class Wish {
 	public void setWishlist(Wishlist wishlist) {
 		this.wishlist = wishlist;
 	}
+
+	@Override
+	public String toString() {
+		return "Wish [id=" + id + ", title=" + title + ", item=" + item + ", description=" + description + ", link="
+				+ link + ", image=" + image + ", createDate=" + createDate + ", modifyDate=" + modifyDate + ", giver="
+				+ giver + ", wishlist=" + wishlist + "]";
+	}
 	
 }
