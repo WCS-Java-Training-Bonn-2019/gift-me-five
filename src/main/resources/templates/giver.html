@@ -43,14 +43,33 @@
 		</section>
 		<section id="friend_wish_list_details">
 			<h1>My Christmas Wishes</h1>
+			<!-- 
+			<form method="post" th:action="@{/wish}" th:object="${wish}">
+			<input name="id" th:field="*{id}" type="hidden" />
+<input id="wish-description" name="description"
+				placeholder="I would like to get a really cool game console with a lot of memory blablabla..."
+				th:field="*{description}" type="text" />
+				<input type="submit" value="Submit" />
+			</form>
+			 -->
+			<!--  todo dynamic giver_id (user_id) --> <!--  
+						<input name="giver_id + ' ' + *{giverId}" th:field="2"
+							type="hidden" />
+			-->
 			<ul>
 				<li th:each="wish : ${wishes}" th:object="${wish}">
+					
+			<form method="post" th:action="@{/giver}">
+			<input th:name="'id' + ${wish.id}" th:id="${wish.id}" th:value="${wish.id}" />
+			<input th:name="'image' + ${wish.id}" th:value="'image' + ${wish.id}" />
+			<!--  
 				
-					<div class="input-group mb-3">
+			<input th:name="'giverId' + ${wish.giver.id}" th:id="'giverId' + ${wish.giver.id}" type="hidden" value="2" />
+			 -->			
+				<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<div class="input-group-text">
-														<a id="btn_create_list" th:href="@{*/giver/pick/' + *{id}}" class="btn btn-success">Pick</a>
-
+								<input type="submit" value="Submit" />
 							</div>
 						</div>
 						<div class="description">
@@ -62,6 +81,8 @@
 								th:href="@{${wish.link}}">Link</a>
 						</div>
 					</div>
+					
+			</form>
 				</li>
 			</ul>
 		</section>

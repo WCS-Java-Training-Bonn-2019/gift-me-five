@@ -34,7 +34,7 @@ public class Wish {
 
 	@ManyToOne
     @JoinColumn(name = "giverId")
-    private  User user;
+    private User giver;
 
 	@ManyToOne
     @JoinColumn(name = "wishlistId", nullable=false)
@@ -107,12 +107,12 @@ public class Wish {
 		this.modifyDate = modifyDate;
 	}
 
-	public User getUser() {
-		return user;
+	public User getGiver() {
+		return giver;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setGiver(User giver) {
+		this.giver = giver;
 	}
 
 	public Wishlist getWishlist() {
