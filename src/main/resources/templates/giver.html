@@ -60,7 +60,7 @@
 				<li th:each="wish : ${wishes}" th:object="${wish}" th:class="*{giver} ? 'selected' : 'deselected'">
 					
 			<form method="post" th:action="@{/giver}" >
-			<input th:name="id" th:id="${wish}" th:value="${wish}" type="hidden">
+			<input th:name="id" th:id="*{id}" th:value="*{id}" type="hidden">
             <input th:name="giverId" th:id="giverId" type="hidden" th:value="*{giver} ? '0' : '1'">	
 				<div class="input-group mb-3">
 						<div class="input-group-prepend">
