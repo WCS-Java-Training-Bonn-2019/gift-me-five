@@ -1,0 +1,46 @@
+main {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	/* justify-content: space-around;  to show content in the middle of the site*/
+}
+
+#index_info_box {
+	display: flex;
+	align-items: center;
+	min-width: 25em;
+	max-width: 25em;
+	margin-right: 10%;
+	padding: 10px;
+}
+
+@media only screen and (max-width: 550px) {
+	#index_info_box {
+	display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 25em;
+    max-width: 25em;
+    padding: 10px;
+    margin-right: auto;
+    margin-left: 0em;
+	}
+}
+
+#index_info_box  div {
+	background-color: #cfe7f57a;
+	border-color: #c8d6e4;
+	border-radius: 10px;
+	border-style: solid;
+	margin: 10px;
+	padding-top: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+#index_info_box span {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-bottom: 1em;
+}
