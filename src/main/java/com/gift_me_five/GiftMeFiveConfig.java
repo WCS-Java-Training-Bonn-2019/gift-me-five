@@ -72,7 +72,7 @@ public class GiftMeFiveConfig {
 				"https://www.idealo.de/preisvergleich/OffersOfProduct/3922755_-xbox-one-microsoft.html",
 				"https://www.spiegel.de/netzwelt/games/best-of-2019-die-zehn-besten-videospiele-des-jahres-a-1298479.html",
 				"https://www.pcgamer.com/best-controller-for-pc-gaming/", "" };
-		final String[] wishImage = { "", "", "XBoxController.png", "" };
+		final String[] wishImage = { "", "", "XBox-Controller.png", "" };
 
 		List<Wish> wishes = new ArrayList<>();
 		for (int i = 0; i < wishTitle.length; i++) {
