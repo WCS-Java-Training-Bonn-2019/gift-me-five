@@ -34,24 +34,14 @@ public class GiverController {
 	@PostMapping("/giver")
 	public String updateWish(@ModelAttribute(value = "wish") Wish wish,
 			@ModelAttribute(value = "giverId") Long giverId) {
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println("ID:" + wish.getId());
-		System.out.println("all: " + wish.toString());
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println("Giver ID: " + giverId);
+		//System.out.println("Wish ID = " + wishId);
+		wish = repository.findById(wish.getId()).get();
 		if (giverId == 0) {
 			wish.setGiver(null);
 		} else {
 			wish.setGiver(uRepository.findById(giverId).get());
 		}
-		wish.setWishlist(wlRepository.findById(1L).get());
-		System.out.println(repository.save(wish));
+		repository.save(wish);
 		return "redirect:/giver";
 	}
 }
