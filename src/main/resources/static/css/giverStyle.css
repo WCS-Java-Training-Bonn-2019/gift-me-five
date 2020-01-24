@@ -102,6 +102,15 @@ main {
 	padding-right: 1em;
 }
 
+li.selected input.btn.btn-success {
+	background-color: red;
+}
+
+li.selected .description {
+	opacity: 50%;
+}
+
+
 #friend_wish_list_details li, h1 {
 	background-color: #e2f2ff;
 	border-radius: 10px;
