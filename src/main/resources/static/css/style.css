@@ -172,3 +172,7 @@ footer {
 img {
 	width: 100px;
 }
+
+li.selected {
+	background-color: black;
+}
