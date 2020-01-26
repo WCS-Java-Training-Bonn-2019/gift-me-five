@@ -23,7 +23,10 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: header">Header</header>
+		<header>
+		<nav th:replace="header.html :: navigation(view='giver')"></nav>
+		<div th:replace="header.html :: loginButton"></div>		
+		</header>
 		<main>
 		<section id="friends_wish_list">
 			<div>
