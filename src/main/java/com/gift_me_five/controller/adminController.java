@@ -24,7 +24,7 @@ public class adminController {
 	@GetMapping("/admin/user")
 	public String getAll(Model model) {
 		model.addAttribute("users", userRepository.findAll());
-		return "user";
+		return "admin/get_all_User";
 	}
 	
 	@GetMapping("/admin/wish")
