@@ -27,10 +27,10 @@ public class GiverController {
 	}
 
 	@PostMapping("/giver")
-	public String updateWish(@ModelAttribute(value = "wish") Wish wish,
+	public String updateWish(@ModelAttribute(value = "wishId") Long wishId,
 			@ModelAttribute(value = "giverId") Long giverId) {
 		//System.out.println("Wish ID = " + wishId);
-		wish = repository.findById(wish.getId()).get();
+		Wish wish = repository.findById(wishId).get();
 		if (giverId == 0) {
 			wish.setGiver(null);
 		} else {
