@@ -29,7 +29,7 @@ public class GiftMeFiveConfig {
 			final String[] userNames = { "publicDummyUser", "Michaela", "Frieda", "Alfred" };
 			final String[] passwords = { "jykQGKpb;q-9FjkX8r_IB", "#1michaelasSecretPassword",
 					"#1friedasSecretPassword", "#1alfredsSecretPassword" };
-			final String[] backgroundPictures = { "", "myBackgroundPicture", "pics2", "pic3" };
+			final String[] backgroundPictures = { "white-4742365_640.jpg", "white-4742365_640.jpg", "postcard-1529121_640.png", "christmas-2947257_640.jpg" };
 			for (int i = 0; i < userNames.length; i++) {
 				Theme theme = createTheme(themeRepository, backgroundPictures[i]);
 				User receiver = createUser(userRepository, userNames[i], passwords[i]);
