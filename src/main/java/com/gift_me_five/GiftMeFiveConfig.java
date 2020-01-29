@@ -38,7 +38,9 @@ public class GiftMeFiveConfig {
 		final String[] userName = { "Michaela", "Frieda", "Alfred" };
 		final String[] password = { "#1michaelasSecretPassword", "#1friedasSecretPassword", "#1alfredsSecretPassword" };
 
-		// Currently only one user is created
+		for (int i = 0; i < userName.length; i++) {
+			System.out.println("U: " + userName[i] + " P: " + password[i]);
+		}
 		User user = new User();
 		user.setLogin(userName[1]);
 		user.setPassword(password[1]);
