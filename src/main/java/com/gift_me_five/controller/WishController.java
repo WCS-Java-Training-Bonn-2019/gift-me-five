@@ -34,7 +34,6 @@ public class WishController {
 			}
 		}
 		model.addAttribute("wish", wish);
-		
 		return "wishForm";
 	}
 	
@@ -42,8 +41,6 @@ public class WishController {
 	public String saveWish(@ModelAttribute Wish wish) {
 		
 		wish.setWishlist(wlRepository.findById(1L).get());
-		System.out.println(repository.save(wish));
-		
 		return "redirect:/wish?id="+wish.getId();
 	}
 
