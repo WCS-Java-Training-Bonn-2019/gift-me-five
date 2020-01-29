@@ -22,7 +22,14 @@ public class GiverController {
 
 	@GetMapping("/giver")
 	public String getAll(Model model) {
-		model.addAttribute("wishes", repository.findAll());
+//		model.addAttribute("wishes", repository.findAll());
+		model.addAttribute("wishes", repository.findByIdLessThan(5L));
+//		model.addAttribute("wishes", repository.findById(2L));
+		System.out.println();System.out.println();
+		System.out.println();System.out.println();
+		System.out.println(repository.toString());
+		System.out.println();System.out.println();
+		System.out.println();System.out.println();
 		return "giver";
 	}
 
