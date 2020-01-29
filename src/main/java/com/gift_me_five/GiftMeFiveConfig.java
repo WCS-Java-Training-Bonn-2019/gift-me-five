@@ -20,37 +20,37 @@ import com.gift_me_five.repository.WishlistRepository;
 public class GiftMeFiveConfig {
 
 	@Bean
-	public CommandLineRunner dbInit(UserRepository userRepository,
-			ThemeRepository themeRepository, WishlistRepository wishlistRepository, WishRepository wishRepository) {
+	public CommandLineRunner dbInit(UserRepository userRepository, ThemeRepository themeRepository,
+			WishlistRepository wishlistRepository, WishRepository wishRepository) {
 		return (args) -> {
 			emptyWishlistTable(wishlistRepository);
 			emptyUserTable(userRepository);
 			emptyThemeTable(themeRepository);
-			User receiver = createUser(userRepository);
-			Theme theme = createTheme(themeRepository);
-			Wishlist wishlist = createWishlist(receiver, theme, wishlistRepository);
-			createWishes(wishRepository, wishlist);
+			final String[] userNames = { "publicDummyUser", "Michaela", "Frieda", "Alfred" };
+			final String[] passwords = { "jykQGKpb;q-9FjkX8r_IB", "#1michaelasSecretPassword",
+					"#1friedasSecretPassword", "#1alfredsSecretPassword" };
+			final String[] backgroundPictures = { "", "myBackgroundPicture", "pics2", "pic3" };
+			for (int i = 0; i < userNames.length; i++) {
+				Theme theme = createTheme(themeRepository, backgroundPictures[i]);
+				User receiver = createUser(userRepository, userNames[i], passwords[i]);
+				Wishlist wishlist = createWishlist(receiver, theme, wishlistRepository);
+				createWishes(wishRepository, wishlist);
+
+			}
 		};
 	}
 
-	private User createUser(UserRepository userRepository) {
-
-		final String[] userName = { "Michaela", "Frieda", "Alfred" };
-		final String[] password = { "#1michaelasSecretPassword", "#1friedasSecretPassword", "#1alfredsSecretPassword" };
-
-		for (int i = 0; i < userName.length; i++) {
-			System.out.println("U: " + userName[i] + " P: " + password[i]);
-		}
+	private User createUser(UserRepository userRepository, String userName, String password) {
 		User user = new User();
-		user.setLogin(userName[1]);
-		user.setPassword(password[1]);
+		user.setLogin(userName);
+		user.setPassword(password);
 		userRepository.save(user);
 		return user;
 	}
 
-	private Theme createTheme(ThemeRepository themeRepository) {
+	private Theme createTheme(ThemeRepository themeRepository, String picture) {
 		Theme theme = new Theme();
-		theme.setBackgroundPicture("myBackgroundPicture");
+		theme.setBackgroundPicture(picture);
 		themeRepository.save(theme);
 		return theme;
 	}
