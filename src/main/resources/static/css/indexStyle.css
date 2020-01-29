@@ -7,23 +7,20 @@ main {
 
 #index_info_box {
 	display: flex;
-	align-items: center;
-	min-width: 25em;
-	max-width: 25em;
+	flex-direction: column;
+	justify-content: center;
+	width: 25em;
 	margin-right: 10%;
-	padding: 10px;
+/*	padding: 10px; */
 }
 
 @media only screen and (max-width: 550px) {
 	#index_info_box {
-	display: flex;
-    align-items: flex-start;
     justify-content: flex-start;
-    min-width: 25em;
+    min-width: 15em;
     max-width: 25em;
-    padding: 10px;
-    margin-right: auto;
-    margin-left: 0em;
+    margin-right: 0.2em;
+    margin-left: 0.2em;
 	}
 }
 
