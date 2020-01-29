@@ -18,7 +18,7 @@ public class GiverController {
 	private WishRepository repository;
 
 	@Autowired
-	private UserRepository uRepository;
+	private UserRepository userRepository;
 
 	@GetMapping("/giver")
 	public String getAll(Model model) {
@@ -34,7 +34,7 @@ public class GiverController {
 		if (giverId == 0) {
 			wish.setGiver(null);
 		} else {
-			wish.setGiver(uRepository.findById(giverId).get());
+			wish.setGiver(userRepository.findById(giverId).get());
 		}
 		repository.save(wish);
 		return "redirect:/giver";
