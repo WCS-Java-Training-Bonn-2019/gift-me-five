@@ -1,87 +1,9 @@
-@charset "UTF-8";
-
-@media ( max-width : 991px) { /* adjust menu for better reading */
-	.navbar-collapse {
-		z-index: 1;
-		overflow: hidden; /* no scrolling bar while opening hamburger */
-	}
-	.navbar-nav {
-		border-color: #c8d6e4;
-		border-radius: 25px;
-		border-style: solid;
-		border-width: 1px;
-		background-color: #cfe7f5 !important;
-		padding: 0px 10px 10px 10px;
-		margin: 10px;
-		width: max-content;
-		height: max-content;
-    	position: absolute;
-    	top: 0;
-    	left: 75px;
-    	width: max-content;
-	}
-}
-
-.bg-light {
-		background-color: transparent !important;
-}
-
-html, body {
-	margin: 0;
-	padding: 0;
-	height: 100%;
-}
 
 #wrapper {
 	display: flex;
 	flex-direction: column;
 	min-height: 100%;
 	position: relative;
-}
-
-header, footer {
-	display: flex;
-	justify-content: space-between;
-	background-color: #cfe7f5;
-	padding: 10px;
-	height: 50px;
-	left: 0;
-	right: 0;
-	flex-grow: 0;
-}
-
-header {
-	margin-top: 10px;
-}
-
-header img {
-	height: 35px;
-	width: 35px;
-}
-
-header ul, section ul {
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	list-style-type: none;
-}
-
-.login_frame {
-	height: max-content;
-	background-color: transparent;
-	color: black;
-}
-main {
-	padding-bottom: 60px;
-	/*
-	background-image: url("../pics/gift-548290_1920.jpg");
-	*/
-	background-image: url("../pics/gift-leftside.jpg");
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-	display: flex;
-	flex-wrap: wrap;
-	flex-grow: 1;
 }
 
 #friends_wish_list {
@@ -102,14 +24,9 @@ main {
 	padding-right: 1em;
 }
 
-li.selected input.btn.btn-success {
-	background-color: red;
-}
-
 li.selected .description {
 	opacity: 50%;
 }
-
 
 #friend_wish_list_details li, h1 {
 	background-color: #e2f2ff;
@@ -163,25 +80,10 @@ li.selected .description {
 	margin: 10px;
 }
 
-.button_list_element {
-	background-color: #f1f5ff !important;
-	width: max-content;
-	font-family: initial;
-}
-
 .input-group-text {
 	background-color: #d9e8fb;
 }
 
-footer {
-	position: absolute;
-	bottom: 0;
-}
-
 img {
 	width: 100px;
-}
-
-li.selected {
-	background-color: black;
 }

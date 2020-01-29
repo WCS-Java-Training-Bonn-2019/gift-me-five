@@ -32,7 +32,7 @@ html, body {
 	height: 100%;
 }
 
-#wrapper {
+#GM5wrapper {
 	display: flex;
 	flex-direction: column;
 	min-height: 100%;
@@ -42,7 +42,7 @@ html, body {
 header, footer {
 	display: flex;
 	justify-content: space-between;
-	background-color: #cfe7f5;
+	background-color: #c3dff0;
 	padding: 10px;
 	height: 50px;
 	left: 0;
@@ -51,12 +51,13 @@ header, footer {
 }
 
 header {
-	margin-top: 10px;
+	height: 60px;
+	margin-top: 5px;
 }
 
 header img {
-	height: 35px;
-	width: 35px;
+	height: 30px;
+	width: 30px;
 }
 
 header ul, section ul {
@@ -66,7 +67,7 @@ header ul, section ul {
 	list-style-type: none;
 }
 
-.login_frame {
+.GM5login_frame {
 	height: max-content;
 	background-color: transparent;
 	color: black;
@@ -84,86 +85,6 @@ main {
 	flex-grow: 1;
 }
 
-#friends_wish_list {
- 	min-width: 25em;
- 	max-width: 25em;	
- 	margin-right: auto;
- 	padding: 10px;
-}
-
-#friends_wish_list div{
-	background-color: #cfe7f57a;
-	border-color: #c8d6e4;	
-	border-radius: 10px;
-	border-style: solid;
-	margin: 10px;
-	padding-top: 1em;
-	padding-left: 1em;
-	padding-right: 1em;
-}
-
-#friend_wish_list_details li, h1 {
-	background-color: #e2f2ff;
-	border-radius: 10px;
-	margin: 10px;
-	padding: 10px;
-	padding-left: 20px;
-}
-
-#friend_wish_list_details li {
-	padding-left: 10px;
-}
-
-#friend_wish_list_details h1 {
-	font-size: 180%;
-}
-
-#friend_wish_list_details h2 {
-	font-size: 150%;
-}
-
-#friend_wish_list_details {
-	display: flex;
-	align-items: stretch;
-	flex-direction: column;
-	justify-content: center;
-    background-color: #f1f5ff;
-    background-image: url(../pics/christmas-2946698_1920_mod.png);
-    background-repeat: no-repeat;
-    background-size: 30% 30%;
-    border-color: #c8d6e4;
-    border-radius: 25px;
-    border-style: solid;
-    border-width: 1px;
-    margin: 10px;
-    min-width: 60%;
-    width: max-content;
-    padding-left: 7%;
-    padding-top: 35px;
-    padding-right: 5%;
-    padding-bottom: 35px;    
-	font-family: "Chilanka" !important;
-}
-
-#friend_wish_list_details ul {
-	display: flex;
-	flex-direction: column;
-}
-
-#friend_wish_list_details .description {
-	margin: 10px;
-}
-
-.button_list_element {
-	background-color: #f1f5ff !important;
-	width: max-content;
-	font-family: initial;
-}
-
-.input-group-text {
-	background-color: #d9e8fb;
-}
-
 footer {
 	position: absolute;
 	bottom: 0;
@@ -173,6 +94,14 @@ img {
 	width: 100px;
 }
 
-li.selected {
-	background-color: black;
+.GM5button {
+	font-family: Arial;
+	margin: auto;
+	width: 5em;
+}
+
+.selected .GM5button {
+	background-color: #0edd3c;
+	border-color: #1dee44;
+	padding: 5px;
 }

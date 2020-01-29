@@ -22,10 +22,13 @@
 <link rel="stylesheet" href="css/wishStyle.css">
 </head>
 <body>
-	<div id="wrapper">
-		<header th:replace="header.html :: header">Header</header>
+	<div id="GM5wrapper">
+		<header>
+		<nav th:replace="header.html :: navigation(view='receiver')"></nav>
+		<div th:replace="header.html :: loginButton"></div>		
+		</header>
 		<main>
-		<div class="spacer"></div>
+		<div class="GM5spacer"></div>
 		<section>
 			<div>
 				<h1 th:text="${wish.id} ? 'Edit a Wish' : 'Create a Wish'">My
@@ -36,17 +39,12 @@
 				<label for="wish-title">Short Description:</label>
 				<br>
 				<input id="wish-title" name="title" placeholder="X-Box One" required
-					th:field="*{title}" type="text" class="input">
+					th:field="*{title}" type="text" class="GM5input">
 				<br> <br>
 				<label for="wish-description">Additional Information:</label>
 				<br>
-				<!--
-				<input id="wish-description" name="description"
-					placeholder="I would like to get a really cool game console with a lot of memory blablabla..."
-					th:field="*{description}" type="text" >
-				  -->
 				<textarea name="description" rows="4" cols="20"
-					th:field="*{description}" class="input">
+					th:field="*{description}" class="GM5input">
 					I would like to get a really cool game console with a lot of memory blablabla...
 				</textarea>
 				<br> <br>
@@ -54,7 +52,7 @@
 				<br>
 				<input id="wish-link" name="link"
 					placeholder="https://www.idealo.de/preisvergleich/OffersOfProduct/3922755_-xbox-one-microsoft.html"
-					th:field="*{link}" type="url" class="input">
+					th:field="*{link}" type="url" class="GM5input">
 				<br> <br>
 				<label for="wish-image">Image source:</label>
 				<br>
@@ -66,7 +64,7 @@
 				</span>
 			</form>
 		</section>
-		<div class="spacer"></div>
+		<div class="GM5spacer"></div>
 		</main>
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>

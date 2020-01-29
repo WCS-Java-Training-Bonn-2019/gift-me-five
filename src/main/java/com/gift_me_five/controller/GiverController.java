@@ -7,20 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
-import com.gift_me_five.repository.WishlistRepository;
 
 @Controller
 public class GiverController {
 
 	@Autowired
 	private WishRepository repository;
-
-	@Autowired
-	private WishlistRepository wlRepository;
 
 	@Autowired
 	private UserRepository uRepository;
@@ -32,10 +27,10 @@ public class GiverController {
 	}
 
 	@PostMapping("/giver")
-	public String updateWish(@ModelAttribute(value = "wish") Wish wish,
+	public String updateWish(@ModelAttribute(value = "wishId") Long wishId,
 			@ModelAttribute(value = "giverId") Long giverId) {
 		//System.out.println("Wish ID = " + wishId);
-		wish = repository.findById(wish.getId()).get();
+		Wish wish = repository.findById(wishId).get();
 		if (giverId == 0) {
 			wish.setGiver(null);
 		} else {
