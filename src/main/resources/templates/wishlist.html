@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Gift Me Five Create a wishlist</title>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/wishStyle.css">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<div id="GM5wrapper">
+		<header>
+			<nav th:replace="header.html :: navigation(view='')"></nav>
+			<div th:replace="header.html :: loginButton"></div>
+		</header>
+
+		<!-- Create a wishlist page  -->
+
+		<main>
+			<section>
+				<h1>Create a wishlist</h1>
+
+
+				<form method="post" th:action="@{/wishlist}" th:object="${wishlist}">
+					
+					<input name="wishlistId" type="hidden" th:field="*{id}">
+					
+					<input th:field="*{receiver}" type="hidden">
+					<!-- 
+					<input th:name="receiverId" type="hidden" th:value="1">
+					 --> 
+					
+					<label for="wishlist-title">Wishlist title:</label> 
+					<input placeholder="My cool wishlist"
+						required th:field="*{title}" type="text" class="GM5input">
+    <!-- id="wishlist-title" name="title"  -->
+					<hr>
+
+					<label for="theme-id">Wishlist theme:</label>
+                    <input id="theme-id" th:field="*{theme}" type="hidden" class="GM5input">
+					<!--  
+					<input id="theme-id" th:name="themeId"
+					 th:value="1" type="hidden" class="GM5input">
+					 -->
+
+					<hr>
+
+					<input type="submit" value="Preview" class="btn btn-success">
+
+
+
+				</form>
+
+				<hr>
+
+				<figure class="col-md-4">
+					<a href="/pics/snowman/36663.jpg" data-size="1600x1067"> <img
+						alt="picture" src="/pics/snowman/36663.jpg" class="img-fluid">
+					</a>
+				</figure>
+
+				<figure class="col-md-4">
+					<a href="/pics/christmas-2946698_1920_mod.png"
+						data-size="1600x1067"> <img alt="picture"
+						src="/pics/christmas-2946698_1920_mod.png" class="img-fluid" />
+					</a>
+				</figure>
+			</section>
+
+		</main>
+		<footer th:replace="footer.html :: footer">Footer</footer>
+	</div>
+</body>
+</html>

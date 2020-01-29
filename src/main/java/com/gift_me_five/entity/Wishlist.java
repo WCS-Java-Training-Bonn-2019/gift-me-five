@@ -24,6 +24,8 @@ public class Wishlist {
 	
 	private String uniqueUrlGiver;
 	private String uniqueUrlReceiver;
+	
+	private String title;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createDate", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -45,6 +47,7 @@ public class Wishlist {
     @ManyToMany
     @JoinTable(name="GiverSeeWishlist", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns=@JoinColumn(name="wishlist_id"))
     private List<User> givers = new ArrayList<>();
+    
     
 	public Wishlist() {
 	}
@@ -111,6 +114,14 @@ public class Wishlist {
 
 	public void setGivers(List<User> givers) {
 		this.givers = givers;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }
