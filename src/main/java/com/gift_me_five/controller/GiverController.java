@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
-import com.gift_me_five.repository.WishlistRepository;
 
 @Controller
 public class GiverController {
@@ -20,10 +18,7 @@ public class GiverController {
 	private WishRepository repository;
 
 	@Autowired
-	private WishlistRepository wlRepository;
-
-	@Autowired
-	private UserRepository uRepository;
+	private UserRepository userRepository;
 
 	@GetMapping("/giver")
 	public String getAll(Model model) {
@@ -39,7 +34,7 @@ public class GiverController {
 		if (giverId == 0) {
 			wish.setGiver(null);
 		} else {
-			wish.setGiver(uRepository.findById(giverId).get());
+			wish.setGiver(userRepository.findById(giverId).get());
 		}
 		repository.save(wish);
 		return "redirect:/giver";
