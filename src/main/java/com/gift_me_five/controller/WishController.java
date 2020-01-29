@@ -41,6 +41,13 @@ public class WishController {
 	public String saveWish(@ModelAttribute Wish wish) {
 		
 		wish.setWishlist(wlRepository.findById(1L).get());
+		System.out.println();System.out.println();
+		System.out.println();System.out.println();
+		System.out.println("-".repeat(80));
+		System.out.println(wish.toString());
+		System.out.println("-".repeat(80));
+		System.out.println();System.out.println();
+		System.out.println();System.out.println();
 		return "redirect:/wish?id="+wish.getId();
 	}
 

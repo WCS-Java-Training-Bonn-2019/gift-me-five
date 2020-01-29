@@ -128,13 +128,4 @@ public class Wish {
 	public void setWishlist(Wishlist wishlist) {
 		this.wishlist = wishlist;
 	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
-	}
-
-	
-	
 }
