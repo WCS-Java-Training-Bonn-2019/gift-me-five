@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gift_me_five.entity.Wish;
-import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
 
@@ -23,6 +22,15 @@ public class WishController {
 	
 	@Autowired
 	private WishlistRepository wlRepository;
+	
+	//******************************************************************************
+	// TEMPORARY TO REVIEW SITE LAYOUT
+	//******************************************************************************
+	@GetMapping("/wishlistPreview")
+	public String displayWishlist() {
+		return("receiver");
+	}
+	
 	
 	@GetMapping("/wish")
 	public String upsertWish(Model model, @RequestParam(required = false) Long id) {

@@ -19,18 +19,36 @@
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/indexStyle.css">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
 	<div id="GM5wrapper">
 		<header>
-		<nav th:replace="header.html :: navigation(view='')"></nav>
-		<div th:replace="header.html :: loginButton"></div>		
+			<nav th:replace="header.html :: navigation(view='')"></nav>
+			<div th:replace="header.html :: loginButton"></div>
 		</header>
 
-		<main> <!-- Info box start page  -->
-		<h1>Überschrift</h1>
+		<main>
+			<!-- Info box start page  -->
+			<div id="leftmargin"></div>
+			<section id="index_info_box">
+				<h1>Gift me five</h1>
+				<p>
+					Creating and sharing wishlists… <br> Your birthday is coming
+					up, tired of lame gifts? Create your wishlist without registering
+					and share it with your friends!
+				</p>
+				<!-- Button "Create a wish" -->
+				<div>
+					<a href="/wish" class="btn btn-success">Create a wish</a>
+				</div>
+				<br>
+				<p>If you need to manage multiple wishlists or want to ensure
+					privacy of your wishlists, it is recommended to create an account.</p>
+			</section>
+			<div id="rightmargin"></div>
 		</main>
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>
