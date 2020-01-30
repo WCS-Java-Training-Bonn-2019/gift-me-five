@@ -53,15 +53,20 @@ public class WishController {
 		wish.setWishlist(wlRepository.findById(1L).get());
 		System.out.println(repository.save(wish));
 
-		return "redirect:/wish?id=" + wish.getId();
+		//return "redirect:/wish?id=" + wish.getId();
+		return "redirect:/wishlistPreview";
 	}
 
+	
 	@GetMapping("/wish/delete")
 	public String deleteWish(@RequestParam Long id) {
 
 		repository.deleteById(id);
 
-		return "redirect:/wish";
+		return "redirect:/wishlistPreview";
 	}
-
+	
+	
+	
+	
 }
