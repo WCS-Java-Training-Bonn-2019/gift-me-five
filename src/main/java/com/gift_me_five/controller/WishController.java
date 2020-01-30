@@ -34,7 +34,7 @@ public class WishController {
 			}
 		}
 		model.addAttribute("wish", wish);
-
+		
 		return "wishForm";
 	}
 
