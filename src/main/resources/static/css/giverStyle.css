@@ -34,6 +34,7 @@ li.selected .description {
 
 #friend_wish_list_details li {
 	padding-left: 10px;
+	display: block ruby;
 }
 
 #friend_wish_list_details h1 {
