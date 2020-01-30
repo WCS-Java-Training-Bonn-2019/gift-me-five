@@ -1,14 +1,10 @@
 
-#wrapper {
-	display: flex;
-	flex-direction: column;
-	min-height: 100%;
-	position: relative;
-}
 
 #friends_wish_list {
- 	min-width: 25em;
- 	max-width: 25em;	
+	/*
+ 	min-width: 20em;
+ 	*/	
+ 	max-width: max-content;
  	margin-right: auto;
  	padding: 10px;
 }
@@ -62,7 +58,6 @@ li.selected .description {
     border-style: solid;
     border-width: 1px;
     margin: 10px;
-    min-width: 60%;
     width: max-content;
     padding-left: 7%;
     padding-top: 35px;

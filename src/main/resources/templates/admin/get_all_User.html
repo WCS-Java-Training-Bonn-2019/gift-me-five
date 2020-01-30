@@ -19,7 +19,7 @@
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/indexStyle.css">
+<link rel="stylesheet" href="../css/adminStyle.css">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
@@ -56,14 +56,14 @@
 						<td th:text="*{failedLogins}">Failed Logins</td>
 						<td th:text="*{createDate}">Create Date</td>
 						<td th:text="*{modifyDate}">Modify Date</td>
-						<td><a th:href="@{'/user/edit/' + *{id}}">Edit</a> <a
-							th:href="@{'/user/delete/' + *{id}}">Delete</a></td>
+						<td><a th:href="@{'/admin/edit_user/' + *{id}}">Edit</a> <a
+							th:href="@{'/admin/delete_user/' + *{id}}">Delete</a></td>
 					</tr>
 				</table>
 			</section>
 
 			<section>
-				<br> <a th:href="@{'/user/new'}">New user</a><br> <a
+				<br> <a th:href="@{'/admin/new_user/'}">New user</a><br> <a
 					th:href="@{/}">Home</a>
 			</section>
 		</main>
