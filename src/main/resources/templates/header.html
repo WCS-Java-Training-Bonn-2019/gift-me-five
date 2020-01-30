@@ -6,7 +6,7 @@
 </head>
 
 <header th:fragment="navigation (view)">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="GM5_header_left_nav navbar navbar-expand-lg navbar-light bg-light">
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
 			aria-expanded="false" aria-label="Toggle navigation">
@@ -15,9 +15,9 @@
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<div class="navbar-nav">
 				<a class="navbar-brand" href="/">Gift me five</a> <a
-					th:class="${view=='receiver'} ? 'nav-item nav-link active' : 'nav-item nav-link'"
+					th:class="${view=='receiver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
 					href="/wish">My Wishes</a> <a
-					th:class="${view=='giver'} ? 'nav-item nav-link active' : 'nav-item nav-link'"
+					th:class="${view=='giver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
 					href="/giver">Friend's Wishes</a>
 
 			</div>
