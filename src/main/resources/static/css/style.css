@@ -22,9 +22,11 @@
 	}
 }
 
+/*
 html {
 	font-size: calc(0.7em + 1vw) !important;
 }
+*/
 
 .bg-light {
 		background-color: transparent !important;

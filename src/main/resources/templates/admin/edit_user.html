@@ -19,8 +19,8 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
-<link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/adminStyle.css">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/adminStyle.css">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
@@ -45,8 +45,8 @@
 				<input th:field="*{password}" required type="text"> <br> <br> 
 				<label for="email">E-Mail</label>
 				<input th:field="*{email}" type="email"> <br> <br> 
-				<label for="lastLogin">Last Login</label>
-				<input th:field="*{failedLogins}" required type="number"> <br> <br> 
+				<label for="failedLogins">Failed Login</label>
+				<input th:field="*{failedLogins}" required type="number" value="0"> <br> <br> 
 				<input type="submit"
 					value="Save"> <input type="reset" value="Reset" />
 			</form>
