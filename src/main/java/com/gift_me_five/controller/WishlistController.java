@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gift_me_five.entity.Theme;
 import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.ThemeRepository;
 import com.gift_me_five.repository.UserRepository;
+import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
 
 @Controller
@@ -27,11 +27,24 @@ public class WishlistController {
 
 	@Autowired
 	private UserRepository receiverRepository;
-
+	
+	@Autowired
+	private WishRepository wishRepository;
+	
 	@GetMapping("/wishlistPreview")
-	public String wishlistPreview(@RequestParam(required = false) Long id) {
+	public String displayWishlist(Model model, @RequestParam(required=false) Long id) {
 		
-		return("receiver_dummy");
+		Wishlist wishlist = new Wishlist();
+		if (id != null) {
+			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
+			if (optionalWishlist.isPresent()) {
+				wishlist = optionalWishlist.get();
+			}
+		}
+		
+		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));		
+		model.addAttribute("wishlists", wishlistRepository.findAll());
+		return ("receiver");
 	}
 	
 	@GetMapping("/wishlist")

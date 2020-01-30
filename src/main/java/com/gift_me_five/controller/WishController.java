@@ -21,16 +21,7 @@ public class WishController {
 	private WishRepository repository;
 
 	@Autowired
-	private WishlistRepository wlRepository;
-
-	// ******************************************************************************
-	// TEMPORARY TO REVIEW SITE LAYOUT
-	// ******************************************************************************
-	@GetMapping("/wishlistPreview")
-	public String displayWishlist(Model model) {
-		model.addAttribute("wishes", repository.findAll());
-		return ("receiver");
-	}
+	private WishlistRepository wishlistRepository;
 
 	@GetMapping("/wish")
 	public String upsertWish(Model model, @RequestParam(required = false) Long id) {
@@ -50,7 +41,7 @@ public class WishController {
 	@PostMapping("/wish")
 	public String saveWish(@ModelAttribute Wish wish) {
 
-		wish.setWishlist(wlRepository.findById(1L).get());
+		wish.setWishlist(wishlistRepository.findById(1L).get());
 		System.out.println(repository.save(wish));
 
 		//return "redirect:/wish?id=" + wish.getId();

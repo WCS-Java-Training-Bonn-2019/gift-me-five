@@ -42,9 +42,9 @@
 					<button type="button" class="btn btn-success dropdown-toggle GM5button"
 						data-toggle="dropdown">My wishlists</button>
 					<div class="dropdown-menu">
-						<a class="dropdown-item active" href="#">Ben's Xmas</a> <a
-							class="dropdown-item" href="#">Jon's Work Anniversary</a> <a
-							class="dropdown-item" href="#">Jenny's Silver Wedding</a>
+						<a th:each="wishlist : ${wishlists}" th:object="${wishlist}"
+						  class="dropdown-item active" th:text="*{title}"
+						  th:href="@{/wishlistPreview(id=*{id})}">Ben's Xmas</a>
 					</div>
 				</div>
 			</section>
