@@ -18,11 +18,18 @@ public class GiverController {
 	private WishRepository repository;
 
 	@Autowired
-	private UserRepository uRepository;
+	private UserRepository userRepository;
 
 	@GetMapping("/giver")
 	public String getAll(Model model) {
-		model.addAttribute("wishes", repository.findAll());
+//		model.addAttribute("wishes", repository.findAll());
+		model.addAttribute("wishes", repository.findByIdLessThan(5L));
+//		model.addAttribute("wishes", repository.findById(2L));
+		System.out.println();System.out.println();
+		System.out.println();System.out.println();
+		System.out.println(repository.toString());
+		System.out.println();System.out.println();
+		System.out.println();System.out.println();
 		return "giver";
 	}
 
@@ -34,7 +41,7 @@ public class GiverController {
 		if (giverId == 0) {
 			wish.setGiver(null);
 		} else {
-			wish.setGiver(uRepository.findById(giverId).get());
+			wish.setGiver(userRepository.findById(giverId).get());
 		}
 		repository.save(wish);
 		return "redirect:/giver";

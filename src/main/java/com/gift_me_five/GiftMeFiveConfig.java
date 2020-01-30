@@ -26,27 +26,29 @@ public class GiftMeFiveConfig {
 			emptyWishlistTable(wishlistRepository);
 			emptyUserTable(userRepository);
 			emptyThemeTable(themeRepository);
-			User receiver = createUser(userRepository);
-			Theme theme = createTheme(themeRepository);
-			Wishlist wishlist = createWishlist(receiver, theme, wishlistRepository);
-			createWishes(wishRepository, wishlist);
+			final String[] userNames = { "publicDummyUser", "Michaela", "Frieda", "Alfred" };
+			final String[] passwords = { "jykQGKpb;q-9FjkX8r_IB", "#1michaelasSecretPassword",
+					"#1friedasSecretPassword", "#1alfredsSecretPassword" };
+			createTheme(themeRepository);
+			for (int i = 0; i < userNames.length; i++) {
+				User receiver = createUser(userRepository, userNames[i], passwords[i]);
+				Theme theme = themeRepository.findById(i+1L).get();
+				Wishlist wishlist = createWishlist(receiver, theme, wishlistRepository);
+				createWishes(wishRepository, wishlist);
+
+			}
 		};
 	}
 
-	private User createUser(UserRepository userRepository) {
-
-		final String[] userName = { "Michaela", "Frieda", "Alfred" };
-		final String[] password = { "#1michaelasSecretPassword", "#1friedasSecretPassword", "#1alfredsSecretPassword" };
-
-		// Currently only one user is created
+	private User createUser(UserRepository userRepository, String userName, String password) {
 		User user = new User();
-		user.setLogin(userName[1]);
-		user.setPassword(password[1]);
+		user.setLogin(userName);
+		user.setPassword(password);
 		userRepository.save(user);
 		return user;
 	}
 
-	private Theme createTheme(ThemeRepository themeRepository) {
+	private void createTheme(ThemeRepository themeRepository) {
 
 		final String[] themePics = { "Theme_Picture_1.jpg", "Theme_Picture_2.jpg", "Theme_Picture_3.jpg",
 				"Theme_Picture_4.png" };
@@ -56,7 +58,6 @@ public class GiftMeFiveConfig {
 			theme.setBackgroundPicture(themePics[i]);
 			themeRepository.save(theme);
 		}
-		return null;
 	}
 
 	private Wishlist createWishlist(User receiver, Theme theme, WishlistRepository wishlistRepository) {
