@@ -73,11 +73,25 @@ header ul, section ul {
 	list-style-type: none;
 }
 
+.GM5_header_right_nav {
+	display: flex;
+	align-items: center;	
+}
+
+.GM5_header_right_nav a {
+	display: flex;
+	align-items: center;	
+	padding: 5px;
+    color: rgba(0,0,0,.5);
+    width: min-content;
+}
+
 .GM5login_frame {
 	height: max-content;
 	background-color: transparent;
 	color: black;
 }
+
 main {
 	padding-bottom: 60px;
 	/*
