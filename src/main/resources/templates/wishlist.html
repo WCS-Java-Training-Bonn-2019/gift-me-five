@@ -35,7 +35,7 @@
 
 		<main>
 			<section id="wishlist_control">
-				<h1>Create a wishlist</h1>
+				<h1 th:text="${wishlist.id}==null ? 'Create a wishlist' : 'Edit a wishlist'">Create a wishlist</h1>
 
 
 				<form method="post" th:action="@{/wishlist}" th:object="${wishlist}">
@@ -54,15 +54,14 @@
 							<input type="radio" name="nav" th:id="'a' + *{id}"
 								th:field="${wishlist.theme.id}" th:value="*{id}"> 
 							<label th:for="'a' + *{id}">
-							<img th:src="'/pics/snowman/' + *{backgroundPicture}"
+							<img th:src="@{/pics/snowman/} + *{backgroundPicture}"
 								width="110" height="130" />
 							</label>
 						</div>
 					</nav>
 					<input type="submit" value="Preview" class="btn btn-success">
 					<!-- Button "Cancel" -->
-					<span> <a href="/" class="btn btn-success">Cancel</a>
-					</span>
+					<input type="button" class="btn btn-success" value="Cancel" onclick="history.back()">
 				</form>
 
 			</section>

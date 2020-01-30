@@ -112,7 +112,7 @@ public class WishlistController {
 
 		wishlistRepository.deleteById(id);
 
-		return "redirect:/wishlist";
+		return "redirect:/wishlistPreview?id=" + (id-1);
 	}
 
 }

@@ -24,7 +24,7 @@ public class WishController {
 	private WishlistRepository wishlistRepository;
 
 	@GetMapping("/wish")
-	public String upsertWish(Model model, @RequestParam(required = false) Long id) {
+	public String upsertWish(Model model, @RequestParam(required = false) Long wishlistId, @RequestParam(required = false) Long id) {
 
 		Wish wish = new Wish();
 		if (id != null) {
