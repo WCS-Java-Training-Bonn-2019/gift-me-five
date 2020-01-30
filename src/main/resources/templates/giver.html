@@ -24,9 +24,7 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header>
-			<nav th:replace="header.html :: navigation(view='giver')"></nav>
-			<div th:replace="header.html :: loginButton"></div>
+		<header th:replace="header.html :: navigation(view='giver')">	
 		</header>
 		<main>
 			<section id="friends_wish_list">
