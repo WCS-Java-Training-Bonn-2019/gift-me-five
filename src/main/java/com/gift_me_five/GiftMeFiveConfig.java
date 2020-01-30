@@ -20,8 +20,8 @@ import com.gift_me_five.repository.WishlistRepository;
 public class GiftMeFiveConfig {
 
 	@Bean
-	public CommandLineRunner dbInit(UserRepository userRepository,
-			ThemeRepository themeRepository, WishlistRepository wishlistRepository, WishRepository wishRepository) {
+	public CommandLineRunner dbInit(UserRepository userRepository, ThemeRepository themeRepository,
+			WishlistRepository wishlistRepository, WishRepository wishRepository) {
 		return (args) -> {
 			emptyWishlistTable(wishlistRepository);
 			emptyUserTable(userRepository);
@@ -47,10 +47,16 @@ public class GiftMeFiveConfig {
 	}
 
 	private Theme createTheme(ThemeRepository themeRepository) {
-		Theme theme = new Theme();
-		theme.setBackgroundPicture("myBackgroundPicture");
-		themeRepository.save(theme);
-		return theme;
+
+		final String[] themePics = { "Theme_Picture_1.png", "Theme_Picture_2.png", "Theme_Picture_3.png",
+				"Theme_Picture_4.png" };
+
+		for (int i = 0; i < themePics.length; i++) {
+			Theme theme = new Theme();
+			theme.setBackgroundPicture(themePics[i]);
+			themeRepository.save(theme);
+		}
+		return null;
 	}
 
 	private Wishlist createWishlist(User receiver, Theme theme, WishlistRepository wishlistRepository) {

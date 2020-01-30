@@ -38,49 +38,28 @@
 
 
 				<form method="post" th:action="@{/wishlist}" th:object="${wishlist}">
-					
-					<input name="wishlistId" type="hidden" th:field="*{id}">
-					
-					<input th:field="*{receiver}" type="hidden">
-					<!-- 
-					<input th:name="receiverId" type="hidden" th:value="1">
-					 --> 
-					
-					<label for="wishlist-title">Wishlist title:</label> 
-					<input placeholder="My cool wishlist"
-						required th:field="*{title}" type="text" class="GM5input">
-    <!-- id="wishlist-title" name="title"  -->
-					<hr>
-
-					<label for="theme-id">Wishlist theme:</label>
-                    <input id="theme-id" th:field="*{theme}" type="hidden" class="GM5input">
-					<!--  
-					<input id="theme-id" th:name="themeId"
-					 th:value="1" type="hidden" class="GM5input">
-					 -->
+					<input name="wishlistId" type="hidden" th:field="*{id}"> <input
+						name="receiverId" type="hidden" th:field="*{receiver}"> <label
+						for="wishlist-title">Wishlist title:</label> <input
+						placeholder="My cool wishlist" required th:field="*{title}"
+						type="text" class="GM5input">
 
 					<hr>
-
+					<figure th:each="theme : ${themes}" th:object="${theme}"
+						class="col-md-4">
+						<!-- 									th:class="(*{id}==${wishlist.theme} ? 'selected' : 'deselected') + ' col-md-6'">  -->
+						<img class="img-fluid" th:alt="*{backgroundPicture}"
+							src="/pics/snowman/36663.jpg" width="100" height="200" />
+						<input type="radio" th:field="${wishlist.theme.id}"
+							th:value="*{id}">
+						<!-- th:checked="*{id}==${wishlist.theme.id} ? 'checked'" -->
+					</figure>
 					<input type="submit" value="Preview" class="btn btn-success">
-
-
-
+					<!-- Button "Cancel" -->
+					<span> <a href="/" class="btn btn-success">Cancel</a>
+					</span>
 				</form>
 
-				<hr>
-
-				<figure class="col-md-4">
-					<a href="/pics/snowman/36663.jpg" data-size="1600x1067"> <img
-						alt="picture" src="/pics/snowman/36663.jpg" class="img-fluid">
-					</a>
-				</figure>
-
-				<figure class="col-md-4">
-					<a href="/pics/christmas-2946698_1920_mod.png"
-						data-size="1600x1067"> <img alt="picture"
-						src="/pics/christmas-2946698_1920_mod.png" class="img-fluid" />
-					</a>
-				</figure>
 			</section>
 
 		</main>

@@ -1,5 +1,7 @@
 package com.gift_me_five.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.entity.Theme;
 import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.ThemeRepository;
 import com.gift_me_five.repository.UserRepository;
@@ -19,46 +22,59 @@ import com.gift_me_five.repository.WishlistRepository;
 public class WishlistController {
 
 	@Autowired
-	private WishlistRepository wlRepository;
+	private WishlistRepository wishlistRepository;
 
 	@Autowired
-	private ThemeRepository thRepository;
-	
+	private ThemeRepository themeRepository;
+
 	@Autowired
-	private UserRepository recRepository;
+	private UserRepository receiverRepository;
 
 	@GetMapping("/wishlist")
 	public String upsertWishList(Model model, @RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = new Wishlist();
-//		wishlist.setReceiver(recRepository.findById(id).get());
-		// ToDo id Anpassen
-		id = 1L;
+
+		// *****************************************************
+		// TO DO: Default values must be defined!!!
+		// *****************************************************
+		Long receiverId = 1L; // receiver Id default Wert
+		Long themeId = 1L; // theme Id default Wert
+
 		if (id != null) {
-			Optional<Wishlist> optionalWishlist = wlRepository.findById(id);
+			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
 			if (optionalWishlist.isPresent()) {
 				wishlist = optionalWishlist.get();
+			} else {
+				// Selected wishlist doesn't exist!
+				id = null;
 			}
+		}
+		if (id == null) {
+			// No wishlist - create new!
+			wishlist.setReceiver(receiverRepository.findById(receiverId).get());
+			wishlist.setTheme(themeRepository.findById(themeId).get());
+			wishlistRepository.save(wishlist);
 		}
 		System.out.println(wishlist.getId());
 		model.addAttribute("wishlist", wishlist);
-
+		model.addAttribute("themes", themeRepository.findAll());
+		System.out.println("Bisher ohne Fehler...");
 		return "wishlist";
 	}
 
 	@PostMapping("/wishlist")
-	public String saveWishList(@ModelAttribute Wishlist wishlist)  {
- 		
+	public String saveWishList(@ModelAttribute Wishlist wishlist) {
+
 		System.out.println("*****Innerhalb von  /wishlist PostMapping ********\n");
 		System.out.println("Wishlist Id: " + wishlist.getId());
-			
+
 //		wishlist.setReceiver(recRepository.findById(receiverId).get());
 //		wishlist.setTheme(thRepository.findById(themeId).get());
-		
-		wlRepository.save(wishlist);
 
+		wishlistRepository.save(wishlist);
 
-		return "redirect:/wishlist?id="+wishlist.getId();
+		return "redirect:/wishlist?id=" + wishlist.getId();
 	}
 
 	/*
@@ -74,7 +90,7 @@ public class WishlistController {
 	@GetMapping("/wishlist/delete")
 	public String deleteWishList(@RequestParam Long id) {
 
-		wlRepository.deleteById(id);
+		wishlistRepository.deleteById(id);
 
 		return "redirect:/wishlist";
 	}
