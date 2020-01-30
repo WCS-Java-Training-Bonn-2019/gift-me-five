@@ -1,0 +1,42 @@
+#theme_grid {
+	width: 100%;
+	display: flex;
+}
+
+#theme_grid figure {
+	padding: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/*
+#theme_grid input {
+	display: none;
+}
+*/
+
+#them_grid input:checked + label {
+	background-color: white;
+	padding: 10px;
+}
+
+/*
+#theme_grid .selected {
+	background-color: white;
+}
+*/
+
+#theme_grid input {
+	margin: auto;
+}
+
+#wishlist_control {
+	min-width: 20em;
+	background-color: #cfe7f57a;
+	border-color: #c8d6e4;
+	border-radius: 10px;
+	border-style: solid;
+	margin: auto;
+	padding: 0.5em 0.5em;
+}

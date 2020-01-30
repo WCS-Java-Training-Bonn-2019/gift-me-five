@@ -1,7 +1,5 @@
 package com.gift_me_five.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,12 @@ public class WishlistController {
 	@Autowired
 	private UserRepository receiverRepository;
 
+	@GetMapping("/wishlistPreview")
+	public String wishlistPreview(@RequestParam(required = false) Long id) {
+		
+		return("receiver_dummy");
+	}
+	
 	@GetMapping("/wishlist")
 	public String upsertWishList(Model model, @RequestParam(required = false) Long id) {
 
@@ -54,12 +58,10 @@ public class WishlistController {
 			// No wishlist - create new!
 			wishlist.setReceiver(receiverRepository.findById(receiverId).get());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
-			wishlistRepository.save(wishlist);
+//			wishlistRepository.save(wishlist);
 		}
-		System.out.println(wishlist.getId());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("themes", themeRepository.findAll());
-		System.out.println("Bisher ohne Fehler...");
 		return "wishlist";
 	}
 
@@ -74,7 +76,7 @@ public class WishlistController {
 
 		wishlistRepository.save(wishlist);
 
-		return "redirect:/wishlist?id=" + wishlist.getId();
+		return "redirect:/wishlistPreview" + wishlist.getId();
 	}
 
 	/*
