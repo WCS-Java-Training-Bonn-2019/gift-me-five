@@ -43,7 +43,8 @@
 						data-toggle="dropdown">My wishlists</button>
 					<div class="dropdown-menu">
 						<a th:each="wishlist : ${wishlists}" th:object="${wishlist}"
-						  class="dropdown-item active" th:text="*{title}"
+						  th:class="'dropdown-item' + (*{id}==${currentWishlist.id} ? ' active')"
+						  th:text="*{title}"
 						  th:href="@{/wishlistPreview(id=*{id})}">Ben's Xmas</a>
 					</div>
 				</div>

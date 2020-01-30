@@ -39,9 +39,14 @@ public class WishlistController {
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
 			if (optionalWishlist.isPresent()) {
 				wishlist = optionalWishlist.get();
+			} else {
+				id = null;
 			}
+		} 
+		if (id == null){
+			return ("redirect:/wishlist");
 		}
-		
+		model.addAttribute("currentWishlist", wishlist);
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));		
 		model.addAttribute("wishlists", wishlistRepository.findAll());
 		return ("receiver");

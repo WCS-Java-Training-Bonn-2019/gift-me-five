@@ -33,7 +33,8 @@ public class GiftMeFiveConfig {
 			for (int i = 0; i < userNames.length; i++) {
 				User receiver = createUser(userRepository, userNames[i], passwords[i]);
 				Theme theme = themeRepository.findById(i+1L).get();
-				Wishlist wishlist = createWishlist(receiver, theme, wishlistRepository);
+				String title = "Wishlist #" + (i+1);
+				Wishlist wishlist = createWishlist(title, receiver, theme, wishlistRepository);
 				createWishes(wishRepository, wishlist);
 
 			}
@@ -60,8 +61,9 @@ public class GiftMeFiveConfig {
 		}
 	}
 
-	private Wishlist createWishlist(User receiver, Theme theme, WishlistRepository wishlistRepository) {
+	private Wishlist createWishlist(String title, User receiver, Theme theme, WishlistRepository wishlistRepository) {
 		Wishlist wishlist = new Wishlist();
+		wishlist.setTitle(title);
 		wishlist.setTheme(theme);
 		wishlist.setReceiver(receiver);
 		wishlistRepository.save(wishlist);
