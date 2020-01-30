@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Gift Me Five</title>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/receiverStyle.css">
+</head>
+<body>
+	<div id="GM5wrapper">
+		<header>
+			<nav th:replace="header.html :: navigation(view='giver')"></nav>
+			<div th:replace="header.html :: loginButton"></div>
+		</header>
+		<main>
+			<section id="wishlist_control">
+				<div class="GM5button_holder">
+					<a href="/" class="btn btn-success GM5button">Invite a friend</a>
+				</div>
+				<div class="GM5button_holder">
+					<a href="/" class="btn btn-success GM5button">Modify wishlist</a>
+				</div>
+				<div class="GM5button_holder">
+					<a href="/" class="btn btn-success GM5button">New wishlist</a>
+				</div>
+				<div class="dropdown GM5button_holder">
+					<button type="button" class="btn btn-success dropdown-toggle GM5button"
+						data-toggle="dropdown">My wishlists</button>
+					<div class="dropdown-menu">
+						<a class="dropdown-item active" href="#">Ben's Xmas</a> <a
+							class="dropdown-item" href="#">Jon's Work Anniversary</a> <a
+							class="dropdown-item" href="#">Jenny's Silver Wedding</a>
+					</div>
+				</div>
+			</section>
+			<section id="wishlist_details">
+				<h1>My Christmas Wishes</h1>
+				<ul>
+					<li th:each="wish : ${wishes}" th:object="${wish}"
+						th:class="*{giver} ? 'selected' : 'deselected'">
+
+						<form method="post" th:action="@{/giver}">
+							<input th:name="wishId" th:id="*{id}" th:value="*{id}"
+								type="hidden"> <input th:name="giverId" th:id="giverId"
+								type="hidden" th:value="*{giver} ? '0' : '1'">
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<div class="input-group-text">
+										
+																					
+											<!-- Add update button/link -->
+											<span>	
+											<a th:href="@{/wish(id=${wish.id})}"
+					   							class="btn btn-info btn-sm">Update</a>
+											</span>																																	
+											
+											<!-- Add "delete" button/link -->					
+											<span>
+											<a th:href="@{/wish/delete(id=${wish.id})}"
+					   							class="btn btn-danger btn-sm"
+					   							onclick="if (!(confirm('Are you sure you want to delete this wish?'))) return false">
+												Delete
+											</a>
+											</span>
+									</div>
+								</div>
+								<div class="description">
+									<h2 th:text="*{title}">title</h2>
+									<p th:text="*{description}">description</p>
+									<img th:if="${wish.image != ''} and ${wish.image != null}"
+										th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
+									<a th:if="${wish.link != ''} and ${wish.link != null}"
+										th:href="@{${wish.link}}">Link</a>
+								</div>
+							</div>
+
+						</form>
+					</li>
+				</ul>
+			</section>
+		</main>
+		<footer th:replace="footer.html :: footer">Footer</footer>
+	</div>
+</body>
+</html>

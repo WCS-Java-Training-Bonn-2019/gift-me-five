@@ -26,31 +26,29 @@
 <body>
 	<div id="GM5wrapper">
 		<header>
-		<nav th:replace="header.html :: navigation(view='')"></nav>
-		<div th:replace="header.html :: loginButton"></div>		
+			<nav th:replace="header.html :: navigation(view='')"></nav>
+			<div th:replace="header.html :: loginButton"></div>
 		</header>
 
-		<main> <!-- Info box start page  -->
-		<section id="index_info_box">
-			<div>
+		<main>
+			<!-- Info box start page  -->
+			<div id="leftmargin"></div>
+			<section id="index_info_box">
 				<h1>Gift me five</h1>
-
-				<p>Creating and sharing wishlists… Your birthday is coming up,
-					tired of lame gifts? Create your wishlist without registering and
-					share it with your friends!</p>
-
-
+				<p>
+					Creating and sharing wishlists… <br> Your birthday is coming
+					up, tired of lame gifts? Create your wishlist without registering
+					and share it with your friends!
+				</p>
 				<!-- Button "Create a wish" -->
-				<span> <a href="/wish" class="btn btn-success">Create a
-						wish</a>
-				</span>
-
-
+				<div>
+					<a href="/wish" class="btn btn-success">Create a wish</a>
+				</div>
+				<br>
 				<p>If you need to manage multiple wishlists or want to ensure
 					privacy of your wishlists, it is recommended to create an account.</p>
-			</div>
-		</section>
-
+			</section>
+			<div id="rightmargin"></div>
 		</main>
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>
