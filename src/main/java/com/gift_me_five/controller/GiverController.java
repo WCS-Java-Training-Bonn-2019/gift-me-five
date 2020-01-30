@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.gift_me_five.entity.Wish;
+import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
+import com.gift_me_five.repository.WishlistRepository;
 
 @Controller
 public class GiverController {
@@ -18,18 +20,18 @@ public class GiverController {
 	private WishRepository repository;
 
 	@Autowired
+	private WishlistRepository wishlistRepository;
+	
+	@Autowired
 	private UserRepository userRepository;
 
 	@GetMapping("/giver")
 	public String getAll(Model model) {
 //		model.addAttribute("wishes", repository.findAll());
-		model.addAttribute("wishes", repository.findByIdLessThan(5L));
+//		model.addAttribute("wishes", repository.findByIdLessThan(7L));
 //		model.addAttribute("wishes", repository.findById(2L));
-		System.out.println();System.out.println();
-		System.out.println();System.out.println();
-		System.out.println(repository.toString());
-		System.out.println();System.out.println();
-		System.out.println();System.out.println();
+		Wishlist wishlist = wishlistRepository.findById(1L).get();
+		model.addAttribute("wishes", repository.findByWishlist(wishlist));
 		return "giver";
 	}
 

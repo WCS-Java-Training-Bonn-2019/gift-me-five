@@ -35,6 +35,12 @@ public class User {
 	private String lastname;
 	private String email;
 
+	private Long failedLogins = 0L;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "lastLogin", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private Date lastLogin;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createDate", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date createDate;
@@ -133,6 +139,42 @@ public class User {
 
 	public void setModifyDate(Date modifyDate) {
 		this.modifyDate = modifyDate;
+	}
+
+	public Long getFailedLogins() {
+		return failedLogins;
+	}
+
+	public void setFailedLogins(Long failedLogins) {
+		this.failedLogins = failedLogins;
+	}
+
+	public List<Wishlist> getWishlists() {
+		return wishlists;
+	}
+
+	public void setWishlists(List<Wishlist> wishlists) {
+		this.wishlists = wishlists;
+	}
+
+	public List<Wish> getWishes() {
+		return wishes;
+	}
+
+	public void setWishes(List<Wish> wishes) {
+		this.wishes = wishes;
+	}
+
+	public List<GiverSeeWishlist> getGiverSeeWishLists() {
+		return giverSeeWishLists;
+	}
+
+	public void setGiverSeeWishLists(List<GiverSeeWishlist> giverSeeWishLists) {
+		this.giverSeeWishLists = giverSeeWishLists;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
 	}
 
 }
