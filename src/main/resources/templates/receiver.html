@@ -64,19 +64,19 @@
 										
 																					
 											<!-- Add update button/link -->
-											<span>
+											<span>	
 											<a th:href="@{/wish(id=${wish.id})}"
 					   							class="btn btn-info btn-sm">Update</a>
-																																												
-											<!-- Add "delete" button/link -->					
+											</span>																																	
 											
+											<!-- Add "delete" button/link -->					
+											<span>
 											<a th:href="@{/wish/delete(id=${wish.id})}"
 					   							class="btn btn-danger btn-sm"
 					   							onclick="if (!(confirm('Are you sure you want to delete this wish?'))) return false">
 												Delete
 											</a>
 											</span>
-											
 									</div>
 								</div>
 								<div class="description">

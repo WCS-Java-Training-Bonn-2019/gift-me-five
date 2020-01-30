@@ -92,6 +92,8 @@ li.selected .description {
 
 .input-group-text {
 	background-color: #d9e8fb;
+	flex-direction: column;
+    justify-content: space-evenly;
 }
 
 img {
