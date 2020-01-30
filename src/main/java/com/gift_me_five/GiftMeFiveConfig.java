@@ -48,7 +48,7 @@ public class GiftMeFiveConfig {
 
 	private Theme createTheme(ThemeRepository themeRepository) {
 
-		final String[] themePics = { "Theme_Picture_1.png", "Theme_Picture_2.png", "Theme_Picture_3.png",
+		final String[] themePics = { "Theme_Picture_1.jpg", "Theme_Picture_2.jpg", "Theme_Picture_3.jpg",
 				"Theme_Picture_4.png" };
 
 		for (int i = 0; i < themePics.length; i++) {

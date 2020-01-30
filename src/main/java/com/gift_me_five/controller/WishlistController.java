@@ -76,7 +76,7 @@ public class WishlistController {
 
 		wishlistRepository.save(wishlist);
 
-		return "redirect:/wishlistPreview" + wishlist.getId();
+		return "redirect:/wishlistPreview?id=" + wishlist.getId();
 	}
 
 	/*

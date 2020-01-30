@@ -41,18 +41,20 @@
 				<form method="post" th:action="@{/wishlist}" th:object="${wishlist}">
 					<input name="wishlistId" type="hidden" th:field="*{id}"> <input
 						name="receiverId" type="hidden" th:field="*{receiver}"> <label
-						for="wishlist-title">Wishlist title:</label> <input
+						for="wishlist-title">Wishlist title:</label>
+						<input
 						placeholder="My cool wishlist" required th:field="*{title}"
 						type="text" class="GM5input">
 
 					<hr>
+					<p>Select Background: </p>
 					<nav id="theme_grid">
 						<div th:each="theme : ${themes}" th:object="${theme}"
 							th:class="*{id}==${wishlist.theme.id} ? 'selected'">
 							<input type="radio" name="nav" th:id="'a' + *{id}"
 								th:field="${wishlist.theme.id}" th:value="*{id}"> 
 							<label th:for="'a' + *{id}">
-							<img src="/pics/snowman/36663.jpg"
+							<img th:src="'/pics/snowman/' + *{backgroundPicture}"
 								width="110" height="130" />
 							</label>
 						</div>
