@@ -20,41 +20,50 @@ import com.gift_me_five.repository.WishlistRepository;
 public class GiftMeFiveConfig {
 
 	@Bean
-	public CommandLineRunner dbInit(UserRepository userRepository,
-			ThemeRepository themeRepository, WishlistRepository wishlistRepository, WishRepository wishRepository) {
+	public CommandLineRunner dbInit(UserRepository userRepository, ThemeRepository themeRepository,
+			WishlistRepository wishlistRepository, WishRepository wishRepository) {
 		return (args) -> {
 			emptyWishlistTable(wishlistRepository);
 			emptyUserTable(userRepository);
 			emptyThemeTable(themeRepository);
-			User receiver = createUser(userRepository);
-			Theme theme = createTheme(themeRepository);
-			Wishlist wishlist = createWishlist(receiver, theme, wishlistRepository);
-			createWishes(wishRepository, wishlist);
+			final String[] userNames = { "publicDummyUser", "Michaela", "Frieda", "Alfred" };
+			final String[] passwords = { "jykQGKpb;q-9FjkX8r_IB", "#1michaelasSecretPassword",
+					"#1friedasSecretPassword", "#1alfredsSecretPassword" };
+			createTheme(themeRepository);
+			for (int i = 0; i < userNames.length; i++) {
+				User receiver = createUser(userRepository, userNames[i], passwords[i]);
+				Theme theme = themeRepository.findById(i+1L).get();
+				String title = "Wishlist #" + (i+1);
+				Wishlist wishlist = createWishlist(title, receiver, theme, wishlistRepository);
+				createWishes(wishRepository, wishlist);
+
+			}
 		};
 	}
 
-	private User createUser(UserRepository userRepository) {
-
-		final String[] userName = { "Michaela", "Frieda", "Alfred" };
-		final String[] password = { "#1michaelasSecretPassword", "#1friedasSecretPassword", "#1alfredsSecretPassword" };
-
-		// Currently only one user is created
+	private User createUser(UserRepository userRepository, String userName, String password) {
 		User user = new User();
-		user.setLogin(userName[1]);
-		user.setPassword(password[1]);
+		user.setLogin(userName);
+		user.setPassword(password);
 		userRepository.save(user);
 		return user;
 	}
 
-	private Theme createTheme(ThemeRepository themeRepository) {
-		Theme theme = new Theme();
-		theme.setBackgroundPicture("myBackgroundPicture");
-		themeRepository.save(theme);
-		return theme;
+	private void createTheme(ThemeRepository themeRepository) {
+
+		final String[] themePics = { "Theme_Picture_1.jpg", "Theme_Picture_2.jpg", "Theme_Picture_3.jpg",
+				"Theme_Picture_4.png" };
+
+		for (int i = 0; i < themePics.length; i++) {
+			Theme theme = new Theme();
+			theme.setBackgroundPicture(themePics[i]);
+			themeRepository.save(theme);
+		}
 	}
 
-	private Wishlist createWishlist(User receiver, Theme theme, WishlistRepository wishlistRepository) {
+	private Wishlist createWishlist(String title, User receiver, Theme theme, WishlistRepository wishlistRepository) {
 		Wishlist wishlist = new Wishlist();
+		wishlist.setTitle(title);
 		wishlist.setTheme(theme);
 		wishlist.setReceiver(receiver);
 		wishlistRepository.save(wishlist);

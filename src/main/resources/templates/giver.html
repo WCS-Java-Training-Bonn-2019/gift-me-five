@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Gift Me Five</title>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -22,67 +23,62 @@
 <link rel="stylesheet" href="css/giverStyle.css">
 </head>
 <body>
-	<div id="wrapper">
-		<header th:replace="header.html :: header">Header</header>
+	<div id="GM5wrapper">
+		<header th:replace="header.html :: navigation(view='giver')">	
+		</header>
 		<main>
-		<section id="friends_wish_list">
-			<div>
-				<strong>My Friend's Wishes</strong>
-				<ul>
-					<li><a href="#">Ben's Xmas</a></li>
-					<li><a href="#">Jon's Work Anniversary</a></li>
-					<li><a href="#">Jenny's Silver Wedding</a></li>
-				</ul>
-			</div>
-			<div>
-				<p>
-					Check a checkbox and click ‘Select’ to reserve an item you want to
-					give to your friend.<br> Items displayed in gray font have
-					already been selected by other people!
-				</p>
-			</div>
-		</section>
-		<section id="friend_wish_list_details">
-			<h1>My Christmas Wishes</h1>
-			<!-- 
+			<section id="friends_wish_list">
+				<div>
+					<strong>My Friend's Wishes</strong>
+					<ul>
+						<li><a href="#">Ben's Xmas</a></li>
+						<li><a href="#">Jon's Work Anniversary</a></li>
+						<li><a href="#">Jenny's Silver Wedding</a></li>
+					</ul>
+				</div>
+			</section>
+			<section id="friend_wish_list_details">
+				<h1>My Christmas Wishes</h1>
+				<!-- 
 			<form method="post" th:action="@{/wish}" th:object="${wish}">
 			<input name="id" th:field="*{id}" type="hidden" />
 <input id="wish-description" name="description"
-				placeholder="I would like to get a really cool game console with a lot of memory blablabla..."
+				placeholder="I would like to get a really cool game console with a lot of memory ..."
 				th:field="*{description}" type="text" />
 				<input type="submit" value="Submit" />
 			</form>
 			 -->
-			<!--  todo dynamic giver_id (user_id) --> <!--  
+				<!--  todo dynamic giver_id (user_id) -->
+				<!--  
 						<input name="giver_id + ' ' + *{giverId}" th:field="2"
 							type="hidden" />
 			-->
-			<ul>
-				<li th:each="wish : ${wishes}" th:object="${wish}" th:class="*{giver} ? 'selected' : 'deselected'">
-					
-			<form method="post" th:action="@{/giver}" >
-			<input th:name="id" th:id="*{id}" th:value="*{id}" type="hidden">
-            <input th:name="giverId" th:id="giverId" type="hidden" th:value="*{giver} ? '0' : '1'">	
-				<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<div class="input-group-text">
-								<input type="submit" th:value="*{giver} ? 'Deselect' : 'Select'" class="btn btn-success"/>
+				<ul>
+					<li th:each="wish : ${wishes}" th:object="${wish}"
+						th:class="*{giver} ? 'selected' : 'deselected'">
+
+						<form method="post" th:action="@{/giver}">
+							<input th:name="wishId" th:id="*{id}" th:value="*{id}"
+								type="hidden"> <input th:name="giverId" th:id="giverId"
+								type="hidden" th:value="*{giver} ? '0' : '1'">
+							<div class="input-group mb-3">
+								<input type="submit" th:value="*{giver} ? 'Deselect' : 'Select'"
+									class="btn btn-success GM5button">
+
+								<div class="description">
+									<h2 th:text="*{title}">title</h2>
+									<p th:text="*{description}">description</p>
+									<img th:if="${wish.image != ''} and ${wish.image != null}"
+										th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
+									<a th:if="${wish.link != ''} and ${wish.link != null}"
+										th:href="@{${wish.link}}">Link</a>
+								</div>
 							</div>
-						</div>
-						<div class="description">
-							<h2 th:text="*{title}">title</h2>
-							<p th:text="*{description}">description</p>
-							<img th:if="${wish.image != ''} and ${wish.image != null}"
-								th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
-							<a th:if="${wish.link != ''} and ${wish.link != null}"
-								th:href="@{${wish.link}}">Link</a>
-						</div>
-					</div>
-					
-			</form>
-				</li>
-			</ul>
-		</section>
+
+						</form>
+					</li>
+				</ul>
+			</section>
 		</main>
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>

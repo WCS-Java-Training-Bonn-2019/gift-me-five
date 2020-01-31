@@ -1,10 +1,9 @@
 main {
 	flex-direction: row;
 	justify-content: center;
-	/* justify-content: space-around;  to show content in the middle of the site*/
 }
 
-div.spacer {
+div.GM5spacer {
 	flex-growth: 1;
 	flex-shrink: 0;
 }
@@ -18,7 +17,6 @@ main section {
 	padding-left: 1em;
 	padding-right: 1em;
 	min-width: 20em;
-/*	max-width: 55em; */
 	flex-basis: 45em;
 	flex-shrink: 1;
 	flex-growth: 0;
@@ -32,14 +30,7 @@ main h1 {
 	font-size: 180%
 }
 
-form {
-	min-width: 100%;
-/*	max-width: 50em; */
-	padding: 10px;
-}
-
-.input {
-	max-width: 50em;
+.GM5input {
 	min-width: 100%;
 }
 
