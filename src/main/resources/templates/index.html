@@ -25,9 +25,7 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header>
-			<nav th:replace="header.html :: navigation(view='')"></nav>
-			<div th:replace="header.html :: loginButton"></div>
+		<header th:replace="header.html :: navigation(view='')">	
 		</header>
 
 		<main>
@@ -42,7 +40,7 @@
 				</p>
 				<!-- Button "Create a wish" -->
 				<div>
-					<a href="/wish" class="btn btn-success">Create a wish</a>
+					<a href="/wishlist" class="btn btn-success">Create a wishlist</a>
 				</div>
 				<br>
 				<p>If you need to manage multiple wishlists or want to ensure

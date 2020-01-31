@@ -26,9 +26,7 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header>
-			<nav th:replace="header.html :: navigation(view='')"></nav>
-			<div th:replace="header.html :: loginButton"></div>
+		<header th:replace="header.html :: navigation(view='')">	
 		</header>
 		<main>
 			<h1>User details</h1>

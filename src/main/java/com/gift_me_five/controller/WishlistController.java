@@ -97,22 +97,18 @@ public class WishlistController {
 		return "redirect:/wishlistPreview?id=" + wishlist.getId();
 	}
 
-	/*
-	 * @PostMapping("/wish") public String saveWish(@ModelAttribute Wish wish) {
-	 * 
-	 * wish.setWishlist(wlRepository.findById(1L).get());
-	 * System.out.println(repository.save(wish));
-	 * 
-	 * return "redirect:/wish?id="+wish.getId(); }
-	 * 
-	 */
-
 	@GetMapping("/wishlist/delete")
 	public String deleteWishList(@RequestParam Long id) {
 
 		wishlistRepository.deleteById(id);
-
-		return "redirect:/wishlistPreview?id=" + (id-1);
+		
+		// *****************************************************
+		// TO DO: Receiver must be defined!!!
+		// *****************************************************
+		
+		Wishlist wishlist = wishlistRepository.findFirstByIdGreaterThan(0L);
+		String wishlistIdTag = (wishlist != null) ? "?id=" + wishlist.getId(): "" ;
+		return "redirect:/wishlistPreview" + wishlistIdTag;
 	}
 
 }

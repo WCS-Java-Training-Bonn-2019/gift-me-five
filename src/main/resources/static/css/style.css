@@ -73,10 +73,33 @@ header ul, section ul {
 	list-style-type: none;
 }
 
+.GM5_header_right_nav {
+	display: flex;
+	align-items: center;	
+}
+
+.GM5_header_left_nav_active {
+    background-color: #accae8;
+}
+
+.GM5_header_right_nav a {
+	display: flex;
+	align-items: center;	
+	padding: 5px;
+    color: rgba(0,0,0,.5);
+    width: min-content;
+}
+
 .GM5login_frame {
 	height: max-content;
 	background-color: transparent;
 	color: black;
+}
+
+/* dropdown menu items */
+.show {
+	border-radius: 10px;
+	background-color: #e2f2ff;
 }
 
 main {
@@ -102,6 +125,8 @@ img {
 }
 
 .GM5button {
+	display: flex;
+	place-self: center;
 	font-family: Arial;
 	width: 5em;
 	margin: 3px auto;

@@ -5,66 +5,71 @@
 <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 
-<nav th:fragment="navigation (view)"
-	class="navbar navbar-expand-lg navbar-light bg-light">
-	<button class="navbar-toggler" type="button" data-toggle="collapse"
-		data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
-		aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
-	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-		<div class="navbar-nav">
-			<a class="navbar-brand" href="/">Gift me five</a> <a
-				th:class="${view=='receiver'} ? 'nav-item nav-link active' : 'nav-item nav-link'"
-				href="/wishlistPreview?id=1">My Wishes</a> <a
-				th:class="${view=='giver'} ? 'nav-item nav-link active' : 'nav-item nav-link'"
-				href="/giver">Friend's Wishes</a>
-			<div class="navbar-nav dropdown show">
-				<a class="dropdown-toggle" href="#" role="button"
-					id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false">Admin</a>
+<header th:fragment="navigation (view)">
+	<nav
+		class="GM5_header_left_nav navbar navbar-expand-lg navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="navbar-brand" href="/">Gift me five</a> <a
+					th:class="${view=='receiver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
+					href="/wishlistPreview?id=1">My Wishes</a> <a
+					th:class="${view=='giver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
+					href="/giver">Friend's Wishes</a>
 
-				<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-					<a class="dropdown-item" href="/admin/user">User</a> <a
-						class="dropdown-item" href="/admin/wishlist">Wishlist</a> <a
-						class="dropdown-item" href="/admin/wish">Wish</a>
-				</div>
 			</div>
 		</div>
-	</div>
-</nav>
+	</nav>
 
-<div th:fragment="loginButton" class="btn-group dropleft">
-	<button type="button"
-		class="GM5login_frame btn btn-secondary dropdown-toggle"
-		data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		<img th:src="@{/pics/User_account_Login_free_icon_1.png}">
-	</button>
-	<div class="dropdown-menu">
-		<form class="px-4 py-3">
-			<div class="form-group">
-				<label for="exampleDropdownFormEmail1">Email address</label> <input
-					type="email" class="form-control" id="exampleDropdownFormEmail1"
-					placeholder="email@example.com">
-			</div>
-			<div class="form-group">
-				<label for="exampleDropdownFormPassword1">Password</label> <input
-					type="password" class="form-control"
-					id="exampleDropdownFormPassword1" placeholder="Password">
-			</div>
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input" id="dropdownCheck">
-				<label class="form-check-label" for="dropdownCheck">
-					Remember me </label>
-			</div>
-			<button type="submit" class="btn btn-primary">Sign in</button>
-		</form>
-		<div class="dropdown-divider"></div>
-		<a class="dropdown-item" href="#">New around here? Sign up</a> <a
-			class="dropdown-item" href="#">Forgot password?</a>
-	</div>
-</div>
+	<nav class="GM5_header_right_nav">
+		<div class="navbar-nav dropdown ">
+			<a class="dropdown-toggle" href="#" role="button"
+				id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false">Admin</a>
 
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+				<a class="dropdown-item" href="/admin/user">User</a> <a
+					class="dropdown-item" href="/admin/wishlist">Wishlist</a> <a
+					class="dropdown-item" href="/admin/wish">Wish</a>
+			</div>
+		</div>
+
+		<div th:fragment="loginButton" class="btn-group dropleft">
+			<button type="button"
+				class="GM5login_frame btn btn-secondary dropdown-toggle"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<img th:src="@{/pics/User_account_Login_free_icon_1.png}">
+			</button>
+			<div class="dropdown-menu">
+				<form class="px-4 py-3">
+					<div class="form-group">
+						<label for="exampleDropdownFormEmail1">Email address</label> <input
+							type="email" class="form-control" id="exampleDropdownFormEmail1"
+							placeholder="email@example.com">
+					</div>
+					<div class="form-group">
+						<label for="exampleDropdownFormPassword1">Password</label> <input
+							type="password" class="form-control"
+							id="exampleDropdownFormPassword1" placeholder="Password">
+					</div>
+					<div class="form-check">
+						<input type="checkbox" class="form-check-input" id="dropdownCheck">
+						<label class="form-check-label" for="dropdownCheck">
+							Remember me </label>
+					</div>
+					<button type="submit" class="btn btn-primary">Sign in</button>
+				</form>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="#">New around here? Sign up</a> <a
+					class="dropdown-item" href="#">Forgot password?</a>
+			</div>
+		</div>
+	</nav>
+</header>
 <!--
 .navbar-toggler:not(:disabled):not(.disabled)
 -->
