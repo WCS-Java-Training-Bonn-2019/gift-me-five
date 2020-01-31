@@ -96,6 +96,11 @@ header ul, section ul {
 	color: black;
 }
 
+/* dropdown menu items */
+.show {
+	border-radius: 10px;
+}
+
 main {
 	padding-bottom: 60px;
 	/*
