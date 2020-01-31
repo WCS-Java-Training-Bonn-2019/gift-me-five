@@ -15,10 +15,10 @@
 		margin: 10px;
 		width: max-content;
 		height: max-content;
-    	position: absolute;
-    	top: 0;
-    	left: 75px;
-    	width: max-content;
+		position: absolute;
+		top: 0;
+		left: 75px;
+		width: max-content;
 	}
 }
 
@@ -29,7 +29,7 @@ html {
 */
 
 .bg-light {
-		background-color: transparent !important;
+	background-color: transparent !important;
 }
 
 html, body {
@@ -120,12 +120,12 @@ img {
 
 .GM5button {
 	font-family: Arial;
-	margin: auto;
 	width: 5em;
+	margin: 3px auto;
 }
 
 .selected .GM5button {
 	background-color: #0edd3c;
 	border-color: #1dee44;
-	padding: 5px;
+/*	padding: 5px; */
 }

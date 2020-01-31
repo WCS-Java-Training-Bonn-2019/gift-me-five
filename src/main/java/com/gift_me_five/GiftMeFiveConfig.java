@@ -29,11 +29,12 @@ public class GiftMeFiveConfig {
 			final String[] userNames = { "publicDummyUser", "Michaela", "Frieda", "Alfred" };
 			final String[] passwords = { "jykQGKpb;q-9FjkX8r_IB", "#1michaelasSecretPassword",
 					"#1friedasSecretPassword", "#1alfredsSecretPassword" };
-			final String[] backgroundPictures = { "white-4742365_640.jpg", "white-4742365_640.jpg", "postcard-1529121_640.png", "christmas-2947257_640.jpg" };
+			createTheme(themeRepository);
 			for (int i = 0; i < userNames.length; i++) {
-				Theme theme = createTheme(themeRepository, backgroundPictures[i]);
 				User receiver = createUser(userRepository, userNames[i], passwords[i]);
-				Wishlist wishlist = createWishlist(receiver, theme, wishlistRepository);
+				Theme theme = themeRepository.findById(i+1L).get();
+				String title = "Wishlist #" + (i+1);
+				Wishlist wishlist = createWishlist(title, receiver, theme, wishlistRepository);
 				createWishes(wishRepository, wishlist);
 
 			}
@@ -48,15 +49,21 @@ public class GiftMeFiveConfig {
 		return user;
 	}
 
-	private Theme createTheme(ThemeRepository themeRepository, String picture) {
-		Theme theme = new Theme();
-		theme.setBackgroundPicture(picture);
-		themeRepository.save(theme);
-		return theme;
+	private void createTheme(ThemeRepository themeRepository) {
+
+		final String[] themePics = { "Theme_Picture_1.jpg", "Theme_Picture_2.jpg", "Theme_Picture_3.jpg",
+				"Theme_Picture_4.png" };
+
+		for (int i = 0; i < themePics.length; i++) {
+			Theme theme = new Theme();
+			theme.setBackgroundPicture(themePics[i]);
+			themeRepository.save(theme);
+		}
 	}
 
-	private Wishlist createWishlist(User receiver, Theme theme, WishlistRepository wishlistRepository) {
+	private Wishlist createWishlist(String title, User receiver, Theme theme, WishlistRepository wishlistRepository) {
 		Wishlist wishlist = new Wishlist();
+		wishlist.setTitle(title);
 		wishlist.setTheme(theme);
 		wishlist.setReceiver(receiver);
 		wishlistRepository.save(wishlist);
