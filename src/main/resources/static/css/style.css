@@ -119,6 +119,8 @@ img {
 }
 
 .GM5button {
+	display: flex;
+	place-self: center;
 	font-family: Arial;
 	width: 5em;
 	margin: 3px auto;
