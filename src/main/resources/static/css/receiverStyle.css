@@ -67,6 +67,7 @@ li.selected .description {
 	margin: 10px;
 	padding: 10px;
 	padding-left: 20px;
+	opacity: 90%;
 }
 
 #wishlist_details li {
