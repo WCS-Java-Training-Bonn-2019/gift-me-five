@@ -16,16 +16,16 @@ import com.gift_me_five.repository.WishlistRepository;
 
 @Controller
 public class WishController {
-	
+
 	@Autowired
 	private WishRepository repository;
-	
+
 	@Autowired
-	private WishlistRepository wlRepository;
-	
+	private WishlistRepository wishlistRepository;
+
 	@GetMapping("/wish")
-	public String upsertWish(Model model, @RequestParam(required = false) Long id) {
-		
+	public String upsertWish(Model model, @RequestParam(required = false) Long wishlistId, @RequestParam(required = false) Long id) {
+
 		Wish wish = new Wish();
 		if (id != null) {
 			Optional<Wish> optionalWish = repository.findById(id);
@@ -34,22 +34,30 @@ public class WishController {
 			}
 		}
 		model.addAttribute("wish", wish);
+		
 		return "wishForm";
 	}
-	
+
 	@PostMapping("/wish")
 	public String saveWish(@ModelAttribute Wish wish) {
-		
-		wish.setWishlist(wlRepository.findById(1L).get());
-		return "redirect:/wish?id="+wish.getId();
+
+		wish.setWishlist(wishlistRepository.findById(1L).get());
+		System.out.println(repository.save(wish));
+
+		//return "redirect:/wish?id=" + wish.getId();
+		return "redirect:/wishlistPreview";
 	}
 
+	
 	@GetMapping("/wish/delete")
 	public String deleteWish(@RequestParam Long id) {
-		
-		repository.deleteById(id);
-		
-		return "redirect:/wish";
-	}
 
+		repository.deleteById(id);
+
+		return "redirect:/wishlistPreview";
+	}
+	
+	
+	
+	
 }
