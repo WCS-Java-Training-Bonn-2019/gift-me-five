@@ -99,6 +99,7 @@ header ul, section ul {
 /* dropdown menu items */
 .show {
 	border-radius: 10px;
+	background-color: #e2f2ff;
 }
 
 main {
