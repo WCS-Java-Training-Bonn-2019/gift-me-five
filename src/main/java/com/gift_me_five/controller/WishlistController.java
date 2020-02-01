@@ -59,6 +59,7 @@ public class WishlistController {
 
 		// *****************************************************
 		// TO DO: Default values must be defined!!!
+		// Wishlists of current user must be added to model instead of all wishlists!
 		// *****************************************************
 		Long receiverId = 1L; // receiver Id default Wert
 		Long themeId = 1L; // theme Id default Wert
@@ -76,8 +77,8 @@ public class WishlistController {
 			// No wishlist - create new!
 			wishlist.setReceiver(receiverRepository.findById(receiverId).get());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
-//			wishlistRepository.save(wishlist);
 		}
+		model.addAttribute("wishlists", wishlistRepository.findAll());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("themes", themeRepository.findAll());
 		return "wishlist";

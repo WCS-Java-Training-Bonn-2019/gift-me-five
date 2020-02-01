@@ -5,7 +5,7 @@
 <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 
-<header th:fragment="navigation (view)">
+<header th:fragment="navigation (view, myWishlists, thisWishlistId)">
 	<nav
 		class="GM5_header_left_nav navbar navbar-expand-lg navbar-light bg-light">
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -16,28 +16,42 @@
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<div class="navbar-nav">
 				<a class="navbar-brand" href="/">Gift me five</a> <a
-					th:class="${view=='receiver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
-					href="/wishlistPreview?id=1">My Wishes</a> <a
+					th:class="${view=='newWishlist'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
+					th:href="@{/wishlist}">New Wishlist</a>
+				<!-- Dropdown for My Wishlists -->
+				<div>
+					<a
+						th:class="(${view=='receiver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link') + ' dropdown-toggle'"
+						data-toggle="dropdown" href="#">My Wishlists</a>
+					<div class="dropdown-menu">
+						<a th:each="wishlist : ${myWishlists}" th:object="${wishlist}"
+							th:class="'dropdown-item' + (*{id}==${thisWishlistId} ? ' active' : ' ')"
+							th:text="*{title}" th:href="@{/wishlistPreview(id=*{id})}">Ben's
+							Xmas</a>
+					</div>
+				</div>
+				<!-- Dropdown for Friend's Wishlists -->
+				<a
 					th:class="${view=='giver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
-					href="/giver">Friend's Wishes</a>
-
+					href="/giver">Friend's Wishlists</a>
+				<!-- Dropdown for Admin -->
+				<div>
+					<!-- class="navbar-nav dropdown " -->
+					<a
+						th:class="(${view=='admin'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link') + ' dropdown-toggle'"
+						href="#" role="button" data-toggle="dropdown">Admin</a>
+					<!-- aria-haspopup="true" id="dropdownMenuLink" aria-expanded="false" -->
+					<div class="dropdown-menu"> <!-- aria-labelledby="dropdownMenuLink" -->
+						<a class="dropdown-item" href="/admin/user">User</a> <a
+							class="dropdown-item" href="/admin/wishlist">Wishlist</a> <a
+							class="dropdown-item" href="/admin/wish">Wish</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</nav>
 
 	<nav class="GM5_header_right_nav">
-		<div class="navbar-nav dropdown ">
-			<a class="dropdown-toggle" href="#" role="button"
-				id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false">Admin</a>
-
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-				<a class="dropdown-item" href="/admin/user">User</a> <a
-					class="dropdown-item" href="/admin/wishlist">Wishlist</a> <a
-					class="dropdown-item" href="/admin/wish">Wish</a>
-			</div>
-		</div>
-
 		<div th:fragment="loginButton" class="btn-group dropleft">
 			<button type="button"
 				class="GM5login_frame btn btn-secondary dropdown-toggle"

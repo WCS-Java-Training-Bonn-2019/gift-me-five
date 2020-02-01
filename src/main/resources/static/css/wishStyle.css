@@ -13,11 +13,8 @@ main section {
 	border-color: #c8d6e4;
 	border-radius: 10px;
 	border-style: solid;
-	padding-top: 1em;
-	padding-left: 1em;
-	padding-right: 1em;
-	min-width: 20em;
-	flex-basis: 45em;
+	padding: 1em;
+	flex-basis: 46em;
 	flex-shrink: 1;
 	flex-growth: 0;
 }
