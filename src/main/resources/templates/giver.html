@@ -24,7 +24,7 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='giver')">	
+		<header th:replace="header.html :: navigation(view='giver', myWishlists=${myWishlists}, thisWishlistId=${wishlist.id})">	
 		</header>
 		<main>
 			<section id="friends_wish_list">
