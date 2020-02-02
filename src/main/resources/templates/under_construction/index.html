@@ -21,6 +21,13 @@
 <link rel="stylesheet" href="/under_construction/css/custom.css">
 <!-- Favicon-->
 <link rel="shortcut icon" href="/under_construction/favicon.png">
+<!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+	integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+	crossorigin="anonymous">
+
 <!-- Global css -->
 <link rel="stylesheet" href="css/style.css">
 <!-- Tweaks for older IEs-->
@@ -30,8 +37,7 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='')">	
-		</header>
+		<header th:replace="header.html :: navigation(view='')"> </header>
 
 		<main>
 			<!-- Info box start page  -->
@@ -74,11 +80,6 @@
 			<script
 				src="/under_construction/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 			<script src="/under_construction/js/front.js"></script>
-			<!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
-			<link rel="stylesheet"
-				href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-				integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-				crossorigin="anonymous">
 
 		</main>
 		<footer th:replace="footer.html :: footer">Footer</footer>

@@ -33,6 +33,10 @@
 			<form action="#" th:action="@{/admin/upsert_user}"
 				th:object="${user}" method="post">
 				<input th:field="*{id}" type="hidden"> 
+				<input th:field="*{role}" type="hidden">
+				<!-- todo dropdown menu with existing roles, predefined role selected/active -->
+				<label for="role">Role: </label>
+				<span th:text="*{role}">Role</span><br>
 				<label for="firstname">First Name:</label>
 				<input th:field="*{firstname}" type="text"> <br><br>
 				<label for="lastname">Last Name:</label> <input
@@ -44,7 +48,12 @@
 				<label for="email">E-Mail</label>
 				<input th:field="*{email}" type="email"> <br> <br> 
 				<label for="failedLogins">Failed Login</label>
-				<input th:field="*{failedLogins}" required type="number" value="0"> <br> <br> 
+				<input th:field="*{failedLogins}" required type="number" value="0"> <br>
+				<label for="createDate">Create Date: </label>
+				<span th:text="*{createDate}">Create Date</span><br>
+				<label for="modifyDate">Modify Date: </label>
+				<span th:text="*{modifyDate}">Modify Date: </span><br>
+				<br> <br> 
 				<input type="submit"
 					value="Save"> <input type="reset" value="Reset" />
 			</form>
