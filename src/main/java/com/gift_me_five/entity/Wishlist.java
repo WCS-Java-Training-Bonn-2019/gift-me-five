@@ -57,7 +57,8 @@ public class Wishlist {
 	private List<Wish> wishes = new ArrayList<>();
 
 	// wishlist in join table 
-	@OneToMany(mappedBy = "wishlist")
+	@OneToMany(mappedBy = "wishlist", cascade = CascadeType.REMOVE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<GiverSeeWishlist> giverSeeWishlists = new ArrayList<>();
 
 	public Wishlist() {
