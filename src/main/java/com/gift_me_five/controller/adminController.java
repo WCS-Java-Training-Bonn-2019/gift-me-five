@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.gift_me_five.entity.User;
+import com.gift_me_five.entity.Wish;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
@@ -51,14 +52,13 @@ public class adminController {
 	}
 
 	@PostMapping("/admin/upsert_user")
-	public String upsertuser(Model model, @Valid User user) {
+	public String upsertUser(Model model, @Valid User user) {
 		user = userRepository.save(user);
 		return "redirect:/admin/user";
 	}
 
 	@GetMapping("/admin/delete_user/{id}")
-	public String deleteuser(@PathVariable("id") long id) {
-		System.out.println("delete id: " + id);
+	public String deleteUser(@PathVariable("id") long id) {
 		userRepository.deleteById(id);
 		return "redirect:/admin/user";
 	}
@@ -69,6 +69,33 @@ public class adminController {
 		return "/admin/get_all_wish";
 	}
 
+	@GetMapping({ "/admin/new_wish", "/admin/edit_wish/{id}" })
+	public String editWish(Model model, @PathVariable(required = false) Long id) {
+		if (id == null) {
+			model.addAttribute("wish", new Wish());
+			return "/admin/edit_wish.html";
+		}
+		Optional<Wish> optionalWish = wishRepository.findById(id);
+		if (optionalWish.isPresent()) {
+			model.addAttribute("wish", optionalWish.get());
+		} else {
+			return "redirect:/admin/wish";
+		}
+		return "/admin/edit_wish";
+	}
+
+	@PostMapping("/admin/upsert_wish")
+	public String upsertWish(Model model, @Valid Wish wish) {
+		wish = wishRepository.save(wish);
+		return "redirect:/admin/wish";
+	}
+
+	@GetMapping("/admin/delete_wish/{id}")
+	public String deleteWish(@PathVariable("id") long id) {
+		wishRepository.deleteById(id);
+		return "redirect:/admin/wish";
+	}
+	
 	@GetMapping("/admin/wishlist")
 	public String getWishlist() {
 		return "redirect:/under_construction";
