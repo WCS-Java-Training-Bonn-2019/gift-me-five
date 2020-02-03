@@ -31,7 +31,7 @@ public class WishlistController {
 	@Autowired
 	private WishRepository wishRepository;
 	
-	@GetMapping("/wishlistPreview")
+	@GetMapping("/receiver")
 	public String displayWishlist(Model model, @RequestParam(required=false) Long id) {
 		
 		Wishlist wishlist = new Wishlist();
@@ -95,7 +95,7 @@ public class WishlistController {
 
 		wishlistRepository.save(wishlist);
 
-		return "redirect:/wishlistPreview?id=" + wishlist.getId();
+		return "redirect:/receiver?id=" + wishlist.getId();
 	}
 
 	@GetMapping("/wishlist/delete")
@@ -109,7 +109,7 @@ public class WishlistController {
 		
 		Wishlist wishlist = wishlistRepository.findFirstByIdGreaterThan(0L);
 		String wishlistIdTag = (wishlist != null) ? "?id=" + wishlist.getId(): "" ;
-		return "redirect:/wishlistPreview" + wishlistIdTag;
+		return "redirect:/receiver" + wishlistIdTag;
 	}
 
 }
