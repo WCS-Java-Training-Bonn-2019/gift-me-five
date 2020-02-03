@@ -37,6 +37,10 @@ public class User {
 
 	private Long failedLogins = 0L;
 	
+	// admin or user
+	// todo default value "" or null?!
+	private String role;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "lastLogin", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date lastLogin;
@@ -129,16 +133,8 @@ public class User {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
 	public Date getModifyDate() {
 		return modifyDate;
-	}
-
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
 	}
 
 	public Long getFailedLogins() {
@@ -175,6 +171,14 @@ public class User {
 
 	public Date getLastLogin() {
 		return lastLogin;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }

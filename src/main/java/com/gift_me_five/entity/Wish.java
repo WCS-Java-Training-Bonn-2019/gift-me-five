@@ -27,7 +27,9 @@ public class Wish {
 	
 	@Column(columnDefinition = "TEXT")
 	private String link;
+	
 	private String image;
+	private Float price = 0F;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createDate", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -36,7 +38,6 @@ public class Wish {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "modifyDate", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	private Date modifyDate;
-
 
 	@ManyToOne
     @JoinColumn(name = "giverId")

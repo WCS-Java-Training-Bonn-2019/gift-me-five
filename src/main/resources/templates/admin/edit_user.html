@@ -25,28 +25,56 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
-	<div id="GM5wrapper">
 		<header th:replace="header.html :: navigation(view='', myWishlists=null, thisWishlistId=null)">	
 		</header>
 		<main>
 			<h1>User details</h1>
 			<form action="#" th:action="@{/admin/upsert_user}"
 				th:object="${user}" method="post">
-				<input th:field="*{id}" type="hidden"> 
-				<label for="firstname">First Name:</label>
-				<input th:field="*{firstname}" type="text"> <br><br>
-				<label for="lastname">Last Name:</label> <input
-					th:field="*{lastname}" type="text"> <br><br> 
-				<label for="login">Login</label> 
-				<input th:field="*{login}" required type="text"> <br> <br> 
-				<label for="password">Password</label>
-				<input th:field="*{password}" required type="text"> <br> <br> 
-				<label for="email">E-Mail</label>
-				<input th:field="*{email}" type="email"> <br> <br> 
-				<label for="failedLogins">Failed Login</label>
-				<input th:field="*{failedLogins}" required type="number" value="0"> <br> <br> 
-				<input type="submit"
-					value="Save"> <input type="reset" value="Reset" />
+				<table>
+					<tr>
+						<input th:field="*{id}" type="hidden">
+						<input th:field="*{role}" type="hidden">
+						<!-- todo dropdown menu with existing roles, predefined role selected/active -->
+						<td><label for="role">Role: </label></td>
+						<td th:text="*{role}">Role</td>
+					</tr>
+					<tr>
+						<td><label for="firstname">First Name:</label></td>
+						<td><input th:field="*{firstname}" type="text"></td>
+					</tr>
+					<tr>
+						<td><label for="lastname">Last Name:</label></td>
+						<td><input th:field="*{lastname}" type="text"></td>
+					</tr>
+					<tr>
+						<td><label for="login">Login</label></td>
+						<td><input th:field="*{login}" required type="text"></td>
+					</tr>
+					<tr>
+						<td><label for="password">Password</label></td>
+						<td><input th:field="*{password}" required type="text"></td>
+					</tr>
+					<tr>
+						<td><label for="email">E-Mail</label></td>
+						<td><input th:field="*{email}" type="email"></td>
+					</tr>
+					<tr>
+						<td><label for="failedLogins">Failed Login</label></td>
+						<td><input th:field="*{failedLogins}" required type="number"
+							value="0"></td>
+					</tr>
+					<tr>
+						<td><label for="createDate">Create Date: </label></td>
+						<td><span th:text="*{createDate}">Create Date</span></td>
+					</tr>
+					<tr>
+						<td><label for="modifyDate">Modify Date: </label></td>
+						<td><span th:text="*{modifyDate}">Modify Date: </span></td>
+					</tr>
+				</table>
+				<input type="submit" value="Save"> <input type="reset"
+					value="Reset" />
 			</form>
 		</main>
 		<footer th:replace="footer.html :: footer">Footer</footer>
