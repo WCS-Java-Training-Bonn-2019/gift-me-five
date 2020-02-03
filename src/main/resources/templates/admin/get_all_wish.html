@@ -25,52 +25,53 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='', myWishlists=null, thisWishlistId=null)">	
+		<header
+			th:replace="header.html :: navigation(view='', myWishlists=null, thisWishlistId=null)">
 		</header>
-			<h1>Admin view - Wish</h1>
-			<section>
-				<table border="1">
-					<tr>
-						<th>ID</th>
-						<th>Title</th>
-						<th>Description</th>
-					<!-- 
+		<h1>Admin view - Wish</h1>
+		<section>
+			<table border="1">
+				<tr>
+					<th>ID</th>
+					<th>Title</th>
+					<th>Description</th>
+					<!-- not used right now
 						<th>Item</th> 
 					-->
-						<th>Image</th>
-						<th>Link</th>
-					<!-- 
-						<th>WishlistID</th>
-						<th>GiverID</th>
-					 -->
-						<th>Create Date</th>
-						<th>Modify Date</th>
-					</tr>
-					<tr th:each="wish : ${wishes}" th:object="${wish}">
-						<td th:text="*{id}">ID</td>
-						<td th:text="*{title}">Title</td>
-						<td th:text="*{description}">Description</td>
+					<th>Image</th>
+					<th>Link</th>
+					<th>WishlistID</th>
+					<th>GiverID</th>
+					<th>Create Date</th>
+					<th>Modify Date</th>
+				</tr>
+				<tr th:each="wish : ${wishes}" th:object="${wish}">
+					<td th:text="*{id}">ID</td>
+					<td th:text="*{title}">Title</td>
+					<td th:text="*{description}">Description</td>
 					<!-- 
 						<td th:text="*{item}">Item</td>
 					 -->
-						<td th:text="*{image}">Image</td>
-						<td th:text="*{link}">Link</td>
-					<!-- 
-						<td th:text="*{wishlistId}">WishlistID</td>
-						<td th:text="*{giverId}">GiverID</td>
-					 -->
-						<td th:date="*{createDate}">Create Date</td>
-						<td th:date="*{modifyDate}">Modify Date</td>
-						<td><a th:href="@{'/admin/edit_wish/' + *{id}}">Edit</a> <a
-							th:href="@{'/admin/delete_wish/' + *{id}}">Delete</a></td>
-					</tr>
-				</table>
-			</section>
+					<td th:text="*{image}">Image</td>
+					<td th:text="*{link}">Link</td>
+					<td th:text="*{wishlist.id}">Wishlist ID</td>
+					<td><a th:href="*{giver} ? @{edit_user/} + *{giver.id}"
+						th:text="*{giver} ? *{giver.id}">GiverID</td>
+					<td th:date="*{createDate}">Create Date</td>
+					<td th:date="*{modifyDate}">Modify Date</td>
+					<td><a th:href="@{'/admin/edit_wish/' + *{id}}">Edit</a> <a
+						th:href="@{'/admin/delete_wish/' + *{id}}">Delete</a></td>
+				</tr>
+			</table>
+		</section>
 
-			<section>
-				<br> <a th:href="@{'/admin/new_wish/'}">New wish</a><br> <a
-					th:href="@{/}">Home</a>
-			</section>
+		<section>
+			<br>
+			<!-- no new wish because of missing wishlist ID
+				<a th:href="@{'/admin/new_wish/'}">New wish</a><br> 
+			 -->
+			<a th:href="@{/}">Home</a>
+		</section>
 		</main>
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>

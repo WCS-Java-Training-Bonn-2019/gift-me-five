@@ -26,13 +26,13 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header
-			th:replace="header.html :: navigation(view='', myWishlists=null, thisWishlistId=null)">
+		<header th:replace="header.html :: navigation">
+			<!-- (view='', myWishlists=null, thisWishlistId=null) -->
 		</header>
 		<main>
-			<h1>User details</h1>
-			<form action="#" th:action="@{/admin/upsert_user}"
-				th:object="${user}" method="post">
+			<h1>Wish details</h1>
+			<form action="#" th:action="@{/admin/upsert_wish}"
+				th:object="${wish}" method="post">
 				<table>
 					<tr>
 						<input th:field="*{id}" type="hidden">
@@ -40,40 +40,39 @@
 						<td><span th:text="*{id}">ID: </span></td>
 					</tr>
 					<tr>
-						<input th:field="*{role}" type="hidden">
-						<!-- todo dropdown menu with existing roles, predefined role selected/active -->
-						<td><label for="role">Role: </label></td>
-						<td th:text="*{role}">Role</td>
-						<!-- <td> <select class="form-control" th:field="${operator.opeId}"  id="dropOperator">
-    <option value="0">select operator</option>
-    <option th:each="role : ${roles}" th:value="a" th:text="a"></option>
-    </select></td> -->
-
+						<td><label for="title">Title:</label></td>
+						<td><input th:field="*{title}" type="text"></td>
 					</tr>
 					<tr>
-						<td><label for="firstname">First Name:</label></td>
-						<td><input th:field="*{firstname}" type="text"></td>
+						<td><label for="description">Description:</label></td>
+						<td><input th:field="*{description}" type="text"></td>
 					</tr>
 					<tr>
-						<td><label for="lastname">Last Name:</label></td>
-						<td><input th:field="*{lastname}" type="text"></td>
+						<td><label for="image">Image:</label></td>
+						<td><input th:field="*{image}" type="text"></td>
+					</tr>
+					<!-- not used right now
+					<tr>
+						<td><label for="item">Item:</label></td>
+						<td><input th:field="*{item}" type="text"></td>
+					</tr>
+					 -->
+					<tr>
+						<td><label for="link">link:</label></td>
+						<td><input th:field="*{link}" type="text"></td>
 					</tr>
 					<tr>
-						<td><label for="login">Login</label></td>
-						<td><input th:field="*{login}" required type="text"></td>
+						<td><label for="price">Price:</label></td>
+						<td><input th:field="*{price}" step="0.01" placeholder="0.00"
+							min="0" type="number"></td>
 					</tr>
 					<tr>
-						<td><label for="password">Password (hidden)</label></td>
-						<td><input th:field="*{password}" type="password"></td>
+						<td><label for="giverId">GiverID:</label></td>
+						<td><input th:field="*{giver.id}" type="text"></td>
 					</tr>
 					<tr>
-						<td><label for="email">E-Mail</label></td>
-						<td><input th:field="*{email}" type="email"></td>
-					</tr>
-					<tr>
-						<td><label for="failedLogins">Failed Login</label></td>
-						<td><input th:field="*{failedLogins}" required type="number"
-							value="0"></td>
+						<td><label for="wishlistId">Wishlist ID:</label></td>
+						<td th:text="*{wishlist.id}">WishlistID</td>
 					</tr>
 					<tr>
 						<td><label for="createDate">Create Date: </label></td>
