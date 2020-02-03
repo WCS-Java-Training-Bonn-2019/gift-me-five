@@ -27,7 +27,6 @@ public class WishController {
 	@GetMapping("/wish")
 	public String upsertWish(Model model, @RequestParam(required = false) Long wishlistId,
 			@RequestParam(required = false) Long id) {
-
 		Wish wish = new Wish();
 		if (id != null) {
 			Optional<Wish> optionalWish = repository.findById(id);
@@ -36,6 +35,11 @@ public class WishController {
 			}
 		}
 		model.addAttribute("wish", wish);
+	       // **********************************************************************************
+		   // TO DO: Retrieve wishlists only for current user, not all wishlists!
+		   // Wishlists required to build the navigation menu properly for this user.
+		   // **********************************************************************************
+			model.addAttribute("wishlists", wishlistRepository.findAll());
 
 		return "wishForm";
 	}

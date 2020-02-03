@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Gift Me Five - Create/Edit Wish</title>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
+<meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -23,13 +24,13 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='receiver')">	
+		<header th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${wish.wishlist.id})">	
 		</header>
 		<main>
 		<div class="GM5spacer"></div>
 		<section>
 			<div>
-				<h1 th:text="${wish.id} ? 'Edit a Wish' : 'Create a Wish'">My
+				<h1 th:text="(${wish.id} ? 'Update a wish on ' : 'Create a wish on: ') + ${wish.wishlist.title}">My
 					Wish</h1>
 			</div>
 			<form method="post" th:action="@{/wish}" th:object="${wish}">
@@ -62,9 +63,8 @@
 				
 				<br> <br>
 				<input type="submit" value="Submit" class="btn btn-success">
-				<!-- Button "Home" -->
-				<span> <a href="/" class="btn btn-success">Home</a>
-				</span>
+				<!-- Button "Cancel" -->
+				<input type="button" class="btn btn-success" value="Cancel" onclick="history.back()">
 			</form>
 		</section>
 		<div class="GM5spacer"></div>
