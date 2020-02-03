@@ -1,7 +1,5 @@
 package com.gift_me_five.entity;
 
-import java.util.List;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

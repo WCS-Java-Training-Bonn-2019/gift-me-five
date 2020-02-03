@@ -45,9 +45,10 @@
 						<td><label for="role">Role: </label></td>
 						<td th:text="*{role}">Role</td>
 						<!-- <td> <select class="form-control" th:field="${operator.opeId}"  id="dropOperator">
-    <option value="0">select operator</option>
-    <option th:each="role : ${roles}" th:value="a" th:text="a"></option>
-    </select></td> -->
+					    <option value="0">select operator</option>
+					    <option th:each="role : ${roles}" th:value="a" th:text="a"></option>
+					    </select></td> 
+					    -->
 
 					</tr>
 					<tr>
@@ -62,10 +63,44 @@
 						<td><label for="login">Login</label></td>
 						<td><input th:field="*{login}" required type="text"></td>
 					</tr>
+					<!-- do not show pw, but take a new pw
 					<tr>
 						<td><label for="password">Password (hidden)</label></td>
 						<td><input th:field="*{password}" type="password"></td>
 					</tr>
+					-->
+					<!-- PW with PW-Confirm, required must be set -->
+					<tr>
+						<td>Password / PW-Confirm:</td>
+						<td><input name="password" type="password" id="password" th:value=*{password} />
+							<input name="password_confirm" required="required"
+							type="password" id="password_confirm" oninput="check(this)" th:value=*{password} /> <script
+								language='javascript' type='text/javascript'>
+								function check(input) {
+									if (input.value != document
+											.getElementById('password').value) {
+										input
+												.setCustomValidity('Password Must be Matching.');
+									} else {
+										// input is valid -- reset the error message
+										input.setCustomValidity('');
+									}
+								}
+							</script></td>
+					</tr>
+
+					<!-- 
+					<tr>
+						<td>Password / PW-Confirm:</td>
+						<td><input id="password" name="password" type="password"
+							pattern="^\S{6,}$"
+							onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;"
+							placeholder="Password"> <input id="password_two"
+							name="password_two" type="password" pattern="^\S{6,}$"
+							onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');"
+							placeholder="Verify Password"> </td>
+					</tr>
+					-->
 					<tr>
 						<td><label for="email">E-Mail</label></td>
 						<td><input th:field="*{email}" type="email"></td>
