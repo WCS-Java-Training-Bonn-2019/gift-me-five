@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Gift Me Five Create a wishlist</title>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
+<meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -21,19 +22,20 @@
 
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/wishlistStyle.css">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='')">	
+		<header
+			th:replace="header.html :: navigation(view=(${wishlist.id} == null ? 'newWishlist' : 'wishlist'),
+			myWishlists=${wishlists}, thisWishlistId=${wishlist.id})">
 		</header>
 
 		<!-- Create a wishlist page  -->
 
 		<main>
 			<section id="wishlist_control">
-				<h1 th:text="${wishlist.id}==null ? 'Create a wishlist' : 'Edit a wishlist'">Create a wishlist</h1>
+				<h1 th:text="${wishlist.id}==null ? 'Create a wishlist' : ('Edit ' + ${wishlist.title})">Create a wishlist</h1>
 
 
 				<form method="post" th:action="@{/wishlist}" th:object="${wishlist}">
@@ -52,12 +54,12 @@
 							<input type="radio" name="nav" th:id="'a' + *{id}"
 								th:field="${wishlist.theme.id}" th:value="*{id}"> 
 							<label th:for="'a' + *{id}">
-							<img th:src="@{/pics/snowman/} + *{backgroundPicture}"
+							<img th:src="@{/pics/themes/} + *{backgroundPicture}"
 								width="110" height="130" />
 							</label>
 						</div>
 					</nav>
-					<input type="submit" value="Preview" class="btn btn-success">
+					<input type="submit" value="Save" class="btn btn-success">
 					<!-- Button "Cancel" -->
 					<input type="button" class="btn btn-success" value="Cancel" onclick="history.back()">
 				</form>

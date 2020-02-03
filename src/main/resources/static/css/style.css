@@ -47,6 +47,7 @@ html, body {
 
 header, footer {
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 	background-color: #c3dff0;
 	padding: 10px;
@@ -58,7 +59,9 @@ header, footer {
 
 header {
 	height: 60px;
-	margin-top: 5px;
+	position: sticky;
+	top: 0;
+	z-index: 99;
 }
 
 header img {
@@ -77,6 +80,13 @@ header ul, section ul {
 	display: flex;
 	align-items: center;	
 }
+
+/*
+.GM5_header_left_nav {
+	margin-top: auto;
+	margin-bottom: 20px;
+}
+*/
 
 .GM5_header_left_nav_active {
     background-color: #accae8;
@@ -99,29 +109,26 @@ header ul, section ul {
 /* dropdown menu items */
 .show {
 	border-radius: 10px;
+	background-color: #e2f2ff;
 }
 
-main {
-	padding-bottom: 60px;
-	/*
-	background-image: url("../pics/gift-548290_1920.jpg");
-	*/
-	background-image: url("../pics/gift-leftside.jpg");
-	background-size: 100% 100%;
+#GM5wrapper main {
+	background-image: url("../pics/background_gift.png");
 	background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 	display: flex;
 	flex-wrap: wrap;
-	flex-grow: 1;
+    flex-grow: 1;
 }
 
+/*
 footer {
 	position: absolute;
 	bottom: 0;
 }
-
-img {
-	width: 100px;
-}
+*/
 
 .GM5button {
 	display: flex;

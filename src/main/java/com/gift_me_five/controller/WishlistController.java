@@ -59,6 +59,7 @@ public class WishlistController {
 
 		// *****************************************************
 		// TO DO: Default values must be defined!!!
+		// Wishlists of current user must be added to model instead of all wishlists!
 		// *****************************************************
 		Long receiverId = 1L; // receiver Id default Wert
 		Long themeId = 1L; // theme Id default Wert
@@ -76,8 +77,8 @@ public class WishlistController {
 			// No wishlist - create new!
 			wishlist.setReceiver(receiverRepository.findById(receiverId).get());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
-//			wishlistRepository.save(wishlist);
 		}
+		model.addAttribute("wishlists", wishlistRepository.findAll());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("themes", themeRepository.findAll());
 		return "wishlist";
@@ -97,22 +98,18 @@ public class WishlistController {
 		return "redirect:/wishlistPreview?id=" + wishlist.getId();
 	}
 
-	/*
-	 * @PostMapping("/wish") public String saveWish(@ModelAttribute Wish wish) {
-	 * 
-	 * wish.setWishlist(wlRepository.findById(1L).get());
-	 * System.out.println(repository.save(wish));
-	 * 
-	 * return "redirect:/wish?id="+wish.getId(); }
-	 * 
-	 */
-
 	@GetMapping("/wishlist/delete")
 	public String deleteWishList(@RequestParam Long id) {
 
 		wishlistRepository.deleteById(id);
-
-		return "redirect:/wishlistPreview?id=" + (id-1);
+		
+		// *****************************************************
+		// TO DO: Receiver must be defined!!!
+		// *****************************************************
+		
+		Wishlist wishlist = wishlistRepository.findFirstByIdGreaterThan(0L);
+		String wishlistIdTag = (wishlist != null) ? "?id=" + wishlist.getId(): "" ;
+		return "redirect:/wishlistPreview" + wishlistIdTag;
 	}
 
 }

@@ -31,6 +31,15 @@ public class GiverController {
 //		model.addAttribute("wishes", repository.findByIdLessThan(7L));
 //		model.addAttribute("wishes", repository.findById(2L));
 		Wishlist wishlist = wishlistRepository.findById(1L).get();
+		//****************************************************************************
+		// TO DO: (when user handling is enabled)
+		// - add all OWN wishlists as attribute myWishlists (only titles would be required)
+		// - add all wishlists I'm invited to... model attribute still tbd  (only titles would be required)
+		//   (requires action also in other controllers and in header.html)
+		// - add current wishlist Id (or better add full wishlist instead of wishes?)
+		//*****************************************************************************
+		model.addAttribute("myWishlists", wishlistRepository.findAll());
+		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("wishes", repository.findByWishlist(wishlist));
 		return "giver";
 	}
