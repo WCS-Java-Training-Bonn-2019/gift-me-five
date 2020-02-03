@@ -52,6 +52,9 @@ public class adminController {
 
 	@PostMapping("/admin/upsert_user")
 	public String upsertUser(Model model, @Valid User user) {
+		if (user.getPassword() == null || user.getPassword() == "") {
+			user.setPassword(userRepository.findById(user.getId()).get().getPassword());
+		}
 		user = userRepository.save(user);
 		return "redirect:/admin/user";
 	}
