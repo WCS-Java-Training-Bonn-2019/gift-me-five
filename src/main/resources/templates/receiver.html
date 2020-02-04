@@ -38,11 +38,13 @@
 		<main>
 			<section id="wishlist_control">
 				<div class="GM5button_holder">
-					<a th:href="@{/under_construction}"
+				<!-- todo add wish -->
+					<a th:href="@{/wish?wishlistId=} + ${currentWishlist.id}"
 						class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
 						data-placement="right" title="Add wish"> <img class="GM5icon"
 						th:src="@{/pics/icons/plus_white.png}"></a>
 				</div>
+				<!-- todo addPerson -->
 				<div class="GM5button_holder">
 					<a th:href="@{/under_construction}"
 						class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
@@ -70,7 +72,7 @@
 							class="GM5icon" th:src="@{/pics/icons/cross2.png}"></a>
 					</div>
 				</div>
-
+				
 				<ul>
 					<li th:each="wish : ${wishes}" th:object="${wish}"
 						class="GM5wishlistElement">

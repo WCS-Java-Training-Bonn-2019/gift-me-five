@@ -26,7 +26,7 @@
 					<div class="dropdown-menu">
 						<a th:each="wishlist : ${myWishlists}" th:object="${wishlist}"
 							th:class="'dropdown-item' + (*{id}==${thisWishlistId} ? ' active' : ' ')"
-							th:text="*{title}" th:href="@{/wishlistPreview(id=*{id})}">Ben's
+							th:text="*{title}" th:href="@{/receiver(id=*{id})}">Ben's
 							Xmas</a>
 					</div>
 				</div>
