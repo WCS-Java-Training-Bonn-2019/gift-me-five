@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
 <style
-	th:text="'#wishlist_details { background-image: url(' + @{/pics/themes/} + ${currentWishlist.theme.backgroundPicture} +');}'">
+	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${currentWishlist.theme.backgroundPicture} +');}'">
 #wishlist_details {
 	background-image: url(../pics/christmas-2946698_1920_mod.png);
 }
@@ -31,10 +31,10 @@
 
 </head>
 <body>
+	<header
+		th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${currentWishlist.id})">
+	</header>
 	<div id="GM5wrapper">
-		<header
-			th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${currentWishlist.id})">
-		</header>
 		<main>
 			<section id="wishlist_control">
 				<div class="GM5button_holder">
@@ -60,7 +60,7 @@
 						<a th:href="@{/wishlist(id=${currentWishlist.id})}"
 							class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
 							data-placement="top" title="Modify wishlist"> <img
-							class="GM5icon" th:src="@{/pics/icons/refresh2_white.png}">
+							class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
 						</a>
 						<!-- Delete wishlist -->
 						<a th:href="@{/wishlist/delete(id=${currentWishlist.id})}"
@@ -81,7 +81,7 @@
 								<a th:href="@{/wish(id=${wish.id})}"
 									class="btn btn-primary GM5button" data-toggle="tooltip"
 									data-placement="right" title="Modify wish"> <img
-									class="GM5icon" th:src="@{/pics/icons/refresh2_white.png}">
+									class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
 								</a>
 								<!-- Delete wish -->
 								<a th:href="@{/wish/delete(id=${wish.id})}"
@@ -103,7 +103,7 @@
 			</section>
 			<div class="GM5spacerRight"></div>
 		</main>
-		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>
+	<footer th:replace="footer.html :: footer">Footer</footer>
 </body>
 </html>

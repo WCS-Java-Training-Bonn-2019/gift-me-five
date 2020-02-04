@@ -39,7 +39,7 @@ public class GiverController {
 		// - add current wishlist Id (or better add full wishlist instead of wishes?)
 		//*****************************************************************************
 		model.addAttribute("myWishlists", wishlistRepository.findAll());
-		model.addAttribute("wishlist", wishlist);
+		model.addAttribute("currentWishlist", wishlist);
 		model.addAttribute("wishes", repository.findByWishlist(wishlist));
 		return "giver";
 	}

@@ -21,7 +21,7 @@
 }
 
 li.selected .description {
-	opacity: 50%;
+	opacity: 10%;
 }
 
 #friend_wish_list_details li, h1 {

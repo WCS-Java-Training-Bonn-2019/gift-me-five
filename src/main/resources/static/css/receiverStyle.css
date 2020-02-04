@@ -9,6 +9,14 @@ img {
 	padding: 7px;
 }
 
+.GM5button input {
+	display: none;
+}
+
+.selected {
+	opacity: 10%;
+}
+
 .GM5buttonGreen {
 	background-color: #288628;
 	margin: 7px;
@@ -44,11 +52,12 @@ img {
 	background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
-	border-color: #c8d6e4;
+/*	border-color: #c8d6e4;
 	border-style: solid;
 	border-radius: 6px;
+*/
 	padding-top: 10px;
-	padding-bottom: 50px;
+	padding-bottom: 30px;
 	font-family: "Chilanka" !important;
 	font-weight: 500;
 }
@@ -73,7 +82,7 @@ img {
 }
 
 .GM5wishlistElement {
-	background-color: rgba(226, 242, 255, 0.8);
+	background-color: rgba(226, 242, 255, 0.9);
 	border-radius: 10px;
 	width: 90%;
 	margin: 10px auto;
