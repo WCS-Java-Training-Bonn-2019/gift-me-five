@@ -1,4 +1,4 @@
-package com.gift_me_five;
+package com.gift_me_five.config;
 
 import java.util.ArrayList;
 import java.util.List;
