@@ -54,11 +54,6 @@ public class WishController {
 	@PostMapping("/wish")
 	public String saveWish(@ModelAttribute Wish wish) {
 
-		System.out.println("*".repeat(80));
-		System.out.println("/wish post at start");
-		System.out.println("Wish: " + wish);
-		System.out.println("*".repeat(80));
-
 		Wish wishOld = new Wish();
 
 		if (wish.getId() != null) {
@@ -68,10 +63,6 @@ public class WishController {
 				Wishlist wishlist = wishOld.getWishlist();
 				wish.setWishlist(wishlist);
 
-				System.out.println("*".repeat(80));
-				System.out.println("optionalWish isPresent");
-				System.out.println("Wish: " + wish);
-				System.out.println("*".repeat(80));
 			}
 		}
 

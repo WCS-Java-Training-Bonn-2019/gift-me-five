@@ -35,9 +35,9 @@
 
 		<main>
 			<section id="wishlist_control">
+			 
 				<h1 th:text="${wishlist.id}==null ? 'Create a wishlist' : ('Edit ' + ${wishlist.title})">Create a wishlist</h1>
-
-
+				
 				<form method="post" th:action="@{/wishlist}" th:object="${wishlist}">
 					<input name="wishlistId" type="hidden" th:field="*{id}"> <input
 						name="receiverId" type="hidden" th:field="*{receiver}"> <label
