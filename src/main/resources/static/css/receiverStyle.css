@@ -9,13 +9,6 @@ img {
 	padding: 7px;
 }
 
-.GM5buttonGreen {
-	background-color: #288628;
-	margin: 7px;
-	width: max-content;
-	padding: 7px;
-}
-
 .GM5button_holder {
 	display: flex;
 }
