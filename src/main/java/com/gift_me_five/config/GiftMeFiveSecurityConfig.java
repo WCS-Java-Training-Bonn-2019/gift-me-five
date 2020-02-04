@@ -50,6 +50,8 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 	        	.logout().permitAll()
 	        	.logoutSuccessUrl("/")
 	        	.and()
+	        	.rememberMe()
+	        	.and()
 	        	.exceptionHandling().accessDeniedPage("/access-denied");
 	      //     .and()
 	      //  .httpBasic();

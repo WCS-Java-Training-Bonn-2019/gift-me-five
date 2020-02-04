@@ -36,8 +36,8 @@
 				<a
 					th:class="${view=='giver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
 					href="/giver">Friend's Wishlists</a>
-				<!-- Dropdown for Admin -->
-				<div sec:authorize="isAuthenticated()">
+				<div sec:authorize="hasRole('ROLE_admin')">
+					<!-- Dropdown for Admin -->
 					<!-- class="navbar-nav dropdown " -->
 					<a
 						th:class="(${view=='admin'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link') + ' dropdown-toggle'"
@@ -99,15 +99,16 @@
 						</div>
 
 						<div class="form-check">
-							<input type="checkbox" class="form-check-input"
+							<input type="checkbox" class="form-check-input" name="remember-me"
 								id="dropdownCheck"> <label class="form-check-label"
-								for="dropdownCheck"> Remember me </label>
+								for="dropdownCheck">Remember me </label>
 						</div>
+						
 						<button type="submit" class="btn btn-primary GM5buttonGreen"><img src="pics/Login-512-white.png"></button>
 					</form>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">New around here? Sign up</a> <a
-						class="dropdown-item" href="#">Forgot password?</a>
+					<a class="dropdown-item" title="Registration" href="#">New around here? Sign up</a> <a
+						class="dropdown-item" title="Password Recovery" href="#">Forgot password?</a>
 				</div>
 			</div>
 		</div>
