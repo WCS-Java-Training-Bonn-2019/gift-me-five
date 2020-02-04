@@ -1,12 +1,12 @@
 {"properties": [
   {
-    "name": "adminPassword",
+    "name": "admin.password",
     "type": "java.lang.String",
-    "description": "'adminPassword' if admin is not existing in DB and will be created"
+    "description": "default 'admin.password' bcrypt"
   },
   {
-    "name": "adminUsername",
+    "name": "admin.username",
     "type": "java.lang.String",
-    "description": "'adminUsername' if admin is not existing in DB and will be created"
+    "description": "default 'admin.username' bcrypt"
   }
 ]}

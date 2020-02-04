@@ -1,8 +1,10 @@
 package com.gift_me_five.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +37,23 @@ public class WishlistController {
 	@Autowired
 	private WishRepository wishRepository;
 	
+	
+//	public String currentUserName(Principal principal) {
+//        return principal.getName();
+//    }
+	
+	
 	@GetMapping("/giver")
-	public String getAll(Model model) {
+	public String getAll(Model model, Principal principal, Authentication authentication) {
+		System.out.println();System.out.println();
+		System.out.println("*".repeat(80));
+		System.out.println("principal name: " + principal.getName());
+//		System.out.println(userRepository.findByEmail("admin").get().getPassword());
+		System.out.println("findbyemail principal name, password: " + userRepository.findByEmail(principal.getName()).get().getPassword());
+		System.out.println("findbyemail principal name, id: " + userRepository.findByEmail(principal.getName()).get().getId());
+//		System.out.println(userRepository.findByEmail(principal.getName()).get().toString());
+		System.out.println("*".repeat(80));
+		System.out.println();System.out.println();
 		Wishlist wishlist = wishlistRepository.findById(1L).get();
 		//****************************************************************************
 		// TO DO: (when user handling is enabled)
