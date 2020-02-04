@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.ThemeRepository;
 import com.gift_me_five.repository.UserRepository;
@@ -19,6 +20,9 @@ import com.gift_me_five.repository.WishlistRepository;
 @Controller
 public class WishlistController {
 
+	@Autowired
+	private UserRepository userRepository;
+	
 	@Autowired
 	private WishlistRepository wishlistRepository;
 
@@ -30,6 +34,36 @@ public class WishlistController {
 	
 	@Autowired
 	private WishRepository wishRepository;
+	
+	@GetMapping("/giver")
+	public String getAll(Model model) {
+		Wishlist wishlist = wishlistRepository.findById(1L).get();
+		//****************************************************************************
+		// TO DO: (when user handling is enabled)
+		// - add all OWN wishlists as attribute myWishlists (only titles would be required)
+		// - add all wishlists I'm invited to... model attribute still tbd  (only titles would be required)
+		//   (requires action also in other controllers and in header.html)
+		// - add current wishlist Id (or better add full wishlist instead of wishes?)
+		//*****************************************************************************
+		model.addAttribute("myWishlists", wishlistRepository.findAll());
+		model.addAttribute("wishlist", wishlist);
+		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+		return "giver";
+	}
+
+	@PostMapping("/giver")
+	public String updateWish(@ModelAttribute(value = "wishId") Long wishId,
+			@ModelAttribute(value = "giverId") Long giverId) {
+		//System.out.println("Wish ID = " + wishId);
+		Wish wish = wishRepository.findById(wishId).get();
+		if (giverId == 0) {
+			wish.setGiver(null);
+		} else {
+			wish.setGiver(userRepository.findById(giverId).get());
+		}
+		wishRepository.save(wish);
+		return "redirect:/giver";
+	}
 	
 	@GetMapping("/receiver")
 	public String displayWishlist(Model model, @RequestParam(required=false) Long id) {

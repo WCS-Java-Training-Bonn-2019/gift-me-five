@@ -5,7 +5,6 @@
 <meta charset="UTF-8" />
 <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
-​
 <header th:fragment="navigation">
 	<!-- (view, myWishlists, thisWishlistId) -->
 	<nav
@@ -20,8 +19,8 @@
 				<a class="navbar-brand" href="/">Gift me five</a> <a
 					th:class="${view=='newWishlist'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
 					th:href="@{/wishlist}">New Wishlist</a>
-				<!-- Dropdown for My Wishlists -->
-				<div>
+				<div sec:authorize="isAuthenticated()">
+					<!-- Dropdown for My Wishlists -->
 					<a
 						th:class="(${view=='receiver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link') + ' dropdown-toggle'"
 						data-toggle="dropdown" href="#">My Wishlists</a>
@@ -32,10 +31,10 @@
 							Xmas</a>
 					</div>
 				</div>
-				<!-- Dropdown for Friend's Wishlists -->
-				<a
+				<a sec:authorize="isAuthenticated()"
 					th:class="${view=='giver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
 					href="/giver">Friend's Wishlists</a>
+				<!-- Dropdown for Friend's Wishlists -->
 				<div sec:authorize="hasRole('ROLE_admin')">
 					<!-- Dropdown for Admin -->
 					<!-- class="navbar-nav dropdown " -->
@@ -55,23 +54,27 @@
 	</nav>
 	​
 	<nav class="GM5_header_right_nav">
-		<div class="GM5_header_right_nav_logged_in" sec:authorize="isAuthenticated()">
+		<div class="GM5_header_right_nav_logged_in"
+			sec:authorize="isAuthenticated()">
 			<span sec:authentication="name"></span>
 			<!-- Add a logout icon -->
-					<form action="#" th:action="@{/logout}" method="POST" title="Logout">
-						<button type="submit" class="GM5buttonGreen"><img src="pics/Logout-512-white.png"></button>
-					</form>
+			<form action="#" th:action="@{/logout}" method="POST" title="Logout">
+				<button type="submit" class="GM5buttonGreen">
+					<img src="pics/Logout-512-white.png">
+				</button>
+			</form>
 			<!-- do not show role  <br> Role(s): <span
 							sec:authentication="principal.authorities"></span> <br>
 						-->
 		</div>
-		
-			<div sec:authorize="isAnonymous()">
-		
+
+		<div sec:authorize="isAnonymous()">
+
 			<div th:fragment="loginButton" class="btn-group dropleft">
 				<button type="button"
 					class="GM5login_frame btn btn-secondary dropdown-toggle"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Login">
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+					title="Login">
 					<img th:src="@{/pics/User_account_Login_free_icon_1.png}">
 				</button>
 				<div class="dropdown-menu">
@@ -99,16 +102,20 @@
 						</div>
 
 						<div class="form-check">
-							<input type="checkbox" class="form-check-input" name="remember-me"
-								id="dropdownCheck"> <label class="form-check-label"
-								for="dropdownCheck">Remember me </label>
+							<input type="checkbox" class="form-check-input"
+								name="remember-me" id="dropdownCheck"> <label
+								class="form-check-label" for="dropdownCheck">Remember me
+							</label>
 						</div>
-						
-						<button type="submit" class="btn btn-primary GM5buttonGreen"><img src="pics/Login-512-white.png"></button>
+
+						<button type="submit" class="btn btn-primary GM5buttonGreen">
+							<img src="pics/Login-512-white.png">
+						</button>
 					</form>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" title="Registration" href="#">New around here? Sign up</a> <a
-						class="dropdown-item" title="Password Recovery" href="#">Forgot password?</a>
+					<a class="dropdown-item" title="Registration" href="#">New
+						around here? Sign up</a> <a class="dropdown-item"
+						title="Password Recovery" href="#">Forgot password?</a>
 				</div>
 			</div>
 		</div>
