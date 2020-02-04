@@ -35,26 +35,24 @@ public class WishlistController {
 	private UserRepository receiverRepository;
 	
 	@Autowired
-	private WishRepository wishRepository;
-	
-	
-//	public String currentUserName(Principal principal) {
-//        return principal.getName();
-//    }
-	
+	private WishRepository wishRepository;	
 	
 	@GetMapping("/giver")
 	public String getAll(Model model, Principal principal, Authentication authentication) {
-		System.out.println();System.out.println();
-		System.out.println("*".repeat(80));
-		System.out.println("principal name: " + principal.getName());
-//		System.out.println(userRepository.findByEmail("admin").get().getPassword());
-		System.out.println("findbyemail principal name, password: " + userRepository.findByEmail(principal.getName()).get().getPassword());
-		System.out.println("findbyemail principal name, id: " + userRepository.findByEmail(principal.getName()).get().getId());
-//		System.out.println(userRepository.findByEmail(principal.getName()).get().toString());
-		System.out.println("*".repeat(80));
-		System.out.println();System.out.println();
 		Wishlist wishlist = wishlistRepository.findById(1L).get();
+		System.out.println("");
+		
+//		Wishlist wishlist = new Wishlist();
+//		if (id != null) {
+//			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
+//			if (optionalWishlist.isPresent()) {
+//				wishlist = optionalWishlist.get();
+//			} else {
+//				id = null;
+//			}
+//		} 
+//		
+		
 		//****************************************************************************
 		// TO DO: (when user handling is enabled)
 		// - add all OWN wishlists as attribute myWishlists (only titles would be required)
@@ -62,7 +60,7 @@ public class WishlistController {
 		//   (requires action also in other controllers and in header.html)
 		// - add current wishlist Id (or better add full wishlist instead of wishes?)
 		//*****************************************************************************
-		model.addAttribute("myWishlists", wishlistRepository.findAll());
+		model.addAttribute("myWishlists", wishlistRepository.findFirstByReceiver(userRepository.findByEmail(principal.getName()).get()));
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
 		return "giver";
