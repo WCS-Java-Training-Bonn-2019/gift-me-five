@@ -35,8 +35,7 @@
 				th:object="${wish}" method="post">
 				<table>
 					<tr>
-						<input th:field="*{id}" type="hidden">
-						<td><label for="id">ID: </label></td>
+						<td><label for="id">ID: </label><input th:field="*{id}" type="hidden"></td>
 						<td><span th:text="*{id}">ID: </span></td>
 					</tr>
 					<tr>
