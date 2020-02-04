@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "adminPassword",
+    "type": "java.lang.String",
+    "description": "'adminPassword' if admin is not existing in DB and will be created"
+  },
+  {
+    "name": "adminUsername",
+    "type": "java.lang.String",
+    "description": "'adminUsername' if admin is not existing in DB and will be created"
+  }
+]}

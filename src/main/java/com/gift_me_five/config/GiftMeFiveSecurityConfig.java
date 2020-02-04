@@ -23,18 +23,19 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 	    http
 	        .authorizeRequests()
-	          .antMatchers("/admin/**").hasRole("ADMIN")
-	          //.anyRequest().authenticated()
-	          .and()
-	        .formLogin()
+	        	.antMatchers("/", "/css/**", "/pics/**").permitAll()
+	        	.antMatchers("/admin/**").hasRole("ADMIN")
+	        	.anyRequest().authenticated()
+	        	.and()
+	        	.formLogin()
 	        	.loginPage("/showMyLoginPage")
 	        	.loginProcessingUrl("/authenticateTheUser")
-				.permitAll()
-			.and()
-				.logout().permitAll()
-				.logoutSuccessUrl("/")
-				.and()
-				.exceptionHandling().accessDeniedPage("/access-denied");
+	        	.permitAll()
+	        	.and()
+	        	.logout().permitAll()
+	        	.logoutSuccessUrl("/")
+	        	.and()
+	        	.exceptionHandling().accessDeniedPage("/access-denied");
 	      //     .and()
 	      //  .httpBasic();
 	}
