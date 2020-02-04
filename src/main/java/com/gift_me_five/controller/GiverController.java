@@ -39,7 +39,8 @@ public class GiverController {
 		// - add current wishlist Id (or better add full wishlist instead of wishes?)
 		//*****************************************************************************
 		model.addAttribute("myWishlists", wishlistRepository.findAll());
-		model.addAttribute("currentWishlist", wishlist);
+		model.addAttribute("friendWishlist", wishlist);
+		// ^^^^ HEADER MENU PARAMETERS ^^^^^^^^^^^  ^^^
 		model.addAttribute("wishes", repository.findByWishlist(wishlist));
 		return "giver";
 	}
@@ -47,7 +48,7 @@ public class GiverController {
 	@PostMapping("/giver")
 	public String updateWish(@ModelAttribute(value = "wishId") Long wishId,
 			@ModelAttribute(value = "giverId") Long giverId) {
-		//System.out.println("Wish ID = " + wishId);
+		System.out.println("Wish ID = " + wishId + ", giverId = " + giverId);
 		Wish wish = repository.findById(wishId).get();
 		if (giverId == 0) {
 			wish.setGiver(null);

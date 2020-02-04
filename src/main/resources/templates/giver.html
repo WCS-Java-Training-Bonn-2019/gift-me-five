@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
 <style
-	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${currentWishlist.theme.backgroundPicture} +');}'">
+	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${friendWishlist.theme.backgroundPicture} +');}'">
 #wishlist_details {
 	background-image: url(../pics/christmas-2946698_1920_mod.png);
 }
@@ -32,49 +32,43 @@
 </head>
 <body>
 	<header
-		th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${currentWishlist.id})">
+		th:replace="header.html :: navigation(view='receiver')">
 	</header>
 	<div id="GM5wrapper">
 		<main>
 			<div class="GM5spacerLeft"></div>
-			<section id="wishlist_details">
+			<section id="GM5wishlist_details">
+			<div class="GM5wishlistBlock">
 				<div class="GM5wishlistElement GM5wishlistTitle">
-					<h1 th:text="${currentWishlist.title}">My Christmas Wishes</h1>
+					<h1 th:text="${friendWishlist.title}">My Christmas Wishes</h1>
 				</div>
 
 				<ul>
 					<li th:each="wish : ${wishes}" th:object="${wish}"
-						th:class="'GM5wishlistElement ' + (*{giver}!=null ? 'GM5selected')">
+						th:class="'GM5wishlistElement ' + (*{giver}!=null ? 'GM5selected' : '')">
 						<form method="post" th:action="@{/giver}">
 							<div class="GM5wishlistTitle">
 								<h2 th:text="*{title}">title</h2>
 								<div class="GM5button_holder">
-									<!-- Modify wish -->
-									<!--
-									<a th:href="@{/wish(id=${wish.id})}"
-										class="btn btn-primary GM5button" data-toggle="tooltip"
-										data-placement="right" title="Modify wish"> <img
-										class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
-									</a>
-									 -->
 									<!-- **************** TO DO ******************** -->
 									<!-- The actual user id of the giver must be set -->
-									<div class="btn btn-primary GM5button" data-toggle="tooltip"
-										data-placement="right" title="(De-)select wish">
+									<div id="GM5hideInput">
 										<input th:name="wishId" th:id="*{id}" th:value="*{id}"
-											type="hidden"> 
-										<input type="checkbox" th:name="giverId"
-											th:id="'a' + *{id}"
-											th:value="*{giver} ? '1' : '0'">
-										<label th:for="'a' + *{id}">
-										<img class="GM5icon"
-											th:src="@{/pics/icons/} + (*{giver} ? 'checked_grey.png' : 'notchecked_grey.png')" />
+											type="hidden"> <input th:name="giverId"
+											th:value="*{giver} ? '0' : '1'" type="hidden"> <input
+											type="submit" th:name="Submit" value="" th:id="'a' + *{id}">
+										<label th:for="'a' + *{id}"> <span
+											class="btn btn-primary GM5button" data-toggle="tooltip"
+											data-placement="right" title="(De-)select wish"> <img
+												class="GM5icon"
+												th:src="@{/pics/icons/} + (*{giver} ? 'checked_white.png' : 'nonchecked_white.png')" />
+										</span>
 										</label>
 									</div>
 								</div>
 							</div>
 							<p th:text="*{description}">description</p>
-							<img th:if="${wish.image != ''} and ${wish.image != null}"
+							<img  class="GM5giftImage" th:if="${wish.image != ''} and ${wish.image != null}"
 								th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
 							<h3>
 								<a th:if="${wish.link != ''} and ${wish.link != null}"
@@ -83,6 +77,7 @@
 						</form>
 					</li>
 				</ul>
+			</div>
 			</section>
 			<div class="GM5spacerRight"></div>
 		</main>
