@@ -91,6 +91,10 @@ public class adminController {
 
 	@PostMapping("/admin/upsert_wish")
 	public String upsertWish(Model model, @Valid Wish wish) {
+		//if no giverID, so set giver to null
+		if (wish.getGiver().getId() == null) {
+			wish.setGiver(null);
+		}
 		wish = wishRepository.save(wish);
 		return "redirect:/admin/wish";
 	}

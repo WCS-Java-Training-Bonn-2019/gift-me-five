@@ -54,4 +54,13 @@ public class Wish {
 	
 	public Wish() {
 	}
+
+	@Override
+	public String toString() {
+		return "Wish [id=" + id + ", title=" + title + ", item=" + item + ", description=" + description + ", link="
+				+ link + ", image=" + image + ", price=" + price + ", createDate=" + createDate + ", modifyDate="
+				+ modifyDate + ", giver=" + giver + ", wishlist=" + wishlist + "]";
+	}
+	
+	
 }

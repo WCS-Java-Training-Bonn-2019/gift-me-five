@@ -72,10 +72,18 @@
 					<!-- PW with PW-Confirm, required must be set -->
 					<tr>
 						<td>Password / PW-Confirm:</td>
-						<td><input name="password" type="password" id="password" th:value=*{password} />
-							<input name="password_confirm" required="required"
-							type="password" id="password_confirm" oninput="check(this)" th:value=*{password} /> <script
-								language='javascript' type='text/javascript'>
+						<td><input th:value=*{password} id="password" name="password" type="password"
+							onchange="if(this.checkValidity()) form.password_two.pattern = this.value;"
+							placeholder="Password" required="required"> <input th:value=*{password} id="password_two"
+							name="password_two" type="password"
+							onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');"
+							placeholder="Verify Password" required="required"> 
+						<!-- 		
+						<input name="password" type="password" id="password"
+							th:value=*{password} required="required" /> <input
+							name="password_confirm" required="required" type="password"
+							id="password_confirm" oninput="check(this)" th:value=*{password} />
+							<script language='javascript' type='text/javascript'>
 								function check(input) {
 									if (input.value != document
 											.getElementById('password').value) {
@@ -86,10 +94,12 @@
 										input.setCustomValidity('');
 									}
 								}
-							</script></td>
+							</script>
+							-->
+						</td>
 					</tr>
 
-					<!-- 
+					<!-- PW Pattern Checker
 					<tr>
 						<td>Password / PW-Confirm:</td>
 						<td><input id="password" name="password" type="password"

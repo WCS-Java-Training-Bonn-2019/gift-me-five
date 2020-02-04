@@ -35,8 +35,8 @@
 				th:object="${wishlist}" method="post">
 				<table>
 					<tr>
-						<input th:field="*{id}" type="hidden">
-						<td><label for="id">ID: </label></td>
+						
+						<td><label for="id">ID: </label><input th:field="*{id}" type="hidden"></td>
 						<td><span th:text="*{id}">ID: </span></td>
 					</tr>
 					<tr>
@@ -45,14 +45,12 @@
 					</tr>
 					<tr>
 						<td><label for="receiverId">ReceiverID:</label></td>
-						<td><input th:field="*{receiver.id}" type="text"></td>
+						<td><input th:field="*{receiver.id}" type="text" required></td>
 					</tr>
-					<!-- 
 					<tr>
 						<td><label for="themeId">ThemeID:</label></td>
-						<td><input th:field="*{theme.id}" type="text"></td>
+						<td><input th:field="*{theme.id}" type="text" required></td>
 					</tr>
-					 -->
 					<tr>
 						<td><label for="*{uniqueUrlGiver}">Unique URL Giver</label></td>
 						<td><input th:field="*{uniqueUrlGiver}" type="text"></td>
