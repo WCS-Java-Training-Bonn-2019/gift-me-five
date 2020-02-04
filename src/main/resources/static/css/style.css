@@ -81,6 +81,15 @@ header ul, section ul {
 	align-items: center;	
 }
 
+.GM5_header_right_nav span {
+	margin: 5px;
+}
+
+.GM5_header_right_nav_logged_in {
+	display: flex;
+	align-items: center;
+}
+
 /*
 .GM5_header_left_nav {
 	margin-top: auto;
