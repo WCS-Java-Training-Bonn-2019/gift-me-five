@@ -35,6 +35,7 @@
 			</div>
 			<form method="post" th:action="@{/wish}" th:object="${wish}">
 				<input name="id" th:field="*{id}" type="hidden">
+				<input name="wishlistId" th:field="${wish.wishlist.id}" type="hidden">
 				<label for="wish-title">Short Description:</label>
 				<br>
 				<input id="wish-title" name="title" placeholder="X-Box One" required
