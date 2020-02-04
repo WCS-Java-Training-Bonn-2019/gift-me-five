@@ -2,7 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Gift Me Five</title>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1 shrink-to-fit=no">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -20,35 +22,30 @@
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/indexStyle.css">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
-	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='')">	
-		</header>
-
-		<main>
-			<!-- Info box start page  -->
-			<div id="leftmargin"></div>
-			<section id="index_info_box">
-				<h1>Gift me five</h1>
-				<p>
-					Creating and sharing wishlists… <br> Your birthday is coming
-					up, tired of lame gifts? Create your wishlist without registering
-					and share it with your friends!
-				</p>
-				<!-- Button "Create a wish" -->
-				<div>
-					<a href="/wishlist" class="btn btn-success">Create a wishlist</a>
-				</div>
-				<br>
-				<p>If you need to manage multiple wishlists or want to ensure
-					privacy of your wishlists, it is recommended to create an account.</p>
-			</section>
-			<div id="rightmargin"></div>
-		</main>
-		<footer th:replace="footer.html :: footer">Footer</footer>
-	</div>
+	<header
+		th:replace="header.html :: navigation">
+	</header>
+	<main>
+		<div id="GM5centralpic">
+			<h1>Gift me five</h1>
+		</div>
+		<!-- Info box start page  -->
+		<section>
+			<p>
+				Creating and sharing wishlists… <br> Your birthday is coming
+				up, tired of lame gifts? Create your wishlist without registering
+				and share it with your friends! Try it now:
+			</p>
+			<!-- Button "Create a wish" -->
+			<p>
+				<a href="/wishlist" class="btn btn-success">Create a wishlist</a>
+			</p>
+			<p>If you need to manage multiple wishlists or want to ensure
+				privacy of your wishlists, it is recommended to create an account.</p>
+		</section>
+	</main>
+	<footer th:replace="footer.html :: footer">Footer</footer>
 </body>
 </html>

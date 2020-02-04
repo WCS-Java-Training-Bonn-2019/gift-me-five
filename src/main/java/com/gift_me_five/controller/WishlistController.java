@@ -31,7 +31,7 @@ public class WishlistController {
 	@Autowired
 	private WishRepository wishRepository;
 	
-	@GetMapping("/wishlistPreview")
+	@GetMapping("/receiver")
 	public String displayWishlist(Model model, @RequestParam(required=false) Long id) {
 		
 		Wishlist wishlist = new Wishlist();
@@ -59,6 +59,7 @@ public class WishlistController {
 
 		// *****************************************************
 		// TO DO: Default values must be defined!!!
+		// Wishlists of current user must be added to model instead of all wishlists!
 		// *****************************************************
 		Long receiverId = 1L; // receiver Id default Wert
 		Long themeId = 1L; // theme Id default Wert
@@ -76,8 +77,8 @@ public class WishlistController {
 			// No wishlist - create new!
 			wishlist.setReceiver(receiverRepository.findById(receiverId).get());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
-//			wishlistRepository.save(wishlist);
 		}
+		model.addAttribute("wishlists", wishlistRepository.findAll());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("themes", themeRepository.findAll());
 		return "wishlist";
@@ -94,7 +95,7 @@ public class WishlistController {
 
 		wishlistRepository.save(wishlist);
 
-		return "redirect:/wishlistPreview?id=" + wishlist.getId();
+		return "redirect:/receiver?id=" + wishlist.getId();
 	}
 
 	@GetMapping("/wishlist/delete")
@@ -108,7 +109,7 @@ public class WishlistController {
 		
 		Wishlist wishlist = wishlistRepository.findFirstByIdGreaterThan(0L);
 		String wishlistIdTag = (wishlist != null) ? "?id=" + wishlist.getId(): "" ;
-		return "redirect:/wishlistPreview" + wishlistIdTag;
+		return "redirect:/receiver" + wishlistIdTag;
 	}
 
 }

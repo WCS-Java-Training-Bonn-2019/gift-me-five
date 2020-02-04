@@ -27,7 +27,7 @@ public class WishController {
 	@GetMapping("/wish")
 	public String upsertWish(Model model, @RequestParam(required = false) Long wishlistId,
 			@RequestParam(required = false) Long id) {
-
+//		System.out.println("WishlistId" + wishlistId);
 		Wish wish = new Wish();
 		if (id != null) {
 			Optional<Wish> optionalWish = repository.findById(id);
@@ -35,7 +35,18 @@ public class WishController {
 				wish = optionalWish.get();
 			}
 		}
+
+		if (id == null) {
+			Wishlist wishlist = wishlistRepository.findById(wishlistId).get();
+			wish.setWishlist(wishlist);
+		}
+
 		model.addAttribute("wish", wish);
+		// **********************************************************************************
+		// TO DO: Retrieve wishlists only for current user, not all wishlists!
+		// Wishlists required to build the navigation menu properly for this user.
+		// **********************************************************************************
+		model.addAttribute("wishlists", wishlistRepository.findAll());
 
 		return "wishForm";
 	}
@@ -43,19 +54,31 @@ public class WishController {
 	@PostMapping("/wish")
 	public String saveWish(@ModelAttribute Wish wish) {
 
+		System.out.println("*".repeat(80));
+		System.out.println("/wish post at start");
+		System.out.println("Wish: " + wish);
+		System.out.println("*".repeat(80));
+
 		Wish wishOld = new Wish();
-		Optional<Wish> optionalWish = repository.findById(wish.getId());
-		if (optionalWish.isPresent()) {
-			wishOld = optionalWish.get();
-		} else {
-			System.out.println("***  Post Wish: Wish doesn't exist!!!!! ****");
-		}		
-		Wishlist wishlist = wishOld.getWishlist();
-		wish.setWishlist(wishlist);
+
+		if (wish.getId() != null) {
+			Optional<Wish> optionalWish = repository.findById(wish.getId());
+			if (optionalWish.isPresent()) {
+				wishOld = optionalWish.get();
+				Wishlist wishlist = wishOld.getWishlist();
+				wish.setWishlist(wishlist);
+
+				System.out.println("*".repeat(80));
+				System.out.println("optionalWish isPresent");
+				System.out.println("Wish: " + wish);
+				System.out.println("*".repeat(80));
+			}
+		}
+
 		repository.save(wish);
 
 		// return "redirect:/wish?id=" + wish.getId();
-		return "redirect:/wishlistPreview?id=" + wishlist.getId();
+		return "redirect:/receiver?id=" + wish.getWishlist().getId();
 	}
 
 	@GetMapping("/wish/delete")
@@ -65,7 +88,7 @@ public class WishController {
 		Long wishlistId = wish.getWishlist().getId();
 		repository.deleteById(id);
 
-		return "redirect:/wishlistPreview?id=" + wishlistId;
+		return "redirect:/receiver?id=" + wishlistId;
 	}
 
 }

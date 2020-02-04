@@ -1,50 +1,61 @@
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
 main {
 	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: flex-end;
+	flex-direction: column;
+	height: 100%;
 }
 
-div #rightmargin {
-	width: 4em;
-	flex-shrink: 3;
-	flex-grow: 1;
+
+#GM5centralpic {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-image: url("../pics/gift_me_five.png");
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	flex-basis: 45%;
+}
+#GM5centralpic h1 {
+		font-size:400%;
+		font-family: monospace;
+		text-align: center;
+		color: #27277d;
 }
 
-div #leftmargin {
-	width: 30em;
-	flex-shrink: 6;
-	flex-grow: 4;
+section {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	background-color: #27277d;
+	flex-basis: 55%;
 }
 
-#index_info_box {
-	flex-grow: 0;
-	width: 25em;
-	margin-top: auto;
-	margin-bottom: auto;
-	background-color : #cfe7f57a;
-	border-color: #c8d6e4;
-	border-radius: 10px;
-	border-style: solid;
-	padding-top: 1em;
-	padding-left: 1em;
-	padding-right: 1em;
-	background-color: #cfe7f57a;
+p {
+	font-weight: bold;
+	color: white; /* #cfe7f5 */
+	text-align: justify;
+	max-width: 30em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	margin: 0.5em;
 }
 
-@media only screen and (max-width: 600px) {
-	main {
-		align-items: flex-start;
-	}
-	#index_info_box {
-		margin-top: 1em; min-width : 17em;
-		max-width: 25em;
-		min-width: 15em;
-		flex-shrink: 1;
-	}
+@media only screen and (min-width: 600px) {
+     section {
+     flex-direction: row;
+     }	
 }
 
-#index_info_box div {
-	width: 8em;
-	margin: 0em auto;
+@media only screen and (min-width: 900px) {
+     p, .btn {
+     font-size: 130%;
+     }	
 }

@@ -10,7 +10,7 @@ import com.gift_me_five.entity.Wishlist;
 
 @Repository
 public interface WishRepository extends JpaRepository<Wish, Long> {
-
+	
 	List<Wish> findById(long l);
 	List<Wish> findByIdLessThan(long l);
 	List<Wish> findByWishlist(Wishlist l);

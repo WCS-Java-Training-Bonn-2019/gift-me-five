@@ -25,43 +25,50 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='')">	
+		<header th:replace="header.html :: navigation(view='', myWishlists=null, thisWishlistId=null)">	
 		</header>
-		<main>
-			<h1>Admin view - User</h1>
+			<h1>Admin view - Wish</h1>
 			<section>
 				<table border="1">
 					<tr>
 						<th>ID</th>
-						<th>First Name</th>
-						<th>Last Name</th>
-						<th>Login</th>
-						<th>Password</th>
-						<th>E-Mail</th>
-						<th>Last Login</th>
-						<th>Failed Logins</th>
+						<th>Title</th>
+						<th>Description</th>
+					<!-- 
+						<th>Item</th> 
+					-->
+						<th>Image</th>
+						<th>Link</th>
+					<!-- 
+						<th>WishlistID</th>
+						<th>GiverID</th>
+					 -->
 						<th>Create Date</th>
 						<th>Modify Date</th>
 					</tr>
-					<tr th:each="user : ${users}" th:object="${user}">
+					<tr th:each="wish : ${wishes}" th:object="${wish}">
 						<td th:text="*{id}">ID</td>
-						<td th:text="*{firstname}">First Name</td>
-						<td th:text="*{lastname}">Last Name</td>
-						<td th:text="*{login}">Login</td>
-						<td th:text="*{password}">Password</td>
-						<td th:text="*{email}">E-Mail</td>
-						<td th:text="*{lastLogin}">Last Login</td>
-						<td th:text="*{failedLogins}">Failed Logins</td>
-						<td th:text="*{createDate}">Create Date</td>
-						<td th:text="*{modifyDate}">Modify Date</td>
-						<td><a th:href="@{'/admin/edit_user/' + *{id}}">Edit</a> <a
-							th:href="@{'/admin/delete_user/' + *{id}}">Delete</a></td>
+						<td th:text="*{title}">Title</td>
+						<td th:text="*{description}">Description</td>
+					<!-- 
+						<td th:text="*{item}">Item</td>
+					 -->
+						<td th:text="*{image}">Image</td>
+						<td th:text="*{link}">Link</td>
+					<!-- 
+						<td th:text="*{wishlistId}">WishlistID</td>
+						<td th:text="*{giverId}">GiverID</td>
+					 -->
+						<td th:date="*{createDate}">Create Date</td>
+						<td th:date="*{modifyDate}">Modify Date</td>
+						<td><a th:href="@{'/admin/edit_wish/' + *{id}}">Edit</a> <a
+							th:href="@{'/admin/delete_wish/' + *{id}}">Delete</a></td>
 					</tr>
 				</table>
 			</section>
 
 			<section>
-				<br> <a th:href="@{'/admin/new_user/'}">New user</a><br> <a
+				<br> <a th:href="@{'/admin/new_wish/'}">New wish</a><br> <a
 					th:href="@{/}">Home</a>
 			</section>
 		</main>
