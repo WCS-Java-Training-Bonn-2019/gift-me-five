@@ -44,7 +44,7 @@
 
 				<ul>
 					<li th:each="wish : ${wishes}" th:object="${wish}"
-						th:class="'GM5wishlistElement' + (*{giver}!=null ? 'GM5selected')">
+						th:class="'GM5wishlistElement ' + (*{giver}!=null ? 'GM5selected')">
 						<form method="post" th:action="@{/giver}">
 							<div class="GM5wishlistTitle">
 								<h2 th:text="*{title}">title</h2>
