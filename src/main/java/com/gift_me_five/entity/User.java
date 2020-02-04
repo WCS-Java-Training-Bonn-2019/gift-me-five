@@ -1,6 +1,8 @@
 package com.gift_me_five.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +19,9 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,21 +29,26 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class User {
+public class User implements UserDetails {
+
+	private static final long serialVersionUID = 7089309836794614341L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String login;
+	@Column(nullable = false, unique = true)
+	private String email;
+	
+//	no more login, use email
+//	@Column(nullable = false, unique = true)
+//	private String login;
 
 	@Column(nullable = false)
 	private String password;
 
 	private String firstname;
 	private String lastname;
-	private String email;
 
 	private Long failedLogins = 0L;
 
@@ -85,5 +95,46 @@ public class User {
 
 	public User() {
 	}
-	
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+		return Collections.singletonList(authority);
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO locked if failedLogins > 3
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO role == registered 
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", password=" + password + ", firstname=" + firstname
+				+ ", lastname=" + lastname + ", email=" + email + ", failedLogins=" + failedLogins + ", role=" + role
+				+ ", lastLogin=" + lastLogin + ", createDate=" + createDate + ", modifyDate=" + modifyDate
+				+ ", wishlists=" + wishlists + ", wishes=" + wishes + ", giverSeeWishLists=" + giverSeeWishLists + "]";
+	}
+
 }

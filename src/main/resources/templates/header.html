@@ -64,22 +64,28 @@
 			<div class="dropdown-menu">
 				<form th:action="@{/authenticateTheUser}" method="POST"
 					class="px-4 py-3">
-
 					<div sec:authorize="isAuthenticated()">
-						User: <span sec:authentication="name"></span> <br> Role(s): <span
+						User: <span sec:authentication="name"></span>
+						<!-- do not show role  <br> Role(s): <span
 							sec:authentication="principal.authorities"></span> <br>
+						-->
 					</div>
 
 					<!-- Add User Name Login -->
 					<div class="form-group">
-						<label for="exampleDropdownFormEmail1">Email address</label> <input
-							type="text" class="form-control" id="exampleDropdownFormEmail1"
-							placeholder="username" name="username">
+						<!-- 
+						<label for="exampleDropdownFormEmail1">E-Mail</label>
+						 -->
+						<input type="text" class="form-control"
+							id="exampleDropdownFormEmail1" placeholder="E-Mail"
+							name="username">
 					</div>
 					<!-- Add Password Login -->
 					<div class="form-group">
-						<label for="exampleDropdownFormPassword1">Password</label> <input
-							type="password" class="form-control"
+						<!-- 
+						<label for="exampleDropdownFormPassword1">Password</label> 
+						 -->
+						<input type="password" class="form-control"
 							id="exampleDropdownFormPassword1" placeholder="Password"
 							name="password">
 					</div>
