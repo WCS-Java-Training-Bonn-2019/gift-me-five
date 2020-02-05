@@ -75,20 +75,15 @@
 						class="px-4 py-3">
 
 
-						<!-- Add User Name Login -->
 						<div sec:authorize="isAnonymous()" class="form-group">
-							<!-- 
-						<label for="exampleDropdownFormEmail1">E-Mail</label>
-						 -->
+							<!-- Add User Name Login -->
 							<input type="text" class="form-control"
 								id="exampleDropdownFormEmail1" placeholder="E-Mail"
 								name="username">
 						</div>
-						<!-- Add Password Login -->
+
 						<div sec:authorize="isAnonymous()" class="form-group">
-							<!-- 
-						<label for="exampleDropdownFormPassword1">Password</label> 
-						 -->
+							<!-- Add Password Login -->
 							<input type="password" class="form-control"
 								id="exampleDropdownFormPassword1" placeholder="Password"
 								name="password">
@@ -101,30 +96,32 @@
 							</label>
 						</div>
 
-						<button sec:authorize="isAnonymous()" type="submit" class="btn btn-primary GM5buttonGreen">
+						<button sec:authorize="isAnonymous()" type="submit"
+							class="btn btn-primary GM5buttonGreen">
 							<img src="pics/Login-512-white.png">
 						</button>
 					</form>
 
-					<!-- Add a logout -->
-					<form action="#" th:action="@{/logout}" method="POST"
-						title="Logout">
-						<button sec:authorize="isAuthenticated()" type="submit"
-							class="GM5buttonGreen">
-							<img src="/pics/Logout-512-white.png">
-						</button>
-					</form>
-					
-					<div class="dropdown-divider"></div>
-					<div sec:authorize="isAnonymous()">
-						<a class="dropdown-item" method="GET"
-							th:href="@{/showRegistrationForm}">New around here? Sign up</a> <a
-							class="dropdown-item" title="Password Recovery" href="#">Forgot
-							password?</a>
-					</div>
-					<div sec:authorize="isAuthenticated()">
-						<a class="dropdown-item" title="Profile" href="/profile">Edit
-							Profile</a>
+					<div class="logged_in_dropdown">
+						<!-- Add a logout -->
+						<form th:action="@{/logout}" method="POST" title="Logout">
+							<button sec:authorize="isAuthenticated()" type="submit"
+								class="GM5buttonGreen">
+								<img src="/pics/Logout-512-white.png">
+							</button>
+						</form>
+
+						<div class="dropdown-divider"></div>
+						<div sec:authorize="isAnonymous()">
+							<a class="dropdown-item" method="GET"
+								th:href="@{/showRegistrationForm}">New around here? Sign up</a>
+							<a class="dropdown-item" title="Password Recovery" href="#">Forgot
+								password?</a>
+						</div>
+						<div sec:authorize="isAuthenticated()">
+							<a class="dropdown-item" title="Profile" href="/profile">Edit
+								Profile</a>
+						</div>
 					</div>
 				</div>
 			</div>

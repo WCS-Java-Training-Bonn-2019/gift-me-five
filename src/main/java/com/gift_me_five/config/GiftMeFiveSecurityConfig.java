@@ -37,7 +37,7 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 	    http
 	        .authorizeRequests()
-	        	.antMatchers("/", "/css/**", "/pics/**", "/showRegistrationForm/**", "/processRegistrationForm/**" , "/under_construction/**").permitAll()
+	        	.antMatchers("/", "/css/**", "/pics/**", "/showRegistrationForm/**", "/processRegistrationForm/**" , "/under_construction/**", "/wishlist").permitAll()
 	        	.antMatchers("/admin/**").hasRole("admin")
 	        	.anyRequest().authenticated()
 	        	.and()
