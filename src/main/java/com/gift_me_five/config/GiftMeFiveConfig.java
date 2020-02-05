@@ -1,4 +1,4 @@
-package com.gift_me_five;
+package com.gift_me_five.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.gift_me_five.entity.Theme;
 import com.gift_me_five.entity.User;
@@ -18,33 +20,42 @@ import com.gift_me_five.repository.WishlistRepository;
 
 @Configuration
 public class GiftMeFiveConfig {
-
+	
 	@Bean
 	public CommandLineRunner dbInit(UserRepository userRepository, ThemeRepository themeRepository,
 			WishlistRepository wishlistRepository, WishRepository wishRepository) {
 		return (args) -> {
 			emptyWishlistTable(wishlistRepository);
-			emptyUserTable(userRepository);
+//			emptyUserTable(userRepository);
 			emptyThemeTable(themeRepository);
 			final String[] userNames = { "publicDummyUser", "Michaela", "Frieda", "Alfred" };
-			final String[] passwords = { "jykQGKpb;q-9FjkX8r_IB", "#1michaelasSecretPassword",
-					"#1friedasSecretPassword", "#1alfredsSecretPassword" };
+			final String[] passwords = { "jykQGKpb;q-9FjkX8r_IB", "m", "f", "a" };
+			final String[] emails = { "no@reply.com", "mi@usermail.com", "Granny@gmails.com",
+					"Alfred@technicbase.com" };
+			final String[] roles = { "unregistered", "pending", "registered", "admin" };
 			createTheme(themeRepository);
 			for (int i = 0; i < userNames.length; i++) {
-				User receiver = createUser(userRepository, userNames[i], passwords[i]);
-				Theme theme = themeRepository.findById(i+1L).get();
-				String title = "Wishlist #" + (i+1);
+				User receiver = createUser(userRepository, userNames[i], passwords[i], emails[i], roles[i]);
+				Theme theme = themeRepository.findById(i + 1L).get();
+				String title = "Wishlist #" + (i + 1);
 				Wishlist wishlist = createWishlist(title, receiver, theme, wishlistRepository);
 				createWishes(wishRepository, wishlist);
 
 			}
 		};
 	}
+		
+	private User createUser(UserRepository userRepository, String userName, String password, String email,
+			String role) {
 
-	private User createUser(UserRepository userRepository, String userName, String password) {
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 		User user = new User();
-		user.setLogin(userName);
-		user.setPassword(password);
+//		no more login, use email 
+//		user.setLogin(userName);
+		user.setPassword(passwordEncoder.encode(password));
+		user.setEmail(email);
+		user.setRole(role);
 		userRepository.save(user);
 		return user;
 	}
@@ -100,14 +111,14 @@ public class GiftMeFiveConfig {
 	// **************************************************************************************************
 	// Empty DB tables - currently not needed
 	// **************************************************************************************************
-	private void emptyUserTable(UserRepository userRepository) {
-		// Only possible if user is not entered in wishlist
-		if (userRepository.count() != 0) {
-			System.out.println("User table has at least one entry... empty table.");
-			userRepository.deleteAll();
-			userRepository.flush();
-		}
-	}
+//	private void emptyUserTable(UserRepository userRepository) {
+//		// Only possible if user is not entered in wishlist
+//		if (userRepository.count() != 0) {
+//			System.out.println("User table has at least one entry... empty table.");
+//			userRepository.deleteAll();
+//			userRepository.flush();
+//		}
+//	}
 
 	private void emptyThemeTable(ThemeRepository themeRepository) {
 		// Only possible if theme is not entered in wishlist

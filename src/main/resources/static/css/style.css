@@ -81,6 +81,15 @@ header ul, section ul {
 	align-items: center;	
 }
 
+.GM5_header_right_nav span {
+	margin: 5px;
+}
+
+.GM5_header_right_nav_logged_in {
+	display: flex;
+	align-items: center;
+}
+
 /*
 .GM5_header_left_nav {
 	margin-top: auto;
@@ -143,4 +152,11 @@ footer {
 	background-color: #0edd3c;
 	border-color: #1dee44;
 /*	padding: 5px; */
+}
+
+.GM5buttonGreen {
+	background-color: #288628;
+	margin: 7px;
+	width: max-content;
+	padding: 7px;
 }
