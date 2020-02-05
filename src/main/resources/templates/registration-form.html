@@ -19,8 +19,8 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
-<link rel="stylesheet" href="../../css/style.css">
-<link rel="stylesheet" href="../../css/loginRegistrationStyle.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/loginRegistrationStyle.css">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
@@ -31,25 +31,13 @@
 		</header>
 		<main>
 
-			<div>
-				<h2>User Edit/Register</h2>
+			<div id="GM5loginForm">
+				
+				<h3>User Edit/Register</h3>
 
 				<form action="#" th:action="@{/processRegistrationForm}"
 					th:object="${user}" method="post">
 					<table>
-						<tr>
-							<input th:field="*{id}" type="hidden">
-							<td><label for="id"></label></td>
-							<td><span th:text="*{id}">ID: </span></td>
-						</tr>
-
-						<tr>
-							<input th:field="*{role}" type="hidden">
-							<!-- todo dropdown menu with existing roles, predefined role selected/active -->
-							<td><label for="role"></label></td>
-							<td th:text="*{role}">Role</td>
-						</tr>
-
 
 						<tr>
 							<td><input th:field="*{email}" type="email"
@@ -84,8 +72,10 @@
 
 					</table>
 
+					<p></p>
+
 					<input type="submit" value="Save"> <input type="reset"
-						value="Reset" />
+						value="Reset" >
 				</form>
 
 			</div>
