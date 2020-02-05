@@ -20,52 +20,29 @@
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="../../css/style.css">
-<link rel="stylesheet" href="../../css/loginRegistrationStyle.css">
+<link rel="stylesheet" href="../../css/adminStyle.css">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation"> </header>
-
-		<main>
+		<header
+			th:replace="header.html :: navigation">
+		</header>
 		
-		<div id="GM5loginForm">
-			<h3>Login gift-me-five</h3>
-
-			<p></p>
-
+		<main>
 			
-
-				<form action="#" th:action="@{/authenticateTheUser}"
-					th:object="${user}" method="POST">
-
-					<table>
-						<!-- User Field -->
-						<tr>
-							<!-- <td><label for="email">Username</label></td>  -->
-							<td><input type="text" name="username"
-								placeholder="your email"></td>
-						</tr>
-
-						<!-- Password Field -->
-						<tr>
-							<!-- <td>Password</td>  -->
-							<td><input type="password" name="password"
-								placeholder="password"></td>
-						</tr>
-
-					</table>
-
-					<p></p>
-
-					<input type="submit" value="Login" />
-				</form>
+			<h3>User registered successfully!</h3>
+			
+			
+			<div>
+				<a th:href="@{/showMyLoginPage}">Login with new user</a>
 			</div>
+
 		</main>
-
-
+		
+		
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>
 </body>
