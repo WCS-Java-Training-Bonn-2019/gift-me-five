@@ -18,7 +18,7 @@ import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
 
-@Configuration
+//@Configuration
 public class GiftMeFiveConfig {
 	
 	@Bean

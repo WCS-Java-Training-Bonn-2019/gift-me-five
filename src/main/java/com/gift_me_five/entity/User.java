@@ -50,7 +50,7 @@ public class User implements UserDetails {
 	private String firstname;
 	private String lastname;
 
-	private Long failedLogins = 0L;
+	private Long failedLogins;
 
 	// admin or user
 	// todo default value "" or null?!
@@ -94,6 +94,8 @@ public class User implements UserDetails {
 	private List<GiverSeeWishlist> giverSeeWishLists = new ArrayList<>();
 
 	public User() {
+		this.failedLogins = 0L;
+		this.role  = "pending";
 	}
 
 	@Override
