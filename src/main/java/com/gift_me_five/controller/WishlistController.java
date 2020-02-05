@@ -104,7 +104,7 @@ public class WishlistController {
 	}
 
 	@GetMapping({ "/wishlist", "/newwishlist" })
-	public String upsertWishList(Model model, @RequestParam(required = false) Long id) {
+	public String upsertWishList(Model model, Principal principal, @RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = new Wishlist();
 
@@ -114,7 +114,14 @@ public class WishlistController {
 		// *****************************************************
 		Long receiverId = 1L; // receiver Id default Wert
 		Long themeId = 1L; // theme Id default Wert
-
+		
+		//anonymous should not be allowed to do /wishlist?id=x
+		if (principal == null) {
+			id = null;
+		}
+		
+		//todo: edit wishlist (/wishlist?id=x) should be limited to own wishlists
+		
 		if (id != null) {
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
 			if (optionalWishlist.isPresent()) {
