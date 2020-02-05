@@ -19,30 +19,34 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	crossorigin="anonymous"></script>
-<link rel="stylesheet" href="../../css/style.css">
-<link rel="stylesheet" href="../../css/adminStyle.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/loginRegistrationStyle.css">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
 <body>
 	<div id="GM5wrapper">
-		<header
-			th:replace="header.html :: navigation">
-		</header>
-		
+		<header th:replace="header.html :: navigation"> </header>
+
 		<main>
-			
-			<h3>User registered successfully!</h3>
-			
-			
-			<div>
-				<a th:href="@{/showMyLoginPage}">Login with new user</a>
+
+			<div id="GM5loginForm">
+				<h3>User registered successfully!</h3>
+
+				<div>
+					<form action="#" th:action="@{/authenticateTheUser}"
+						th:object="${user}" method="POST">
+						<input th:href="@{/showMyLoginPage}" type="submit" value="Login" />
+						<!-- <a th:href="@{/showMyLoginPage}">Login with new user</a>  -->
+					</form>
+				</div>
+
 			</div>
 
 		</main>
-		
-		
+
+
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>
 </body>
