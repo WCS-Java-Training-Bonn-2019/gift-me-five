@@ -7,10 +7,12 @@ import javax.persistence.MapsId;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class GiverSeeWishlist {
 
 	@EmbeddedId

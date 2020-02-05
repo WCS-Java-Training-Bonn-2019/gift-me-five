@@ -25,10 +25,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 7089309836794614341L;
@@ -130,13 +132,4 @@ public class User implements UserDetails {
 		// TODO role == registered 
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", password=" + password + ", firstname=" + firstname
-				+ ", lastname=" + lastname + ", email=" + email + ", failedLogins=" + failedLogins + ", role=" + role
-				+ ", lastLogin=" + lastLogin + ", createDate=" + createDate + ", modifyDate=" + modifyDate
-				+ ", wishlists=" + wishlists + ", wishes=" + wishes + ", giverSeeWishLists=" + giverSeeWishLists + "]";
-	}
-
 }
