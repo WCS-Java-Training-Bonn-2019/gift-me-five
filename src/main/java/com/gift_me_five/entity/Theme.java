@@ -14,7 +14,12 @@ import javax.persistence.PreRemove;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
 public class Theme {
 
 	@Id
@@ -41,37 +46,4 @@ public class Theme {
 
 	public Theme() {
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getBackgroundPicture() {
-		return backgroundPicture;
-	}
-
-	public void setBackgroundPicture(String backgroundPicture) {
-		this.backgroundPicture = backgroundPicture;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-	public Date getModifyDate() {
-		return modifyDate;
-	}
-
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
-	}
-
 }

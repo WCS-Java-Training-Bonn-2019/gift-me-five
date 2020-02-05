@@ -12,7 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
 public class Wish {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,83 +55,12 @@ public class Wish {
 	public Wish() {
 	}
 
-	public Long getId() {
-		return id;
+	@Override
+	public String toString() {
+		return "Wish [id=" + id + ", title=" + title + ", item=" + item + ", description=" + description + ", link="
+				+ link + ", image=" + image + ", price=" + price + ", createDate=" + createDate + ", modifyDate="
+				+ modifyDate + ", giver=" + giver + ", wishlist=" + wishlist + "]";
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getItem() {
-		return item;
-	}
-
-	public void setItem(String item) {
-		this.item = item;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getLink() {
-		return link;
-	}
-
-	public void setLink(String link) {
-		this.link = link;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public Date getModifyDate() {
-		return modifyDate;
-	}
-
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
-	}
-
-	public User getGiver() {
-		return giver;
-	}
-
-	public void setGiver(User giver) {
-		this.giver = giver;
-	}
-
-	public Wishlist getWishlist() {
-		return wishlist;
-	}
-
-	public void setWishlist(Wishlist wishlist) {
-		this.wishlist = wishlist;
-	}
+	
+	
 }

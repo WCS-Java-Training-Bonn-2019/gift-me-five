@@ -1,8 +1,10 @@
 package com.gift_me_five.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.ThemeRepository;
 import com.gift_me_five.repository.UserRepository;
@@ -20,6 +23,9 @@ import com.gift_me_five.repository.WishlistRepository;
 public class WishlistController {
 
 	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
 	private WishlistRepository wishlistRepository;
 
 	@Autowired
@@ -29,7 +35,50 @@ public class WishlistController {
 	private UserRepository receiverRepository;
 	
 	@Autowired
-	private WishRepository wishRepository;
+	private WishRepository wishRepository;	
+	
+	@GetMapping("/giver")
+	public String getAll(Model model, Principal principal, Authentication authentication) {
+		Wishlist wishlist = wishlistRepository.findById(1L).get();
+		System.out.println("");
+		
+//		Wishlist wishlist = new Wishlist();
+//		if (id != null) {
+//			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
+//			if (optionalWishlist.isPresent()) {
+//				wishlist = optionalWishlist.get();
+//			} else {
+//				id = null;
+//			}
+//		} 
+//		
+		
+		//****************************************************************************
+		// TO DO: (when user handling is enabled)
+		// - add all OWN wishlists as attribute myWishlists (only titles would be required)
+		// - add all wishlists I'm invited to... model attribute still tbd  (only titles would be required)
+		//   (requires action also in other controllers and in header.html)
+		// - add current wishlist Id (or better add full wishlist instead of wishes?)
+		//*****************************************************************************
+		model.addAttribute("myWishlists", wishlistRepository.findFirstByReceiver(userRepository.findByEmail(principal.getName()).get()));
+		model.addAttribute("friendWishlist", wishlist);
+		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+		return "giver";
+	}
+
+	@PostMapping("/giver")
+	public String updateWish(@ModelAttribute(value = "wishId") Long wishId,
+			@ModelAttribute(value = "giverId") Long giverId) {
+		//System.out.println("Wish ID = " + wishId);
+		Wish wish = wishRepository.findById(wishId).get();
+		if (giverId == 0) {
+			wish.setGiver(null);
+		} else {
+			wish.setGiver(userRepository.findById(giverId).get());
+		}
+		wishRepository.save(wish);
+		return "redirect:/giver";
+	}
 	
 	@GetMapping("/receiver")
 	public String displayWishlist(Model model, @RequestParam(required=false) Long id) {

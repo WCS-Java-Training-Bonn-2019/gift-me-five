@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
+import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
@@ -52,6 +53,10 @@ public class adminController {
 
 	@PostMapping("/admin/upsert_user")
 	public String upsertUser(Model model, @Valid User user) {
+//		PW now
+//		if (user.getPassword() == null || user.getPassword() == "") {
+//			user.setPassword(userRepository.findById(user.getId()).get().getPassword());
+//		}
 		user = userRepository.save(user);
 		return "redirect:/admin/user";
 	}
@@ -68,7 +73,8 @@ public class adminController {
 		return "/admin/get_all_wish";
 	}
 
-	@GetMapping({ "/admin/new_wish", "/admin/edit_wish/{id}" })
+	@GetMapping({ "/admin/edit_wish/{id}" })
+//	"/admin/new_wish", no new_wish because of dependencies (wishlistID)
 	public String editWish(Model model, @PathVariable(required = false) Long id) {
 		if (id == null) {
 			model.addAttribute("wish", new Wish());
@@ -85,6 +91,10 @@ public class adminController {
 
 	@PostMapping("/admin/upsert_wish")
 	public String upsertWish(Model model, @Valid Wish wish) {
+		//if no giverID, so set giver to null
+		if (wish.getGiver().getId() == null) {
+			wish.setGiver(null);
+		}
 		wish = wishRepository.save(wish);
 		return "redirect:/admin/wish";
 	}
@@ -94,9 +104,38 @@ public class adminController {
 		wishRepository.deleteById(id);
 		return "redirect:/admin/wish";
 	}
-	
+
 	@GetMapping("/admin/wishlist")
-	public String getWishlist() {
-		return "redirect:/under_construction";
+	public String getWishlist(Model model) {
+		model.addAttribute("wishlists", wishlistRepository.findAll());
+		return "/admin/get_all_wishlist";
+	}
+	
+	@PostMapping("/admin/upsert_wishlist")
+	public String upsertWishlist(Model model, @Valid Wishlist wishlist) {
+		wishlist = wishlistRepository.save(wishlist);
+		return "redirect:/admin/wishlist";
+	}
+	
+	@GetMapping({ "/admin/edit_wishlist/{id}" })
+//	"/admin/new_wishlist", no new_wishlist because of dependencies (receiverId)
+	public String editWishlist(Model model, @PathVariable(required = false) Long id) {
+		if (id == null) {
+			model.addAttribute("wishlist", new Wishlist());
+			return "/admin/edit_wishlist.html";
+		}
+		Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
+		if (optionalWishlist.isPresent()) {
+			model.addAttribute("wishlist", optionalWishlist.get());
+		} else {
+			return "redirect:/admin/wishlist";
+		}
+		return "/admin/edit_wishlist";
+	}
+	
+	@GetMapping("/admin/delete_wishlist/{id}")
+	public String deleteWishlist(@PathVariable("id") long id) {
+		wishlistRepository.deleteById(id);
+		return "redirect:/admin/wishlist";
 	}
 }
