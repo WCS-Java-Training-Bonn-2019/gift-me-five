@@ -32,24 +32,11 @@ html {
 	background-color: transparent !important;
 }
 
-html, body {
-	margin: 0;
-	padding: 0;
-	height: 100%;
-}
-
-#GM5wrapper {
-	display: flex;
-	flex-direction: column;
-	min-height: 100%;
-	position: relative;
-}
-
 header, footer {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	background-color: #c3dff0;
+	background-color: #ebf2f7;
 	padding: 10px;
 	height: 50px;
 	left: 0;
@@ -62,6 +49,19 @@ header {
 	position: sticky;
 	top: 0;
 	z-index: 99;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+    height: 100%;
+}
+
+#GM5wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+	position: relative;
 }
 
 header img {
@@ -110,6 +110,7 @@ header ul, section ul {
 .show {
 	border-radius: 10px;
 	background-color: #e2f2ff;
+	left: auto;
 }
 
 #GM5wrapper main {
