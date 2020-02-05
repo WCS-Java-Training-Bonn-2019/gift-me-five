@@ -17,7 +17,6 @@
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<div class="navbar-nav">
 				<a class="navbar-brand" href="/">Gift me five</a> <a
-					sec:authorize="isAuthenticated()"
 					th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')"
 					th:href="@{/wishlist}">New Wishlist</a>
 				<div sec:authorize="isAuthenticated()">
@@ -55,77 +54,81 @@
 	</nav>
 	​
 	<nav class="GM5_header_right_nav">
-		<div class="GM5_header_right_nav_logged_in">
-			<span sec:authorize="isAuthenticated()" sec:authentication="name"></span>
-
+		<div class="GM5_header_right_nav_logged_in"
+			sec:authorize="isAuthenticated()">
+			<span sec:authentication="name"></span>
 			<!-- do not show role  <br> Role(s): <span
 							sec:authentication="principal.authorities"></span> <br>
 						-->
 		</div>
 
-		<div th:fragment="loginButton" class="btn-group dropleft">
-			<button type="button"
-				class="GM5login_frame btn btn-secondary dropdown-toggle"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-				title="Login">
-				<img th:src="@{/pics/User_account_Login_free_icon_1.png}">
-			</button>
-			<div class="dropdown-menu">
-				<form th:action="@{/authenticateTheUser}" method="POST"
-					class="px-4 py-3">
+		<div>
+			<div th:fragment="loginButton" class="btn-group dropleft">
+				<button type="button"
+					class="GM5login_frame btn btn-secondary dropdown-toggle"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+					title="Login">
+					<img th:src="@{/pics/User_account_Login_free_icon_1.png}">
+				</button>
+				<div class="dropdown-menu">
+					<form th:action="@{/authenticateTheUser}" method="POST"
+						class="px-4 py-3">
 
-					<!-- Add User Name Login -->
-					<div sec:authorize="isAnonymous()" class="form-group">
-						<!-- 
+
+						<!-- Add User Name Login -->
+						<div sec:authorize="isAnonymous()" class="form-group">
+							<!-- 
 						<label for="exampleDropdownFormEmail1">E-Mail</label>
 						 -->
-						<input type="text" class="form-control"
-							id="exampleDropdownFormEmail1" placeholder="E-Mail"
-							name="username">
-					</div>
-					<!-- Add Password Login -->
-					<div sec:authorize="isAnonymous()" class="form-group">
-						<!-- 
+							<input type="text" class="form-control"
+								id="exampleDropdownFormEmail1" placeholder="E-Mail"
+								name="username">
+						</div>
+						<!-- Add Password Login -->
+						<div sec:authorize="isAnonymous()" class="form-group">
+							<!-- 
 						<label for="exampleDropdownFormPassword1">Password</label> 
 						 -->
-						<input type="password" class="form-control"
-							id="exampleDropdownFormPassword1" placeholder="Password"
-							name="password">
+							<input type="password" class="form-control"
+								id="exampleDropdownFormPassword1" placeholder="Password"
+								name="password">
+						</div>
+
+						<div sec:authorize="isAnonymous()" class="form-check">
+							<input type="checkbox" class="form-check-input"
+								name="remember-me" id="dropdownCheck"> <label
+								class="form-check-label" for="dropdownCheck">Remember me
+							</label>
+						</div>
+
+						<button sec:authorize="isAnonymous()" type="submit" class="btn btn-primary GM5buttonGreen">
+							<img src="pics/Login-512-white.png">
+						</button>
+					</form>
+
+					<!-- Add a logout -->
+					<form action="#" th:action="@{/logout}" method="POST"
+						title="Logout">
+						<button sec:authorize="isAuthenticated()" type="submit"
+							class="GM5buttonGreen">
+							<img src="/pics/Logout-512-white.png">
+						</button>
+					</form>
+					
+					<div class="dropdown-divider"></div>
+					<div sec:authorize="isAnonymous()">
+						<a class="dropdown-item" method="GET"
+							th:href="@{/showRegistrationForm}">New around here? Sign up</a> <a
+							class="dropdown-item" title="Password Recovery" href="#">Forgot
+							password?</a>
 					</div>
-
-					<div sec:authorize="isAnonymous()" class="form-check">
-						<input type="checkbox" class="form-check-input" name="remember-me"
-							id="dropdownCheck"> <label class="form-check-label"
-							for="dropdownCheck">Remember me </label>
+					<div sec:authorize="isAuthenticated()">
+						<a class="dropdown-item" title="Profile" href="/profile">Edit
+							Profile</a>
 					</div>
-
-					<button sec:authorize="isAnonymous()" type="submit"
-						class="btn btn-primary GM5buttonGreen">
-						<img src="/pics/Login-512-white.png">
-					</button>
-				</form>
-
-				<!-- Add a logout -->
-				<form action="#" th:action="@{/logout}" method="POST" title="Logout">
-					<button sec:authorize="isAuthenticated()" type="submit"
-						class="GM5buttonGreen">
-						<img src="/pics/Logout-512-white.png">
-					</button>
-				</form>
-				<div class="dropdown-divider"></div>
-				<div sec:authorize="isAnonymous()">
-					<a class="dropdown-item" title="Registration" href="#">New
-						around here? Sign up</a> <a class="dropdown-item"
-						title="Password Recovery" href="#">Forgot password?</a>
-				</div>
-				<div sec:authorize="isAuthenticated()">
-					<a class="dropdown-item" title="Profile" href="/profile">Edit Profile</a>
 				</div>
 			</div>
 		</div>
-
-
-
 	</nav>
 </header>
 </html>
