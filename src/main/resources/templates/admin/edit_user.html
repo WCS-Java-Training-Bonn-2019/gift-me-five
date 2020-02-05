@@ -35,14 +35,16 @@
 				th:object="${user}" method="post">
 				<table>
 					<tr>
-						
+
 						<td><label for="id">ID: </label></td>
-						<td><span th:text="*{id}">ID: </span><input th:field="*{id}" type="hidden"></td>
+						<td><span th:text="*{id}">ID: </span><input th:field="*{id}"
+							type="hidden"></td>
 					</tr>
 					<tr>
-						
+
 						<!-- todo dropdown menu with existing roles, predefined role selected/active -->
-						<td><label for="role">Role: </label><input th:field="*{role}" type="hidden"></td>
+						<td><label for="role">Role: </label><input th:field="*{role}"
+							type="hidden"></td>
 						<td th:text="*{role}">Role</td>
 						<!-- <td> <select class="form-control" th:field="${operator.opeId}"  id="dropOperator">
 					    <option value="0">select operator</option>
@@ -65,27 +67,18 @@
 						<td><input th:field="*{login}" required type="text"></td>
 					</tr>
 					 -->
-					<!-- do not show pw, but take a new pw
-					<tr>
-						<td><label for="password">Password (hidden)</label></td>
-						<td><input th:field="*{password}" type="password"></td>
-					</tr>
-					-->
 					<!-- PW with PW-Confirm, required must be set -->
+
+
+
+
 					<tr>
-						<td>Password / PW-Confirm:</td>
-						<td><input th:value=*{password} id="password" name="password" type="password"
-							onchange="if(this.checkValidity()) form.password_two.pattern = this.value;"
-							placeholder="Password" required="required"> <input th:value=*{password} id="password_two"
-							name="password_two" type="password"
-							onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');"
-							placeholder="Verify Password" required="required"> 
-						<!-- 		
-						<input name="password" type="password" id="password"
-							th:value=*{password} required="required" /> <input
-							name="password_confirm" required="required" type="password"
-							id="password_confirm" oninput="check(this)" th:value=*{password} />
-							<script language='javascript' type='text/javascript'>
+						<td>Password / PW-Cofirm:</td>
+						<td><input th:value=*{password} name="password"
+							required="required" type="password" id="password" /> <input
+							th:value=*{password} name="password_confirm" required="required"
+							type="password" id="password_confirm" oninput="check(this)" /> <script
+								language='javascript' type='text/javascript'>
 								function check(input) {
 									if (input.value != document
 											.getElementById('password').value) {
@@ -96,9 +89,7 @@
 										input.setCustomValidity('');
 									}
 								}
-							</script>
-							-->
-						</td>
+							</script></td>
 					</tr>
 
 					<!-- PW Pattern Checker
