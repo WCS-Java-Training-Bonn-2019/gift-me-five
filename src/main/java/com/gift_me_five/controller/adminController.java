@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
@@ -53,10 +54,11 @@ public class adminController {
 
 	@PostMapping("/admin/upsert_user")
 	public String upsertUser(Model model, @Valid User user) {
-//		PW now
+//		old pw != new pw -> encode!
 //		if (user.getPassword() == null || user.getPassword() == "") {
 //			user.setPassword(userRepository.findById(user.getId()).get().getPassword());
 //		}
+		GiftMeFive.debugOut("password: " + user.getPassword());
 		user = userRepository.save(user);
 		return "redirect:/admin/user";
 	}
