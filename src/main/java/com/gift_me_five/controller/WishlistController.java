@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.entity.Theme;
+import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.ThemeRepository;
@@ -22,9 +24,6 @@ import com.gift_me_five.service.UserArtifactsService;
 
 @Controller
 public class WishlistController {
-
-	@Autowired
-	private UserRepository userRepository;
 
 	@Autowired
 	private WishlistRepository wishlistRepository;
@@ -46,11 +45,6 @@ public class WishlistController {
 			@RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = userArtifactsService.friendWishlist(id);
-		System.out.println("*".repeat(40));
-		System.out.println("*".repeat(40));
-		System.out.println("Wishlist ID: " + wishlist.getId());
-		System.out.println("*".repeat(40));
-		System.out.println("*".repeat(40));		
 		if (wishlist != null) {
 			model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
 			model.addAttribute("thisWishlistId", wishlist.getId());
@@ -58,16 +52,6 @@ public class WishlistController {
 			model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 			model.addAttribute("wishlist", wishlist);
 			model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
-			System.out.println("*".repeat(40));
-			System.out.println("*".repeat(40));
-			System.out.println("User ID: " + userArtifactsService.getCurrentUser().getId());
-			for (int i=0; i<userArtifactsService.allFriendWishlists().size(); i++) {
-				System.out.print("Friend's Wishlist IDs:  ");
-				System.out.print(userArtifactsService.allFriendWishlists().get(i).getId() + ",  ");
-				System.out.println();
-			}
-			System.out.println("*".repeat(40));
-			System.out.println("*".repeat(40));	
 			return "giver";
 		}
 		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
@@ -91,7 +75,8 @@ public class WishlistController {
 			return "redirect:/giver?id=" + wishlist.getId();
 		}
 		// Sollte nur nach Manipulation (e.g. curl) erreicht werden:
-		// User versucht, eine wishlist zu verändern, für die er nicht als giver registriert ist
+		// User versucht, eine wishlist zu verändern, für die er nicht als giver
+		// registriert ist
 		return "redirect:/under_construction";
 	}
 
@@ -110,9 +95,11 @@ public class WishlistController {
 		if (id == null) {
 			return ("redirect:/wishlist");
 		}
-		model.addAttribute("currentWishlist", wishlist);
+		model.addAttribute("thisWishlistId", wishlist.getId());
+		model.addAttribute("wishlist", wishlist);
+		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
-		model.addAttribute("wishlists", wishlistRepository.findAll());
 		return ("receiver");
 	}
 
@@ -142,7 +129,9 @@ public class WishlistController {
 			wishlist.setReceiver(receiverRepository.findById(receiverId).get());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
 		}
-		model.addAttribute("wishlists", wishlistRepository.findAll());
+
+		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("themes", themeRepository.findAll());
 		return "wishlist";
@@ -151,13 +140,19 @@ public class WishlistController {
 	@PostMapping("/wishlist")
 	public String saveWishList(@ModelAttribute Wishlist wishlist) {
 
-		System.out.println("*****Innerhalb von  /wishlist PostMapping ********\n");
-		System.out.println("Wishlist Id: " + wishlist.getId());
-
-//		wishlist.setReceiver(recRepository.findById(receiverId).get());
-//		wishlist.setTheme(thRepository.findById(themeId).get());
-
-		wishlistRepository.save(wishlist);
+		User receiver = userArtifactsService.getCurrentUser();
+		if (wishlist.getId() == 0) {
+			wishlist.setReceiver(receiver);
+			wishlistRepository.save(wishlist);
+		} else {
+			Optional<Wishlist> optionalOldWishlist = wishlistRepository.findById(wishlist.getId());
+			if (optionalOldWishlist.isPresent() && receiver.equals(optionalOldWishlist.get().getReceiver())) {
+				Wishlist oldWishlist = optionalOldWishlist.get();
+				oldWishlist.setTheme(wishlist.getTheme());
+				oldWishlist.setTitle(wishlist.getTitle());
+				wishlistRepository.save(oldWishlist);
+			}
+		}
 
 		return "redirect:/receiver?id=" + wishlist.getId();
 	}
