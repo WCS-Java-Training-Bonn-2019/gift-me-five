@@ -16,7 +16,8 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<div class="navbar-nav">
-				<a class="navbar-brand" href="/">Gift me five</a> <a
+				<a class="navbar-brand" href="/">Gift me five</a> 
+				<a sec:authorize="isAuthenticated()"
 					th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')"
 					th:href="@{/wishlist}">New Wishlist</a>
 				<div sec:authorize="isAuthenticated()">
@@ -63,7 +64,7 @@
 					<img src="pics/Logout-512-white.png">
 				</button>
 			</form>
-						
+
 			<!-- do not show role  <br> Role(s): <span
 							sec:authentication="principal.authorities"></span> <br>
 						-->
