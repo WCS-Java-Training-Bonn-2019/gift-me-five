@@ -15,6 +15,7 @@ import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
+import com.gift_me_five.repository.RoleRepository;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
@@ -30,6 +31,9 @@ public class adminController {
 
 	@Autowired
 	private WishlistRepository wishlistRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 
 	@GetMapping("/admin/user")
 	public String getUser(Model model) {
@@ -39,6 +43,7 @@ public class adminController {
 
 	@GetMapping({ "/admin/new_user", "/admin/edit_user/{id}" })
 	public String editUser(Model model, @PathVariable(required = false) Long id) {
+		
 		if (id == null) {
 			model.addAttribute("user", new User());
 			return "/admin/edit_user.html";

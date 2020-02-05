@@ -35,14 +35,14 @@
 				th:object="${user}" method="post">
 				<table>
 					<tr>
-						<input th:field="*{id}" type="hidden">
+						
 						<td><label for="id">ID: </label></td>
-						<td><span th:text="*{id}">ID: </span></td>
+						<td><span th:text="*{id}">ID: </span><input th:field="*{id}" type="hidden"></td>
 					</tr>
 					<tr>
-						<input th:field="*{role}" type="hidden">
+						
 						<!-- todo dropdown menu with existing roles, predefined role selected/active -->
-						<td><label for="role">Role: </label></td>
+						<td><label for="role">Role: </label><input th:field="*{role}" type="hidden"></td>
 						<td th:text="*{role}">Role</td>
 						<!-- <td> <select class="form-control" th:field="${operator.opeId}"  id="dropOperator">
 					    <option value="0">select operator</option>
