@@ -43,14 +43,18 @@
 					<tr>
 
 						<!-- todo dropdown menu with existing roles, predefined role selected/active -->
-						<td><label for="role">Role: </label><input th:field="*{role}"
-							type="hidden"></td>
-						<td th:text="*{role}">Role</td>
-						<!-- <td> <select class="form-control" th:field="${operator.opeId}"  id="dropOperator">
-					    <option value="0">select operator</option>
-					    <option th:each="role : ${roles}" th:value="a" th:text="a"></option>
-					    </select></td> 
-					    -->
+						<td><label for="role">Role: </label></td>
+						<!-- <td th:text="*{role}">Role</td>
+						<input th:field="*{role}"
+							type="hidden">
+						-->
+						<td>
+							<select id="role" th:field="*{role}">
+								<option th:each="role : ${roles}" th:value="${role.role}"
+									th:text="${role.role}"></option>
+						</select>
+						</td>
+
 
 					</tr>
 					<tr>

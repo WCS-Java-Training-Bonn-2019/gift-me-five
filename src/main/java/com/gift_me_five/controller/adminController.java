@@ -21,6 +21,8 @@ import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
 
+import net.bytebuddy.matcher.ModifierMatcher.Mode;
+
 @Controller
 public class adminController {
 
@@ -48,6 +50,7 @@ public class adminController {
 	@GetMapping({ "/admin/new_user", "/admin/edit_user/{id}" })
 	public String editUser(Model model, @PathVariable(required = false) Long id) {
 
+		model.addAttribute("roles", roleRepository.findAll());
 		if (id == null) {
 			model.addAttribute("user", new User());
 			return "/admin/edit_user.html";
@@ -71,7 +74,6 @@ public class adminController {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
 
-		GiftMeFive.debugOut("End: " + user.getPassword());
 		user = userRepository.save(user);
 		return "redirect:/admin/user";
 	}
