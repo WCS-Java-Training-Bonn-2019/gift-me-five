@@ -34,6 +34,7 @@
 		<!-- Create a wishlist page  -->
 
 		<main>
+		    <div id="spacer_left"></div>
 			<section id="wishlist_control">
 				<h1 th:text="${wishlist.id}==null ? 'Create a wishlist' : ('Edit ' + ${wishlist.title})">Create a wishlist</h1>
 
@@ -54,8 +55,7 @@
 							<input type="radio" name="nav" th:id="'a' + *{id}"
 								th:field="${wishlist.theme.id}" th:value="*{id}"> 
 							<label th:for="'a' + *{id}">
-							<img th:src="@{/pics/themes/} + *{backgroundPicture}"
-								width="110" height="130" />
+							<img class="theme_img" th:src="@{/pics/themes/} + *{backgroundPicture}"/>
 							</label>
 						</div>
 					</nav>
@@ -65,7 +65,7 @@
 				</form>
 
 			</section>
-
+		    <div id="spacer_right"></div>
 		</main>
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>
