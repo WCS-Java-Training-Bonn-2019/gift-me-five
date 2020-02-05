@@ -7,7 +7,13 @@ body {
 main {
 	display: flex;
 	flex-direction: column;
+	justify-content:space-around;
 	height: 100%;
+	background-image: url("../pics/gift_me_five.png");
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 
@@ -15,17 +21,21 @@ main {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+/*
 	background-image: url("../pics/gift_me_five.png");
 	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	flex-basis: 45%;
+	flex-basis: max-content;
+	flex-grow: 1;
+*/
 }
 #GM5centralpic h1 {
 		font-size:400%;
 		font-family: monospace;
 		text-align: center;
+		padding: 0.3em 0.2em;
 		color: #27277d;
 }
 
@@ -34,8 +44,8 @@ section {
 	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
-	background-color: #27277d;
-	flex-basis: 55%;
+	background-color: #6565c2;
+	flex-basis: min-content;
 }
 
 p {
@@ -57,5 +67,8 @@ p {
 @media only screen and (min-width: 900px) {
      p, .btn {
      font-size: 130%;
-     }	
+     }
+     
+     
+     
 }

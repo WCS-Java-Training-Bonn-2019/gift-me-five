@@ -61,7 +61,7 @@ public class WishlistController {
 		// - add current wishlist Id (or better add full wishlist instead of wishes?)
 		//*****************************************************************************
 		model.addAttribute("myWishlists", wishlistRepository.findFirstByReceiver(userRepository.findByEmail(principal.getName()).get()));
-		model.addAttribute("wishlist", wishlist);
+		model.addAttribute("friendWishlist", wishlist);
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
 		return "giver";
 	}

@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
 <style
-	th:text="'#wishlist_details { background-image: url(' + @{/pics/themes/} + ${currentWishlist.theme.backgroundPicture} +');}'">
+	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${currentWishlist.theme.backgroundPicture} +');}'">
 #wishlist_details {
 	background-image: url(../pics/christmas-2946698_1920_mod.png);
 }
@@ -31,14 +31,14 @@
 
 </head>
 <body>
+	<header
+		th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${currentWishlist.id})">
+	</header>
 	<div id="GM5wrapper">
-		<header
-			th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${currentWishlist.id})">
-		</header>
 		<main>
-			<section id="wishlist_control">
+			<section id="GM5wishlist_control">
 				<div class="GM5button_holder">
-				<!-- todo add wish -->
+					<!-- todo add wish -->
 					<a th:href="@{/wish?wishlistId=} + ${currentWishlist.id}"
 						class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
 						data-placement="right" title="Add wish"> <img class="GM5icon"
@@ -53,59 +53,62 @@
 				</div>
 			</section>
 			<div class="GM5spacerLeft"></div>
-			<section id="wishlist_details">
-				<div class="GM5wishlistElement GM5wishlistTitle">
-					<h1 th:text="${currentWishlist.title}">My Christmas Wishes</h1>
+			<section id="GM5wishlist_details">
+				<div class="GM5wishlistBlock">
+					<div class="GM5wishlistElement GM5wishlistTitle">
+						<h1 th:text="${currentWishlist.title}">My Christmas Wishes</h1>
 
-					<div class="GM5button_holder">
-						<!-- Modify wishlist -->
-						<a th:href="@{/wishlist(id=${currentWishlist.id})}"
-							class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
-							data-placement="top" title="Modify wishlist"> <img
-							class="GM5icon" th:src="@{/pics/icons/refresh2_white.png}">
-						</a>
-						<!-- Delete wishlist -->
-						<a th:href="@{/wishlist/delete(id=${currentWishlist.id})}"
-							class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
-							data-placement="right" title="Delete wishlist"
-							onclick="if (!(confirm('Are you sure?'))) return false"> <img
-							class="GM5icon" th:src="@{/pics/icons/cross2.png}"></a>
-					</div>
-				</div>
-				
-				<ul>
-					<li th:each="wish : ${wishes}" th:object="${wish}"
-						class="GM5wishlistElement">
-						<div class="GM5wishlistTitle">
-							<h2 th:text="*{title}">title</h2>
-							<div class="GM5button_holder">
-								<!-- Modify wish -->
-								<a th:href="@{/wish(id=${wish.id})}"
-									class="btn btn-primary GM5button" data-toggle="tooltip"
-									data-placement="right" title="Modify wish"> <img
-									class="GM5icon" th:src="@{/pics/icons/refresh2_white.png}">
-								</a>
-								<!-- Delete wish -->
-								<a th:href="@{/wish/delete(id=${wish.id})}"
-									class="btn btn-primary GM5button" data-toggle="tooltip"
-									data-placement="right" title="Delete wish"
-									onclick="if (!(confirm('Are you sure?'))) return false"> <img
-									class="GM5icon" th:src="@{/pics/icons/cross2.png}"></a>
-							</div>
+						<div class="GM5buttonHolder">
+							<!-- Modify wishlist -->
+							<a th:href="@{/wishlist(id=${currentWishlist.id})}"
+								class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
+								data-placement="top" title="Modify wishlist"> <img
+								class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
+							</a>
+							<!-- Delete wishlist -->
+							<a th:href="@{/wishlist/delete(id=${currentWishlist.id})}"
+								class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
+								data-placement="right" title="Delete wishlist"
+								onclick="if (!(confirm('Are you sure?'))) return false"> <img
+								class="GM5icon" th:src="@{/pics/icons/cross2.png}"></a>
 						</div>
-						<p th:text="*{description}">description</p> <img
-						th:if="${wish.image != ''} and ${wish.image != null}"
-						th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
-						<h3>
-							<a th:if="${wish.link != ''} and ${wish.link != null}"
-								th:href="@{${wish.link}}">Link</a>
-						</h3>
-					</li>
-				</ul>
+					</div>
+
+					<ul class="GM5withSideButtons">
+						<li th:each="wish : ${wishes}" th:object="${wish}"
+							class="GM5wishlistElement">
+							<div class="GM5wishlistTitle">
+								<h2 th:text="*{title}">title</h2>
+								<div class="GM5buttonHolder">
+									<!-- Modify wish -->
+									<a th:href="@{/wish(id=${wish.id})}"
+										class="btn btn-primary GM5button" data-toggle="tooltip"
+										data-placement="right" title="Modify wish"> <img
+										class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
+									</a>
+									<!-- Delete wish -->
+									<a th:href="@{/wish/delete(id=${wish.id})}"
+										class="btn btn-primary GM5button" data-toggle="tooltip"
+										data-placement="right" title="Delete wish"
+										onclick="if (!(confirm('Are you sure?'))) return false"> <img
+										class="GM5icon" th:src="@{/pics/icons/cross2.png}"></a>
+								</div>
+							</div>
+							<p th:text="*{description}">description</p> <img
+							class="GM5giftImage"
+							th:if="${wish.image != ''} and ${wish.image != null}"
+							th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
+							<h3>
+								<a th:if="${wish.link != ''} and ${wish.link != null}"
+									th:href="@{${wish.link}}">Link</a>
+							</h3>
+						</li>
+					</ul>
+				</div>
 			</section>
 			<div class="GM5spacerRight"></div>
 		</main>
-		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>
+	<footer th:replace="footer.html :: footer">Footer</footer>
 </body>
 </html>

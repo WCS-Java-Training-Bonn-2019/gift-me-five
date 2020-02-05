@@ -17,12 +17,12 @@
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<div class="navbar-nav">
 				<a class="navbar-brand" href="/">Gift me five</a> <a
-					th:class="${view=='newWishlist'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
+					th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')"
 					th:href="@{/wishlist}">New Wishlist</a>
 				<div sec:authorize="isAuthenticated()">
 					<!-- Dropdown for My Wishlists -->
 					<a
-						th:class="(${view=='receiver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link') + ' dropdown-toggle'"
+						th:class="'nav-item nav-link dropdown-toggle ' + (${view=='receiver'} ? 'active GM5_header_left_nav_active')"
 						data-toggle="dropdown" href="#">My Wishlists</a>
 					<div class="dropdown-menu">
 						<a th:each="wishlist : ${myWishlists}" th:object="${wishlist}"
