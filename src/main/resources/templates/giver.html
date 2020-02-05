@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
 <style
-	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${friendWishlist.theme.backgroundPicture} +');}'">
+	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
 #wishlist_details {
 	background-image: url(../pics/christmas-2946698_1920_mod.png);
 }
@@ -32,7 +32,7 @@
 </head>
 <body>
 	<header
-		th:replace="header.html :: navigation(view='giver', thisWishlistId=${wishlist.id}))">
+		th:replace="header.html :: navigation(view='giver')">
 	</header>
 	<div id="GM5wrapper">
 		<main>
@@ -50,10 +50,10 @@
 								<div class="GM5wishlistTitle">
 									<h2 th:text="*{title}">title</h2>
 									<div class="GM5button_holder"
-										th:if="${myUserId} == *{giver.id}">
+										th:if="*{giver}==null or ${myUserId} == *{giver.id}">
 										<div id="GM5hideInput">
-											<input type="submit" th:name="wishId" value="*{id}"
-												th:id="'a' + *{id}"> <label th:for="'a' + *{id}">
+								 		<input type="hidden" th:name="wishId" th:value="*{id}">
+											<input type="submit" value="" th:id="'a' + *{id}"> <label th:for="'a' + *{id}">
 												<span class="btn btn-primary GM5button"
 												data-toggle="tooltip" data-placement="right"
 												title="(De-)select wish"> <img class="GM5icon"

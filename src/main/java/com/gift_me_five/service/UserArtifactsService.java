@@ -69,7 +69,8 @@ public class UserArtifactsService {
 	}
 
 	public List<Wishlist> allFriendWishlists() {
-		return wishlistRepository.findByGivers(getCurrentUser());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return wishlistRepository.findByGiversEmail(authentication.getName());
 	}
 
 }

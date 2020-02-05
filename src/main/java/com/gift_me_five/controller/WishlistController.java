@@ -25,7 +25,7 @@ public class WishlistController {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private WishlistRepository wishlistRepository;
 
@@ -34,48 +34,70 @@ public class WishlistController {
 
 	@Autowired
 	private UserRepository receiverRepository;
-	
+
 	@Autowired
 	private WishRepository wishRepository;
-	
+
 	@Autowired
 	private UserArtifactsService userArtifactsService;
-	
+
 	@GetMapping("/giver")
 	public String giverWishlistView(Model model, Principal principal, Authentication authentication,
-			@RequestParam(required=false) Long id) {
+			@RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = userArtifactsService.friendWishlist(id);
+		System.out.println("*".repeat(40));
+		System.out.println("*".repeat(40));
+		System.out.println("Wishlist ID: " + wishlist.getId());
+		System.out.println("*".repeat(40));
+		System.out.println("*".repeat(40));		
 		if (wishlist != null) {
 			model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
+			model.addAttribute("thisWishlistId", wishlist.getId());
 			model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
 			model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 			model.addAttribute("wishlist", wishlist);
 			model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+			System.out.println("*".repeat(40));
+			System.out.println("*".repeat(40));
+			System.out.println("User ID: " + userArtifactsService.getCurrentUser().getId());
+			for (int i=0; i<userArtifactsService.allFriendWishlists().size(); i++) {
+				System.out.print("Friend's Wishlist IDs:  ");
+				System.out.print(userArtifactsService.allFriendWishlists().get(i).getId() + ",  ");
+				System.out.println();
+			}
+			System.out.println("*".repeat(40));
+			System.out.println("*".repeat(40));	
 			return "giver";
 		}
-		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt werden kann.
+		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
+		// werden kann.
 		return "redirect:/under_construction";
 
 	}
 
 	@PostMapping("/giver")
-	public String updateWish(@ModelAttribute(value = "wishId") Long wishId,
-			@ModelAttribute(value = "giverId") Long giverId) {
-		//System.out.println("Wish ID = " + wishId);
+	public String updateWish(@ModelAttribute(value = "wishId") Long wishId) {
+		// System.out.println("Wish ID = " + wishId);
 		Wish wish = wishRepository.findById(wishId).get();
-		if (giverId == 0) {
-			wish.setGiver(null);
-		} else {
-			wish.setGiver(userRepository.findById(giverId).get());
+		Wishlist wishlist = userArtifactsService.friendWishlist(wish.getWishlist().getId());
+		if (wishlist != null) { // Current User admitted for this wish's wishlist
+			if (wish.getGiver() == null) {
+				wish.setGiver(userArtifactsService.getCurrentUser());
+			} else if (userArtifactsService.getCurrentUser() == wish.getGiver()) {
+				wish.setGiver(null);
+			}
+			wishRepository.save(wish);
+			return "redirect:/giver?id=" + wishlist.getId();
 		}
-		wishRepository.save(wish);
-		return "redirect:/giver";
+		// Sollte nur nach Manipulation (e.g. curl) erreicht werden:
+		// User versucht, eine wishlist zu verändern, für die er nicht als giver registriert ist
+		return "redirect:/under_construction";
 	}
-	
+
 	@GetMapping("/receiver")
-	public String displayWishlist(Model model, @RequestParam(required=false) Long id) {
-		
+	public String displayWishlist(Model model, @RequestParam(required = false) Long id) {
+
 		Wishlist wishlist = new Wishlist();
 		if (id != null) {
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
@@ -84,17 +106,17 @@ public class WishlistController {
 			} else {
 				id = null;
 			}
-		} 
-		if (id == null){
+		}
+		if (id == null) {
 			return ("redirect:/wishlist");
 		}
 		model.addAttribute("currentWishlist", wishlist);
-		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));		
+		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
 		model.addAttribute("wishlists", wishlistRepository.findAll());
 		return ("receiver");
 	}
-	
-	@GetMapping({"/wishlist", "/newwishlist"})
+
+	@GetMapping({ "/wishlist", "/newwishlist" })
 	public String upsertWishList(Model model, @RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = new Wishlist();
@@ -144,13 +166,13 @@ public class WishlistController {
 	public String deleteWishList(@RequestParam Long id) {
 
 		wishlistRepository.deleteById(id);
-		
+
 		// *****************************************************
 		// TO DO: Receiver must be defined!!!
 		// *****************************************************
-		
+
 		Wishlist wishlist = wishlistRepository.findFirstByIdGreaterThan(0L);
-		String wishlistIdTag = (wishlist != null) ? "?id=" + wishlist.getId(): "" ;
+		String wishlistIdTag = (wishlist != null) ? "?id=" + wishlist.getId() : "";
 		return "redirect:/receiver" + wishlistIdTag;
 	}
 
