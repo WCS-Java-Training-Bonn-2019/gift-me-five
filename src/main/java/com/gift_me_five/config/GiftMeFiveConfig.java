@@ -32,16 +32,24 @@ public class GiftMeFiveConfig {
 			final String[] passwords = { "jykQGKpb;q-9FjkX8r_IB", "m", "f", "a" };
 			final String[] emails = { "no@reply.com", "mi@usermail.com", "Granny@gmails.com",
 					"Alfred@technicbase.com" };
-			final String[] roles = { "unregistered", "pending", "registered", "admin" };
+			final String[] roles = { "unregistered", "registered", "registered", "admin" };
 			createTheme(themeRepository);
 			for (int i = 0; i < userNames.length; i++) {
 				User receiver = createUser(userRepository, userNames[i], passwords[i], emails[i], roles[i]);
 				Theme theme = themeRepository.findById(i + 1L).get();
-				String title = "Wishlist #" + (i + 1);
+				String title = "Wishlist #" + (i + 1) + ": " + userNames[i];
 				Wishlist wishlist = createWishlist(title, receiver, theme, wishlistRepository);
 				createWishes(wishRepository, wishlist);
-
 			}
+			
+			// More wishlists
+			createWishes(wishRepository, 
+					createWishlist("Granny's Wishlist", userRepository.findByEmail("Granny@gmails.com").get(),
+							themeRepository.findById(5L).get(), wishlistRepository));
+			createWishes(wishRepository,
+					createWishlist("Michaelas's Wishlist", userRepository.findByEmail("mi@usermail.com").get(),
+							themeRepository.findById(6L).get(), wishlistRepository));
+			
 		};
 	}
 		

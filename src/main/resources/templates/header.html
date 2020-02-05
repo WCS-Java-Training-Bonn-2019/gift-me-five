@@ -26,15 +26,23 @@
 						data-toggle="dropdown" href="#">My Wishlists</a>
 					<div class="dropdown-menu">
 						<a th:each="wishlist : ${myWishlists}" th:object="${wishlist}"
-							th:class="'dropdown-item' + (*{id}==${thisWishlistId} ? ' active' : ' ')"
+							th:class="'dropdown-item' + ((${view=='receiver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')"
 							th:text="*{title}" th:href="@{/receiver(id=*{id})}">Ben's
 							Xmas</a>
 					</div>
 				</div>
-				<a sec:authorize="isAuthenticated()"
-					th:class="${view=='giver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
-					href="/giver">Friend's Wishlists</a>
-				<!-- Dropdown for Friend's Wishlists -->
+				<div sec:authorize="isAuthenticated()">
+					<!-- Dropdown for Friend's Wishlists -->
+					<a
+						th:class="'nav-item nav-link dropdown-toggle ' + (${view=='giver'} ? 'active GM5_header_left_nav_active')"
+						data-toggle="dropdown" href="#">Friend's Wishlists</a>
+					<div class="dropdown-menu">
+						<a th:each="wishlist : ${friendWishlists}" th:object="${wishlist}"
+							th:class="'dropdown-item' + ((${view=='giver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')"
+							th:text="*{title}" th:href="@{/giver(id=*{id})}">Ben's
+							Xmas</a>
+					</div>
+				</div>
 				<div sec:authorize="hasRole('ROLE_admin')">
 					<!-- Dropdown for Admin -->
 					<!-- class="navbar-nav dropdown " -->
@@ -63,7 +71,7 @@
 					<img src="pics/Logout-512-white.png">
 				</button>
 			</form>
-						
+
 			<!-- do not show role  <br> Role(s): <span
 							sec:authentication="principal.authorities"></span> <br>
 						-->

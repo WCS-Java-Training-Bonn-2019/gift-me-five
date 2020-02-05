@@ -18,6 +18,7 @@ import com.gift_me_five.repository.ThemeRepository;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
+import com.gift_me_five.service.UserArtifactsService;
 
 @Controller
 public class WishlistController {
@@ -35,35 +36,27 @@ public class WishlistController {
 	private UserRepository receiverRepository;
 	
 	@Autowired
-	private WishRepository wishRepository;	
+	private WishRepository wishRepository;
+	
+	@Autowired
+	private UserArtifactsService userArtifactsService;
 	
 	@GetMapping("/giver")
-	public String getAll(Model model, Principal principal, Authentication authentication) {
-		Wishlist wishlist = wishlistRepository.findById(1L).get();
-		System.out.println("");
-		
-//		Wishlist wishlist = new Wishlist();
-//		if (id != null) {
-//			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
-//			if (optionalWishlist.isPresent()) {
-//				wishlist = optionalWishlist.get();
-//			} else {
-//				id = null;
-//			}
-//		} 
-//		
-		
-		//****************************************************************************
-		// TO DO: (when user handling is enabled)
-		// - add all OWN wishlists as attribute myWishlists (only titles would be required)
-		// - add all wishlists I'm invited to... model attribute still tbd  (only titles would be required)
-		//   (requires action also in other controllers and in header.html)
-		// - add current wishlist Id (or better add full wishlist instead of wishes?)
-		//*****************************************************************************
-		model.addAttribute("myWishlists", wishlistRepository.findFirstByReceiver(userRepository.findByEmail(principal.getName()).get()));
-		model.addAttribute("friendWishlist", wishlist);
-		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
-		return "giver";
+	public String giverWishlistView(Model model, Principal principal, Authentication authentication,
+			@RequestParam(required=false) Long id) {
+
+		Wishlist wishlist = userArtifactsService.friendWishlist(id);
+		if (wishlist != null) {
+			model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
+			model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+			model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+			model.addAttribute("wishlist", wishlist);
+			model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+			return "giver";
+		}
+		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt werden kann.
+		return "redirect:/under_construction";
+
 	}
 
 	@PostMapping("/giver")
@@ -101,7 +94,7 @@ public class WishlistController {
 		return ("receiver");
 	}
 	
-	@GetMapping("/wishlist")
+	@GetMapping({"/wishlist", "/newwishlist"})
 	public String upsertWishList(Model model, @RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = new Wishlist();
