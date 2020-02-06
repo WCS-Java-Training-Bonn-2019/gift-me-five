@@ -28,10 +28,28 @@ main h1 {
 }
 
 .GM5input {
+	display: flex;
+	align-items: center;
 	min-width: 100%;
 }
 
-.btn {
-	margin-right: 2em;
+.GM5input label {
+	flex-basis: 6em;
+	flex-grow: 0;
 }
+
+.GM5input input {
+	flex-basis: 6em;
+	flex-grow: 1;
+}
+
+.GM5buttonGreen {
+	width: 5.2em;
+}
+
+#buttons{
+	display: flex;
+	justify-content: flex-end;
+}
+
 }
