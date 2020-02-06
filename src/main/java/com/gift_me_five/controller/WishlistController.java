@@ -1,6 +1,7 @@
 package com.gift_me_five.controller;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.Theme;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
@@ -112,7 +114,6 @@ public class WishlistController {
 		// TO DO: Default values must be defined!!!
 		// Wishlists of current user must be added to model instead of all wishlists!
 		// *****************************************************
-		Long receiverId = 1L; // receiver Id default Wert
 		Long themeId = 1L; // theme Id default Wert
 		
 		//anonymous should not be allowed to do /wishlist?id=x
@@ -133,7 +134,7 @@ public class WishlistController {
 		}
 		if (id == null) {
 			// No wishlist - create new!
-			wishlist.setReceiver(receiverRepository.findById(receiverId).get());
+			wishlist.setReceiver(userArtifactsService.getCurrentUser());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
 		}
 
@@ -148,34 +149,39 @@ public class WishlistController {
 	public String saveWishList(@ModelAttribute Wishlist wishlist) {
 
 		User receiver = userArtifactsService.getCurrentUser();
-		if (wishlist.getId() == 0) {
+		if (wishlist.getId() == null) {
 			wishlist.setReceiver(receiver);
 			wishlistRepository.save(wishlist);
 		} else {
-			Optional<Wishlist> optionalOldWishlist = wishlistRepository.findById(wishlist.getId());
-			if (optionalOldWishlist.isPresent() && receiver.equals(optionalOldWishlist.get().getReceiver())) {
-				Wishlist oldWishlist = optionalOldWishlist.get();
-				oldWishlist.setTheme(wishlist.getTheme());
-				oldWishlist.setTitle(wishlist.getTitle());
-				wishlistRepository.save(oldWishlist);
+			// Check if own wishlist; only then modify
+			// Only take over title and theme
+			Wishlist myWishlist = userArtifactsService.ownWishlist(wishlist.getId());
+			if (myWishlist != null) {
+				myWishlist.setTheme(wishlist.getTheme());
+				myWishlist.setTitle(wishlist.getTitle());
+				wishlist = myWishlist;
+				wishlistRepository.save(wishlist);
 			}
-		}
 
+		}
+        
 		return "redirect:/receiver?id=" + wishlist.getId();
 	}
 
 	@GetMapping("/wishlist/delete")
 	public String deleteWishList(@RequestParam Long id) {
-
-		wishlistRepository.deleteById(id);
-
-		// *****************************************************
-		// TO DO: Receiver must be defined!!!
-		// *****************************************************
-
-		Wishlist wishlist = wishlistRepository.findFirstByIdGreaterThan(0L);
-		String wishlistIdTag = (wishlist != null) ? "?id=" + wishlist.getId() : "";
-		return "redirect:/receiver" + wishlistIdTag;
+        // Check if own wishlist - otherwise don't delete
+		if (userArtifactsService.ownWishlist(id) != null) {
+    		wishlistRepository.deleteById(id);
+        }
+		// redirect to another own wishlist if exists,
+		// otherwise to new wishlist page.
+		List<Wishlist> myWishlist = userArtifactsService.allOwnWishlists();
+        if (myWishlist.size() > 0) {
+    		return "redirect:/receiver?id=" + myWishlist.get(0).getId();
+        } else {
+        	return "redirect:/newwishlist";
+        }
 	}
 
 }
