@@ -3,6 +3,7 @@ package com.gift_me_five.controller;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gift_me_five.GiftMeFive;
-import com.gift_me_five.entity.Theme;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
@@ -140,6 +139,16 @@ public class WishlistController {
 		User receiver = userArtifactsService.getCurrentUser();
 		if (wishlist.getId() == null) {
 			wishlist.setReceiver(receiver);
+			
+			//if null or empty, create UUID as uniqueUrlReceiver
+			if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+				String uniqueUrlReceiver;
+				do {
+				uniqueUrlReceiver = UUID.randomUUID().toString();
+				} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
+				wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+			}
+			
 			wishlistRepository.save(wishlist);
 		} else {
 			// Check if own wishlist; only then modify
@@ -149,6 +158,16 @@ public class WishlistController {
 				myWishlist.setTheme(wishlist.getTheme());
 				myWishlist.setTitle(wishlist.getTitle());
 				wishlist = myWishlist;
+				
+				//if null or empty, create UUID as uniqueUrlReceiver
+				if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+					String uniqueUrlReceiver;
+					do {
+					uniqueUrlReceiver = UUID.randomUUID().toString();
+					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
+					wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+				}
+				
 				wishlistRepository.save(wishlist);
 			}
 

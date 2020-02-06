@@ -1,6 +1,7 @@
 package com.gift_me_five.controller;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
@@ -20,8 +20,6 @@ import com.gift_me_five.repository.RoleRepository;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
-
-import net.bytebuddy.matcher.ModifierMatcher.Mode;
 
 @Controller
 public class adminController {
@@ -130,6 +128,14 @@ public class adminController {
 
 	@PostMapping("/admin/upsert_wishlist")
 	public String upsertWishlist(Model model, @Valid Wishlist wishlist) {
+		//if null or empty, create UUID as uniqueUrlReceiver
+		if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+			String uniqueUrlReceiver;
+			do {
+			uniqueUrlReceiver = UUID.randomUUID().toString();
+			} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
+			wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+		}
 		wishlist = wishlistRepository.save(wishlist);
 		return "redirect:/admin/wishlist";
 	}
