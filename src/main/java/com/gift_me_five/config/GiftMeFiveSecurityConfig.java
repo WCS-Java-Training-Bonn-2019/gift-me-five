@@ -43,7 +43,7 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 	        	.anyRequest().authenticated()
 	        	.and()
 	        	.formLogin()
-	        	.failureUrl("/?failure=1")
+	        	.failureUrl("/?loginFailure=1")
 	        	.loginPage("/")
 	        	.loginProcessingUrl("/authenticateTheUser")
 	        	.permitAll()
