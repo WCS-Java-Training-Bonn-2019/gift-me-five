@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.Theme;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
@@ -140,6 +141,7 @@ public class WishlistController {
 		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
 		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("wishlist", wishlist);
+		GiftMeFive.debugOut(wishlist.toString());
 		model.addAttribute("themes", themeRepository.findAll());
 		return "wishlist";
 	}
@@ -148,7 +150,7 @@ public class WishlistController {
 	public String saveWishList(@ModelAttribute Wishlist wishlist) {
 
 		User receiver = userArtifactsService.getCurrentUser();
-		if (wishlist.getId() == 0) {
+		if (wishlist.getId() == null) {
 			wishlist.setReceiver(receiver);
 			wishlistRepository.save(wishlist);
 		} else {
