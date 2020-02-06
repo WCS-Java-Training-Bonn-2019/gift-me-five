@@ -24,47 +24,62 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
-
 <body>
-
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation"> </header>
-
+		<header
+			th:replace="header.html :: navigation(view='', myWishlists=null, thisWishlistId=null)">
+		</header>
 		<main>
 
 			<div id="GM5loginForm">
-				
-				<h3>Login gift-me-five</h3>
+				<!-- todo edit or register! -->
+				<h3>User Edit/Register</h3>
 
-				
-				<form action="#" th:action="@{/authenticateTheUser}"
-					th:object="${user}" method="POST">
-
+				<form action="#" th:action="@{/processRegistrationForm}"
+					th:object="${user}" method="post">
 					<table>
-						<!-- User Field -->
+
 						<tr>
-							<!-- <td><label for="email">Username</label></td>  -->
-							<td><input type="text" name="username"
-								placeholder="your email"></td>
+							<td><input th:field="*{email}" type="email"
+								placeholder="E-Mail"></td>
 						</tr>
 
-						<!-- Password Field -->
 						<tr>
-							<!-- <td>Password</td>  -->
-							<td><input type="password" name="password"
-								placeholder="password"></td>
+							<td><input th:value=*{password} id="password"
+								name="password" type="password"
+								onchange="if(this.checkValidity()) form.password_two.pattern = this.value;"
+								placeholder="Password" required="required">
+						</tr>
+
+						<tr>
+							<td><input th:value=*{password} id="password_two"
+								name="password_two" type="password"
+								onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');"
+								placeholder="Verify Password" required="required"></td>
+						</tr>
+
+
+						<tr>
+							<td><input th:field="*{firstname}" type="text"
+								placeholder="First Name"></td>
+						</tr>
+
+
+						<tr>
+							<td><input th:field="*{lastname}" type="text"
+								placeholder="Last Name"></td>
 						</tr>
 
 					</table>
 
 					<p></p>
 
-					<input type="submit" value="Login" />
+					<input type="submit" value="Save"> <input type="reset"
+						value="Reset" >
 				</form>
+
 			</div>
 		</main>
-
-
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>
 </body>

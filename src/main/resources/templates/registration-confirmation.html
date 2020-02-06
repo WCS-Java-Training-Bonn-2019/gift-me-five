@@ -26,42 +26,24 @@
 </head>
 
 <body>
-
 	<div id="GM5wrapper">
 		<header th:replace="header.html :: navigation"> </header>
 
 		<main>
 
 			<div id="GM5loginForm">
-				
-				<h3>Login gift-me-five</h3>
+				<h3>User registered successfully!</h3>
 
-				
-				<form action="#" th:action="@{/authenticateTheUser}"
-					th:object="${user}" method="POST">
+				<div>
+					<form action="#" th:action="@{/authenticateTheUser}"
+						th:object="${user}" method="POST">
+						<input th:href="@{/showMyLoginPage}" type="submit" value="Login" />
+						<!-- <a th:href="@{/showMyLoginPage}">Login with new user</a>  -->
+					</form>
+				</div>
 
-					<table>
-						<!-- User Field -->
-						<tr>
-							<!-- <td><label for="email">Username</label></td>  -->
-							<td><input type="text" name="username"
-								placeholder="your email"></td>
-						</tr>
-
-						<!-- Password Field -->
-						<tr>
-							<!-- <td>Password</td>  -->
-							<td><input type="password" name="password"
-								placeholder="password"></td>
-						</tr>
-
-					</table>
-
-					<p></p>
-
-					<input type="submit" value="Login" />
-				</form>
 			</div>
+
 		</main>
 
 

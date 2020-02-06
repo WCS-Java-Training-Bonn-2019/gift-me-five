@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
 <style
-	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${currentWishlist.theme.backgroundPicture} +');}'">
+	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
 #wishlist_details {
 	background-image: url(../pics/christmas-2946698_1920_mod.png);
 }
@@ -32,14 +32,13 @@
 </head>
 <body>
 	<header
-		th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${currentWishlist.id})">
+		th:replace="header.html :: navigation(view='receiver', thisWishlistId=${wishlist.id})">
 	</header>
 	<div id="GM5wrapper">
 		<main>
 			<section id="GM5wishlist_control">
 				<div class="GM5button_holder">
-					<!-- todo add wish -->
-					<a th:href="@{/wish?wishlistId=} + ${currentWishlist.id}"
+					<a th:href="@{/wish?wishlistId=} + ${wishlist.id}"
 						class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
 						data-placement="right" title="Add wish"> <img class="GM5icon"
 						th:src="@{/pics/icons/plus_white.png}"></a>
@@ -56,17 +55,17 @@
 			<section id="GM5wishlist_details">
 				<div class="GM5wishlistBlock">
 					<div class="GM5wishlistElement GM5wishlistTitle">
-						<h1 th:text="${currentWishlist.title}">My Christmas Wishes</h1>
+						<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
 
 						<div class="GM5buttonHolder">
 							<!-- Modify wishlist -->
-							<a th:href="@{/wishlist(id=${currentWishlist.id})}"
+							<a th:href="@{/wishlist(id=${wishlist.id})}"
 								class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
 								data-placement="top" title="Modify wishlist"> <img
 								class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
 							</a>
 							<!-- Delete wishlist -->
-							<a th:href="@{/wishlist/delete(id=${currentWishlist.id})}"
+							<a th:href="@{/wishlist/delete(id=${wishlist.id})}"
 								class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
 								data-placement="right" title="Delete wishlist"
 								onclick="if (!(confirm('Are you sure?'))) return false"> <img

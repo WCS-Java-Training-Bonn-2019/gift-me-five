@@ -19,7 +19,7 @@ public class GiftMeFive {
 		return new BCryptPasswordEncoder();
 	}
 
-	public static void debugOut(String message) {
+	public static void debugOut(Object message) {
 		System.out.println();System.out.println();
 		System.out.println("*".repeat(120));
 		System.out.println(message);

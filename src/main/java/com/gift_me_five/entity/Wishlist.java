@@ -55,8 +55,8 @@ public class Wishlist {
 	@JoinColumn(name = "themeId")
 	private Theme theme;
 
-	@ManyToMany
-	@JoinTable(name = "GiverSeeWishlist", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "wishlist_id"))
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "GiverSeeWishlist", joinColumns = @JoinColumn(name = "wishlist_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private List<User> givers = new ArrayList<>();
 
 	@OneToMany(mappedBy = "wishlist", cascade = CascadeType.REMOVE)
