@@ -141,7 +141,6 @@ public class WishlistController {
 		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
 		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("wishlist", wishlist);
-		GiftMeFive.debugOut(wishlist.toString());
 		model.addAttribute("themes", themeRepository.findAll());
 		return "wishlist";
 	}
