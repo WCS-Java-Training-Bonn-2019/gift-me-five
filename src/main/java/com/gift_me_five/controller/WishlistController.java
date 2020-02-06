@@ -86,7 +86,7 @@ public class WishlistController {
 	public String displayWishlist(Model model, @RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = new Wishlist();
-		if (id != null) {
+		if (id != null && userArtifactsService.) {
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
 			if (optionalWishlist.isPresent()) {
 				wishlist = optionalWishlist.get();
@@ -110,30 +110,18 @@ public class WishlistController {
 
 		Wishlist wishlist = new Wishlist();
 
-		// *****************************************************
-		// TO DO: Default values must be defined!!!
-		// Wishlists of current user must be added to model instead of all wishlists!
-		// *****************************************************
-		Long themeId = 1L; // theme Id default Wert
-		
-		//anonymous should not be allowed to do /wishlist?id=x
+		// Anonymous user should not be allowed to do /wishlist?id=x
 		if (principal == null) {
 			id = null;
 		}
-		
-		//todo: edit wishlist (/wishlist?id=x) should be limited to own wishlists
-		
-		if (id != null) {
-			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
-			if (optionalWishlist.isPresent()) {
-				wishlist = optionalWishlist.get();
-			} else {
-				// Selected wishlist doesn't exist!
-				id = null;
-			}
-		}
-		if (id == null) {
-			// No wishlist - create new!
+
+		// If wishlist exists and belongs to logged in user, update it. Else create a
+		// new one.
+		if (id != null && userArtifactsService.ownWishlist(id) != null) {
+			wishlist = userArtifactsService.ownWishlist(id);
+		} else {
+			id = null;
+			Long themeId = 1L; // theme Id default value for new wishlist
 			wishlist.setReceiver(userArtifactsService.getCurrentUser());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
 		}
@@ -143,6 +131,7 @@ public class WishlistController {
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("themes", themeRepository.findAll());
 		return "wishlist";
+
 	}
 
 	@PostMapping("/wishlist")
@@ -164,24 +153,24 @@ public class WishlistController {
 			}
 
 		}
-        
+
 		return "redirect:/receiver?id=" + wishlist.getId();
 	}
 
 	@GetMapping("/wishlist/delete")
 	public String deleteWishList(@RequestParam Long id) {
-        // Check if own wishlist - otherwise don't delete
+		// Check if own wishlist - otherwise don't delete
 		if (userArtifactsService.ownWishlist(id) != null) {
-    		wishlistRepository.deleteById(id);
-        }
+			wishlistRepository.deleteById(id);
+		}
 		// redirect to another own wishlist if exists,
 		// otherwise to new wishlist page.
 		List<Wishlist> myWishlist = userArtifactsService.allOwnWishlists();
-        if (myWishlist.size() > 0) {
-    		return "redirect:/receiver?id=" + myWishlist.get(0).getId();
-        } else {
-        	return "redirect:/newwishlist";
-        }
+		if (myWishlist.size() > 0) {
+			return "redirect:/receiver?id=" + myWishlist.get(0).getId();
+		} else {
+			return "redirect:/newwishlist";
+		}
 	}
 
 }
