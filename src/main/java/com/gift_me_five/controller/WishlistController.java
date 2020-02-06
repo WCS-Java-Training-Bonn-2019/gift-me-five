@@ -86,7 +86,7 @@ public class WishlistController {
 	public String displayWishlist(Model model, @RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = new Wishlist();
-		if (id != null && userArtifactsService.) {
+		if (id != null && userArtifactsService.ownWishlist(id) != null) {
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
 			if (optionalWishlist.isPresent()) {
 				wishlist = optionalWishlist.get();
