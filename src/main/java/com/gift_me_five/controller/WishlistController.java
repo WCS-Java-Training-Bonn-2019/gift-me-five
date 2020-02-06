@@ -111,8 +111,8 @@ public class WishlistController {
 		Wishlist wishlist = new Wishlist();
 
 		// Anonymous user should not be allowed to do /wishlist?id=x
-		if (principal == null) {
-			id = null;
+		if (principal == null && id != null) {
+			return "redirect:/wishlist";
 		}
 
 		// If wishlist exists and belongs to logged in user, update it. Else create a
