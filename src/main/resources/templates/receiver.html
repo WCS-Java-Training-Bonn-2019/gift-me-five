@@ -10,7 +10,19 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
+<<<<<<< HEAD
 <style th:text="'main { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
+=======
+<
+style
+	th:text ="'#GM5wishlist_details {
+	background-image:
+		url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');
+}
+
+'">
+>>>>>>>
+e49761c99780f91775f5c0dc64afc70c0163ec83
 #wishlist_details {
 	background-image: url(../pics/christmas-2946698_1920_mod.png);
 }
@@ -20,9 +32,9 @@
 <body>
 	<header th:replace="header.html :: navigation(view='receiver', thisWishlistId=${wishlist.id})"> </header>
 	<!-- 	<div id="GM5wrapper"> -->
-	<main id="GM5wishlist_details">
+	<main>
 		<!-- 			<div class="GM5spacerLeft"></div> -->
-		<section>
+		<section id="GM5wishlist_details">
 			<div class="GM5wishlistBlock">
 				<div class="GM5wishlistElement GM5wishlistTitle">
 					<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
@@ -43,12 +55,11 @@
 								<img class="GM5icon" th:src="@{/pics/icons/plus_white.png}">
 							</a>
 							<!-- todo addPerson -->
+
 							<input type="text" th:value="${hostname} + ':' + ${port} + @{/invite/} + ${wishlist.uniqueUrlReceiver}" id="GM5uniqueUrlReceiverHideInput">
-							<button onclick="myFunction()">
-								<div class="GM5buttonGreen">
-									<img class="GM5icon" th:src="@{/pics/icons/addPerson_white.png}" title="uniqueUrlReceiver/invitelink">
-								</div>
-							</button>
+							<a onclick="myFunction()" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add wish">
+								<img class="GM5icon" th:src="@{/pics/icons/addPerson_white.png}" title="uniqueUrlReceiver/invitelink">
+							</a>
 							<script>
 								function myFunction() {
 									var copyText = document
