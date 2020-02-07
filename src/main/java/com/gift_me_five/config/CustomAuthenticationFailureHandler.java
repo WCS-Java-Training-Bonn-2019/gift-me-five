@@ -1,88 +1,73 @@
 package com.gift_me_five.config;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gift_me_five.GiftMeFive;
+import com.gift_me_five.entity.User;
+import com.gift_me_five.repository.UserRepository;
 
-public class CustomAuthenticationFailureHandler 
-implements AuthenticationFailureHandler {
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-  private ObjectMapper objectMapper = new ObjectMapper();
+	@Autowired
+	private UserRepository userRepository;
 
-  @Override
-  public void onAuthenticationFailure(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    AuthenticationException exception) 
-    throws IOException, ServletException {
+	@Override
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException exception) throws IOException, ServletException {
 
-	  String loginFailureUser= request.getParameter("username");
-	  
-	  // ToDo  loginFailure  failed_logins fuer DB einbauen
-	  System.out.println("\n\n*************** hier der User der Mist baut: " + loginFailureUser + "******************\n\n");
-	  
-      response.setStatus(HttpStatus.UNAUTHORIZED.value());
-      
-//      Map<String, Object> data = new HashMap<>();
-//      data.put(
-//        "timestamp", 
-//        Calendar.getInstance().getTime());
-//      data.put(
-//        "exception", 
-//        exception.getMessage());
-//      data.put("Hier der User der Mist baut: ", loginFailureUser);
-      
-//      response.getOutputStream()
-//        .println(objectMapper.writeValueAsString(data));
-      
-         
-      response.sendRedirect("/?loginFailure=1");
-      
-    }
- 
-  /*
-   * implements AuthenticationFailureHandler {
+		GiftMeFive.debugOut(exception.getMessage());
+				
+		// is user locked ?
+		if (exception.getMessage().equals("User account is locked")) {
+			
+			GiftMeFive.debugOut("User is lockded");
+			
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			
+			response.sendRedirect("/?loginFailure=2");
 
-  private ObjectMapper objectMapper = new ObjectMapper();
+		} else {
 
-  @Override
-  public void onAuthenticationFailure(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    AuthenticationException exception) 
-    throws IOException, ServletException {
+			// get the user from Http-Request --Yeah--
+			String loginFailureUser = request.getParameter("username");
 
-	  String loginFailureUser= request.getParameter("username");
-	  
-      response.setStatus(HttpStatus.UNAUTHORIZED.value());
-      
-      Map<String, Object> data = new HashMap<>();
-      data.put(
-        "timestamp", 
-        Calendar.getInstance().getTime());
-      data.put(
-        "exception", 
-        exception.getMessage());
-      data.put("Hier der User der Mist baut: ", loginFailureUser);
+			// check the database if user already exists
+			Optional<User> existing = userRepository.findByEmail(loginFailureUser);
+			if (existing.isPresent()) {
 
-      response.getOutputStream()
-        .println(objectMapper.writeValueAsString(data));
-      
-    }
-  
-}
-   * 
-   */
+				// get number of failed login from db
+				Long countFailedLogin = existing.get().getFailedLogins();
+
+				countFailedLogin += 1;
+
+				// set new number for failed_login in db
+				existing.get().setFailedLogins(countFailedLogin);
+				userRepository.save(existing.get());
+				
+				response.setStatus(HttpStatus.UNAUTHORIZED.value());
+
+				response.sendRedirect("/?loginFailure=1");
+
+			} else {
+				// user not in db
+				response.setStatus(HttpStatus.UNAUTHORIZED.value());
+
+				response.sendRedirect("/?loginFailure=1");
+			}
+		}
+
+		
+
+	}
 
 }

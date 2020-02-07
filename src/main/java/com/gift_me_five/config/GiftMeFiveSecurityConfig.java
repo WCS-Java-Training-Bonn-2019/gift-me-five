@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @EnableWebSecurity
 public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -40,13 +41,13 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 	    http
 	        .authorizeRequests()
 	        	.antMatchers("/", "/css/**", "/pics/**", "/newwishlist/**", "/showRegistrationForm/**", "/processRegistrationForm/**" , "/under_construction/**", "/wishlist").permitAll()
-
 	        	.antMatchers("/admin/**").hasRole("admin")
 	        	.anyRequest().authenticated()
 	        	.and()
 	        	.formLogin()
-	        	.failureUrl("/?loginFailure=1")
+	        	//.failureUrl("/?loginFailure=1")
 	        	.failureHandler(customAuthenticationFailureHandler())
+	        	.successHandler(customAuthenticationSuccessHandler())
 	        	.loginPage("/")
 	        	.loginProcessingUrl("/authenticateTheUser")
 	        	.permitAll()
@@ -65,4 +66,9 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 	    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
 	        return new CustomAuthenticationFailureHandler();
 	    }
+	  
+	  @Bean
+	  public AuthenticationSuccessHandler customAuthenticationSuccessHandler(){
+		  return new CustomAuthenticationSuccessHandler();
+	  }
 }

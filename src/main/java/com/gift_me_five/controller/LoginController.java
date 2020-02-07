@@ -30,15 +30,7 @@ public class LoginController {
 		return "index";
 	}
 	
-	// route deakiviert neu auf "/"
-	/*
-	@GetMapping("/showMyLoginPage")
-	public String showMyLoginPage(Model model) {
-		model.addAttribute("user", new User());
-		return "fancy-login";
-	}
-	*/
-		
+				
 	// add request mapping for /access-denied
 	@GetMapping("/access-denied")
 	public String showAccessDenied() {
