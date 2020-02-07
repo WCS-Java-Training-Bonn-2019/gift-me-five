@@ -136,6 +136,14 @@ public class adminController {
 			} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
 			wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
 		}
+		//if null or empty, create UUID as uniqueUrlGiver
+		if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
+			String uniqueUrlGiver;
+			do {
+			uniqueUrlGiver = UUID.randomUUID().toString();
+			} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null); 
+			wishlist.setUniqueUrlGiver(uniqueUrlGiver);
+		}
 		wishlist = wishlistRepository.save(wishlist);
 		return "redirect:/admin/wishlist";
 	}
