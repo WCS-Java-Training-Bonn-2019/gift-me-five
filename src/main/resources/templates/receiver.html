@@ -10,22 +10,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
-<<<<<<< HEAD
-<style th:text="'main { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
-=======
-<
-style
-	th:text ="'#GM5wishlist_details {
-	background-image:
-		url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');
-}
-
-'">
->>>>>>>
-e49761c99780f91775f5c0dc64afc70c0163ec83
-#wishlist_details {
-	background-image: url(../pics/christmas-2946698_1920_mod.png);
-}
+<style
+	th:text="'#GM5wishlist_details { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
 </style>
 
 </head>
@@ -56,9 +42,14 @@ e49761c99780f91775f5c0dc64afc70c0163ec83
 							</a>
 							<!-- todo addPerson -->
 
-							<input type="text" th:value="${hostname} + ':' + ${port} + @{/invite/} + ${wishlist.uniqueUrlReceiver}" id="GM5uniqueUrlReceiverHideInput">
-							<a onclick="myFunction()" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add wish">
-								<img class="GM5icon" th:src="@{/pics/icons/addPerson_white.png}" title="uniqueUrlReceiver/invitelink">
+							<input type="text"
+								th:value="${hostname} + ':' + ${port} + @{/invite/} + ${wishlist.uniqueUrlReceiver}"
+								id="GM5uniqueUrlReceiverHideInput">
+							<a onclick="myFunction()" class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
+								data-placement="right" title="Add wish">
+									<img class="GM5icon"
+										th:src="@{/pics/icons/addPerson_white.png}"
+										title="uniqueUrlReceiver/invitelink">
 							</a>
 							<script>
 								function myFunction() {
