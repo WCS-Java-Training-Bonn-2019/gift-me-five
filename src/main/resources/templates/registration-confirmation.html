@@ -35,9 +35,9 @@
 				<h3>User registered successfully!</h3>
 
 				<div>
-					<form action="#" th:action="@{/authenticateTheUser}"
+					<form th:href="@{/}"
 						th:object="${user}" method="POST">
-						<input th:href="@{/showMyLoginPage}" type="submit" value="Login" />
+						<input  type="submit" value="Login" />
 						<!-- <a th:href="@{/showMyLoginPage}">Login with new user</a>  -->
 					</form>
 				</div>

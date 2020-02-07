@@ -41,7 +41,7 @@ public class User implements UserDetails {
 
 	@Column(nullable = false, unique = true)
 	private String email;
-	
+
 //	no more login, use email
 //	@Column(nullable = false, unique = true)
 //	private String login;
@@ -97,7 +97,7 @@ public class User implements UserDetails {
 
 	public User() {
 		this.failedLogins = 0L;
-		this.role  = "pending";
+		this.role = "pending";
 	}
 
 	@Override
@@ -119,7 +119,10 @@ public class User implements UserDetails {
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO locked if failedLogins > 3
-		return true;
+		if (this.getFailedLogins() > 3) {
+			return false;
+		} else
+			return true;
 	}
 
 	@Override
@@ -129,7 +132,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO role == registered 
+		// TODO role == registered
 		return true;
 	}
 }
