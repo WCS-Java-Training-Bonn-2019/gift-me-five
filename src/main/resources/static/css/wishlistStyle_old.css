@@ -29,8 +29,8 @@ main {
 }
 
 
-.theme_img {
-	width:100%;
+.img-fluid {
+	height: auto;
 }
 
 

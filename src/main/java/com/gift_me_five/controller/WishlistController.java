@@ -2,7 +2,6 @@ package com.gift_me_five.controller;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,13 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gift_me_five.GiftMeFive;
-import com.gift_me_five.entity.Theme;
-import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.ThemeRepository;
-import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
 import com.gift_me_five.service.UserArtifactsService;
@@ -32,9 +27,6 @@ public class WishlistController {
 
 	@Autowired
 	private ThemeRepository themeRepository;
-
-	@Autowired
-	private UserRepository receiverRepository;
 
 	@Autowired
 	private WishRepository wishRepository;
@@ -87,14 +79,8 @@ public class WishlistController {
 
 		Wishlist wishlist = new Wishlist();
 		if (id != null && userArtifactsService.ownWishlist(id) != null) {
-			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
-			if (optionalWishlist.isPresent()) {
-				wishlist = optionalWishlist.get();
-			} else {
-				id = null;
-			}
-		}
-		if (id == null) {
+			wishlist = userArtifactsService.ownWishlist(id);
+		} else {
 			return ("redirect:/wishlist");
 		}
 		model.addAttribute("thisWishlistId", wishlist.getId());
@@ -131,18 +117,16 @@ public class WishlistController {
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("themes", themeRepository.findAll());
 		return "wishlist";
-
 	}
 
 	@PostMapping("/wishlist")
-	public String saveWishList(@ModelAttribute Wishlist wishlist) {
+	public String saveWishList(@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
 
-		User receiver = userArtifactsService.getCurrentUser();
 		if (wishlist.getId() == null) {
-			wishlist.setReceiver(receiver);
+			wishlist.setReceiver(userArtifactsService.getCurrentUser());
 			wishlistRepository.save(wishlist);
 		} else {
-			// Check if own wishlist; only then modify
+			// Check if own wishlist; only then modify.
 			// Only take over title and theme
 			Wishlist myWishlist = userArtifactsService.ownWishlist(wishlist.getId());
 			if (myWishlist != null) {
@@ -151,7 +135,10 @@ public class WishlistController {
 				wishlist = myWishlist;
 				wishlistRepository.save(wishlist);
 			}
+		}
 
+		if ("Save & Add Wish".equals(submit)) {
+			return "redirect:/wish?wishlistId=" + wishlist.getId();
 		}
 
 		return "redirect:/receiver?id=" + wishlist.getId();

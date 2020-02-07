@@ -3,7 +3,8 @@
 <head>
 <title>Gift Me Five - Create/Edit Wish</title>
 <meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
-<meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1 shrink-to-fit=no">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -24,51 +25,57 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${wish.wishlist.id})">	
+		<header
+			th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${wish.wishlist.id})">
 		</header>
 		<main>
-		<div class="GM5spacer"></div>
-		<section>
-			<div>
-				<h1 th:text="(${wish.id} ? 'Update a wish on ' : 'Create a wish on: ') + ${wish.wishlist.title}">My
-					Wish</h1>
-			</div>
-			<form method="post" th:action="@{/wish}" th:object="${wish}">
-				<input name="id" th:field="*{id}" type="hidden">
-				<input name="wishlistId" th:field="${wish.wishlist.id}" type="hidden">
-				<label for="wish-title">Short Description:</label>
-				<br>
-				<input id="wish-title" name="title" placeholder="X-Box One" required
-					th:field="*{title}" type="text" class="GM5input">
-				<br> <br>
-				<label for="wish-description">Additional Information:</label>
-				<br>
-				<textarea name="description" rows="4" cols="20"
-					th:field="*{description}" class="GM5input">
+			<div class="GM5spacer"></div>
+			<section>
+				<form method="post" th:action="@{/wish}" th:object="${wish}">
+					<div class="headline_buttons">
+						<h1
+							th:text="(${wish.id} ? 'Update a wish on ' : 'Create a wish on: ') + ${wish.wishlist.title}">My
+							Wish</h1>
+						<div id="buttons">
+							<input type="submit" value="Submit"
+								class="btn btn-success GM5buttonGreen">
+							<!-- Button "Cancel" -->
+							<input type="button" class="btn btn-success GM5buttonGreen"
+								value="Cancel" onclick="history.back()">
+						</div>
+					</div>
+					<input name="id" th:field="*{id}" type="hidden">
+					<input name="wishlistId" th:field="${wish.wishlist.id}"
+						type="hidden">
+					<label for="wish-title">Short Description:</label>
+					<br>
+					<input id="wish-title" name="title" placeholder="X-Box One"
+						required th:field="*{title}" type="text" class="GM5input">
+					<br>
+					<label for="wish-description">Additional Information:</label>
+					<br>
+					<textarea name="description" rows="4" cols="20"
+						th:field="*{description}" class="GM5input">
 					I would like to get a really cool game console with a lot of memory blablabla...
 				</textarea>
-				<br> <br>
-				<label for="wish-link">Link:</label>
-				<br>
-				<input id="wish-link" name="link"
-					placeholder="https://www.idealo.de/preisvergleich/OffersOfProduct/3922755_-xbox-one-microsoft.html"
-					th:field="*{link}" type="url" class="GM5input">
-				<br> <br>
-				<label for="wish-image">Image source:</label>
-				<br>
-				<input id="wish-image" name="image" th:field="*{image}" type="text" class="GM5input">
-				
-				<!-- ToDo implement upload image's 
+					<br>
+					<label for="wish-link">Link:</label>
+					<br>
+					<input id="wish-link" name="link"
+						placeholder="https://www.idealo.de/preisvergleich/OffersOfProduct/3922755_-xbox-one-microsoft.html"
+						th:field="*{link}" type="url" class="GM5input">
+					<br>
+					<label for="wish-image">Image source:</label>
+					<br>
+					<input id="wish-image" name="image" th:field="*{image}" type="text"
+						class="GM5input">
+
+					<!-- ToDo implement upload image's 
 				<input id="wish-image" name="image" th:field="*{image}" type="file">
 				 -->
-				
-				<br> <br>
-				<input type="submit" value="Submit" class="btn btn-success">
-				<!-- Button "Cancel" -->
-				<input type="button" class="btn btn-success" value="Cancel" onclick="history.back()">
-			</form>
-		</section>
-		<div class="GM5spacer"></div>
+				</form>
+			</section>
+			<div class="GM5spacer"></div>
 		</main>
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>

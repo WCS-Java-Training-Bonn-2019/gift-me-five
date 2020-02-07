@@ -12,17 +12,30 @@
 
 .GM5button {
 	background-color: #3583d7;
-	margin: 7px;
+	margin: 5px;
 	width: max-content;
 	padding: 7px;
 }
 
 .GM5button_holder {
 	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	flex-wrap: wrap;
 }
 
 .GM5icon {
 	width: 25px;
+}
+
+#GM5uniqueUrlReceiverHideInput {
+	/* 	display: none is not working because no copy of value possible */
+	opacity: 0;
+	height: 0px;
+	width: 0px;
+	position: absolute;
+	left: -99999px;
+	top: -99999px;
 }
 
 #GM5wishlist_control {
@@ -44,6 +57,7 @@
 
 .GM5wishlistBlock {
 	width: 90%;
+	max-width: 70em;
 	margin: 0 auto;
 	padding: 0;
 }
@@ -52,12 +66,12 @@
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	padding-left:3%;
+	padding-left:4%;
 }
 
 
 .GM5wishlistBlock ul.GM5withSideButtons {
-	padding-left: 7%
+	padding-left: 4%
 }
 
 
@@ -77,6 +91,7 @@
 
 .GM5wishlistElement h1 {
 	font-size: 180%;
+	width: max-content;
 }
 
 .GM5wishlistElement h2 {
@@ -117,19 +132,20 @@
 		flex-direction: row;
 		justify-content: center;
 	}
-	.GM5wishlistBlock ul.GM5withSideButtons {
-	padding-left: 3%
-    }
-	#GM5wishlist_details {
-		margin-left: 80px;
-		flex-grow: 1;
-	}
-	div.GM5spacerLeft {
-		flex-grow: 2;
-		min-width: 20px;
-	}
-	div.GM5spacerRight {
-		flex-grow: 5;
-		min-width: 20px;
-	}
+/* 	.GM5wishlistBlock ul.GM5withSideButtons { */
+/* 	padding-left: 3% */
+/*     } */
+/* 	#GM5wishlist_details { */
+/* 		margin-left: 80px; */
+/* 		flex-basis: 80em; */
+/* 		flex-grow: 0; */
+/* 	} */
+/* 	div.GM5spacerLeft { */
+/* 		flex-grow: 1; */
+/* 		min-width: 20px; */
+/* 	} */
+/* 	div.GM5spacerRight { */
+/* 		flex-grow: 1; */
+/* 		min-width: 20px; */
+/* 	} */
 }
