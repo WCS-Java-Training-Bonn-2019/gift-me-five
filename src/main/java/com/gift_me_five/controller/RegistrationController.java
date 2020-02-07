@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.repository.UserRepository;
 
@@ -45,7 +44,6 @@ public class RegistrationController {
 	@GetMapping("/profile")
 	public String editProfile(Model model, Principal principal) {
 		// todo get user credential via principal
-		GiftMeFive.debugOut(principal.getName());
 		model.addAttribute("user", new User());
 
 		return "registration-form";

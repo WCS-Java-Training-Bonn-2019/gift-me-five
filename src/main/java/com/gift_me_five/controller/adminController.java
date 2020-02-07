@@ -1,6 +1,7 @@
 package com.gift_me_five.controller;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -20,11 +21,13 @@ import com.gift_me_five.repository.RoleRepository;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
-
-import net.bytebuddy.matcher.ModifierMatcher.Mode;
+import com.gift_me_five.service.UserArtifactsService;
 
 @Controller
 public class adminController {
+	
+	@Autowired
+	private UserArtifactsService userArtifactsService;
 
 	@Autowired
 	private WishRepository wishRepository;
@@ -43,6 +46,10 @@ public class adminController {
 
 	@GetMapping("/admin/user")
 	public String getUser(Model model) {
+		
+		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+		
 		model.addAttribute("users", userRepository.findAll());
 		return "/admin/get_all_user";
 	}
@@ -130,6 +137,22 @@ public class adminController {
 
 	@PostMapping("/admin/upsert_wishlist")
 	public String upsertWishlist(Model model, @Valid Wishlist wishlist) {
+		//if null or empty, create UUID as uniqueUrlReceiver
+		if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+			String uniqueUrlReceiver;
+			do {
+			uniqueUrlReceiver = UUID.randomUUID().toString();
+			} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
+			wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+		}
+		//if null or empty, create UUID as uniqueUrlGiver
+		if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
+			String uniqueUrlGiver;
+			do {
+			uniqueUrlGiver = UUID.randomUUID().toString();
+			} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null); 
+			wishlist.setUniqueUrlGiver(uniqueUrlGiver);
+		}
 		wishlist = wishlistRepository.save(wishlist);
 		return "redirect:/admin/wishlist";
 	}

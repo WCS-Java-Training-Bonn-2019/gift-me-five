@@ -2,6 +2,9 @@ package com.gift_me_five.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -75,8 +78,14 @@ public class WishlistController {
 	}
 
 	@GetMapping("/receiver")
-	public String displayWishlist(Model model, @RequestParam(required = false) Long id) {
-
+	public String displayWishlist(Model model, @RequestParam(required = false) Long id, HttpServletRequest request) {
+	
+//		hostname (e.g. localhost)
+//		GiftMeFive.debugOut(request.getLocalName());
+//		ip address (e.g. 127.0.0.1)
+//		GiftMeFive.debugOut(request.getLocalAddr());
+//		GiftMeFive.debugOut(request.getLocalPort());
+//		GiftMeFive.debugOut(request.getProtocol());
 		Wishlist wishlist = new Wishlist();
 		if (id != null && userArtifactsService.ownWishlist(id) != null) {
 			wishlist = userArtifactsService.ownWishlist(id);
@@ -88,6 +97,9 @@ public class WishlistController {
 		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
 		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+		// todo: add protocol to model (invite url, receiver.html)
+		model.addAttribute("hostname", request.getLocalName());
+		model.addAttribute("port", request.getLocalPort());
 		return ("receiver");
 	}
 
@@ -123,7 +135,27 @@ public class WishlistController {
 	public String saveWishList(@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
 
 		if (wishlist.getId() == null) {
+			
 			wishlist.setReceiver(userArtifactsService.getCurrentUser());
+			
+			//if null or empty, create UUID as uniqueUrlReceiver
+			if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+				String uniqueUrlReceiver;
+				do {
+				uniqueUrlReceiver = UUID.randomUUID().toString();
+				} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
+				wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+			}
+
+			//if null or empty, create UUID as uniqueUrlGiver
+			if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
+				String uniqueUrlGiver;
+				do {
+				uniqueUrlGiver = UUID.randomUUID().toString();
+				} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null); 
+				wishlist.setUniqueUrlGiver(uniqueUrlGiver);
+			}
+
 			wishlistRepository.save(wishlist);
 		} else {
 			// Check if own wishlist; only then modify.
@@ -133,6 +165,25 @@ public class WishlistController {
 				myWishlist.setTheme(wishlist.getTheme());
 				myWishlist.setTitle(wishlist.getTitle());
 				wishlist = myWishlist;
+				
+				//if null or empty, create UUID as uniqueUrlReceiver
+				if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+					String uniqueUrlReceiver;
+					do {
+					uniqueUrlReceiver = UUID.randomUUID().toString();
+					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
+					wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+				}				
+
+				//if null or empty, create UUID as uniqueUrlGiver
+				if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
+					String uniqueUrlGiver;
+					do {
+					uniqueUrlGiver = UUID.randomUUID().toString();
+					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null); 
+					wishlist.setUniqueUrlGiver(uniqueUrlGiver);
+				}
+				
 				wishlistRepository.save(wishlist);
 			}
 		}
