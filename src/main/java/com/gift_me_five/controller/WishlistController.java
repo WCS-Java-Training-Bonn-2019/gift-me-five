@@ -137,7 +137,7 @@ public class WishlistController {
 			}
 		}
 
-		if ("Save & Add Wish".equals(submit)) {
+		if ("Add Wish".equals(submit)) {
 			return "redirect:/wish?wishlistId=" + wishlist.getId();
 		}
 

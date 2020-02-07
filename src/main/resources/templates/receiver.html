@@ -68,13 +68,12 @@
 							<input type="text"
 								th:value="${hostname} + ':' + ${port} + @{/invite/} + ${wishlist.uniqueUrlReceiver}"
 								id="GM5uniqueUrlReceiverHideInput">
-							<button onclick="myFunction()">
-								<div class="GM5buttonGreen">
+							<a onclick="myFunction()" class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
+								data-placement="right" title="Add wish">
 									<img class="GM5icon"
 										th:src="@{/pics/icons/addPerson_white.png}"
 										title="uniqueUrlReceiver/invitelink">
-								</div>
-							</button>
+							</a>
 							<script>
 								function myFunction() {
 									var copyText = document
