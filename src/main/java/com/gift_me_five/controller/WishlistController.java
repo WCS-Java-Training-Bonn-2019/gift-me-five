@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
@@ -82,8 +85,14 @@ public class WishlistController {
 	}
 
 	@GetMapping("/receiver")
-	public String displayWishlist(Model model, @RequestParam(required = false) Long id) {
-
+	public String displayWishlist(Model model, @RequestParam(required = false) Long id, HttpServletRequest request) {
+	
+//		hostname (e.g. localhost)
+//		GiftMeFive.debugOut(request.getLocalName());
+//		ip address (e.g. 127.0.0.1)
+//		GiftMeFive.debugOut(request.getLocalAddr());
+//		GiftMeFive.debugOut(request.getLocalPort());
+//		GiftMeFive.debugOut(request.getProtocol());
 		Wishlist wishlist = new Wishlist();
 		if (id != null && userArtifactsService.ownWishlist(id) != null) {
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
@@ -101,6 +110,9 @@ public class WishlistController {
 		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
 		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+		// todo: add protocol to model (invite url, receiver.html)
+		model.addAttribute("hostname", request.getLocalName());
+		model.addAttribute("port", request.getLocalPort());
 		return ("receiver");
 	}
 

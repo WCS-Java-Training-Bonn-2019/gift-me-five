@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
@@ -20,9 +21,13 @@ import com.gift_me_five.repository.RoleRepository;
 import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
+import com.gift_me_five.service.UserArtifactsService;
 
 @Controller
 public class adminController {
+	
+	@Autowired
+	private UserArtifactsService userArtifactsService;
 
 	@Autowired
 	private WishRepository wishRepository;
@@ -41,6 +46,10 @@ public class adminController {
 
 	@GetMapping("/admin/user")
 	public String getUser(Model model) {
+		
+		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+		
 		model.addAttribute("users", userRepository.findAll());
 		return "/admin/get_all_user";
 	}
