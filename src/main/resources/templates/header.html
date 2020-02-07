@@ -26,15 +26,23 @@
 						data-toggle="dropdown" href="#">My Wishlists</a>
 					<div class="dropdown-menu">
 						<a th:each="wishlist : ${myWishlists}" th:object="${wishlist}"
-							th:class="'dropdown-item' + (*{id}==${thisWishlistId} ? ' active' : ' ')"
+							th:class="'dropdown-item' + ((${view=='receiver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')"
 							th:text="*{title}" th:href="@{/receiver(id=*{id})}">Ben's
 							Xmas</a>
 					</div>
 				</div>
-				<a sec:authorize="isAuthenticated()"
-					th:class="${view=='giver'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link'"
-					href="/giver">Friend's Wishlists</a>
-				<!-- Dropdown for Friend's Wishlists -->
+				<div sec:authorize="isAuthenticated()">
+					<!-- Dropdown for Friend's Wishlists -->
+					<a
+						th:class="'nav-item nav-link dropdown-toggle ' + (${view=='giver'} ? 'active GM5_header_left_nav_active')"
+						data-toggle="dropdown" href="#">Friend's Wishlists</a>
+					<div class="dropdown-menu">
+						<a th:each="wishlist : ${friendWishlists}" th:object="${wishlist}"
+							th:class="'dropdown-item' + ((${view=='giver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')"
+							th:text="*{title}" th:href="@{/giver(id=*{id})}">Ben's
+							Xmas</a>
+					</div>
+				</div>
 				<div sec:authorize="hasRole('ROLE_admin')">
 					<!-- Dropdown for Admin -->
 					<!-- class="navbar-nav dropdown " -->
@@ -54,23 +62,28 @@
 	</nav>
 	​
 	<nav class="GM5_header_right_nav">
+	
+		<!-- Print user -->
 		<div class="GM5_header_right_nav_logged_in"
 			sec:authorize="isAuthenticated()">
 			<span sec:authentication="name"></span>
-			<!-- Add a logout icon -->
-			<form action="#" th:action="@{/logout}" method="POST" title="Logout">
-				<button type="submit" class="GM5buttonGreen">
-					<img src="pics/Logout-512-white.png">
-				</button>
-			</form>
-						
 			<!-- do not show role  <br> Role(s): <span
 							sec:authentication="principal.authorities"></span> <br>
 						-->
 		</div>
-
-		<div sec:authorize="isAnonymous()">
-
+		
+		<!-- Print loginFailure -->
+		<div class="GM5_header_right_nav_logged_in" >
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10"  th:if="${loginFailure == 1}">Invalid credentials.</span>
+			
+		</div>
+		<!-- Print User is locked -->
+		<div class="GM5_header_right_nav_logged_in" >
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10"  th:if="${loginFailure == 2}">User account is locked.</span>
+			
+		</div>
+		
+		<div>
 			<div th:fragment="loginButton" class="btn-group dropleft">
 				<button type="button"
 					class="GM5login_frame btn btn-secondary dropdown-toggle"
@@ -82,41 +95,54 @@
 					<form th:action="@{/authenticateTheUser}" method="POST"
 						class="px-4 py-3">
 
-
-						<!-- Add User Name Login -->
-						<div class="form-group">
-							<!-- 
-						<label for="exampleDropdownFormEmail1">E-Mail</label>
-						 -->
+						<div sec:authorize="isAnonymous()" class="form-group">
+							<!-- Add User Name Login -->
 							<input type="text" class="form-control"
 								id="exampleDropdownFormEmail1" placeholder="E-Mail"
 								name="username">
 						</div>
-						<!-- Add Password Login -->
-						<div class="form-group">
-							<!-- 
-						<label for="exampleDropdownFormPassword1">Password</label> 
-						 -->
+
+						<div sec:authorize="isAnonymous()" class="form-group">
+							<!-- Add Password Login -->
 							<input type="password" class="form-control"
 								id="exampleDropdownFormPassword1" placeholder="Password"
 								name="password">
 						</div>
 
-						<div class="form-check">
+						<div sec:authorize="isAnonymous()" class="form-check">
 							<input type="checkbox" class="form-check-input"
 								name="remember-me" id="dropdownCheck"> <label
 								class="form-check-label" for="dropdownCheck">Remember me
 							</label>
 						</div>
 
-						<button type="submit" class="btn btn-primary GM5buttonGreen">
+						<button sec:authorize="isAnonymous()" type="submit"
+							class="btn btn-primary GM5buttonGreen">
 							<img src="pics/Login-512-white.png">
 						</button>
 					</form>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" title="Registration" href="#">New
-						around here? Sign up</a> <a class="dropdown-item"
-						title="Password Recovery" href="#">Forgot password?</a>
+
+					<div class="logged_in_dropdown">
+						<!-- Add a logout -->
+						<form th:action="@{/logout}" method="POST" title="Logout">
+							<button sec:authorize="isAuthenticated()" type="submit"
+								class="GM5buttonGreen">
+								<img src="/pics/Logout-512-white.png">
+							</button>
+						</form>
+
+						<div class="dropdown-divider"></div>
+						<div sec:authorize="isAnonymous()">
+							<a class="dropdown-item" method="GET"
+								th:href="@{/showRegistrationForm}">New around here? Sign up</a>
+							<a class="dropdown-item" title="Password Recovery" href="#">Forgot
+								password?</a>
+						</div>
+						<div sec:authorize="isAuthenticated()">
+							<a class="dropdown-item" title="Profile" href="/profile">Edit
+								Profile</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

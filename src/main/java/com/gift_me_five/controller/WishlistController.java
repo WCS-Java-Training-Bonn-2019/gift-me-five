@@ -1,7 +1,10 @@
 package com.gift_me_five.controller;
 
 import java.security.Principal;
-import java.util.Optional;
+import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,16 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.ThemeRepository;
-import com.gift_me_five.repository.UserRepository;
 import com.gift_me_five.repository.WishRepository;
 import com.gift_me_five.repository.WishlistRepository;
+import com.gift_me_five.service.UserArtifactsService;
 
 @Controller
 public class WishlistController {
 
-	@Autowired
-	private UserRepository userRepository;
-	
 	@Autowired
 	private WishlistRepository wishlistRepository;
 
@@ -32,133 +32,183 @@ public class WishlistController {
 	private ThemeRepository themeRepository;
 
 	@Autowired
-	private UserRepository receiverRepository;
-	
+	private WishRepository wishRepository;
+
 	@Autowired
-	private WishRepository wishRepository;	
-	
+	private UserArtifactsService userArtifactsService;
+
 	@GetMapping("/giver")
-	public String getAll(Model model, Principal principal, Authentication authentication) {
-		Wishlist wishlist = wishlistRepository.findById(1L).get();
-		System.out.println("");
-		
-//		Wishlist wishlist = new Wishlist();
-//		if (id != null) {
-//			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
-//			if (optionalWishlist.isPresent()) {
-//				wishlist = optionalWishlist.get();
-//			} else {
-//				id = null;
-//			}
-//		} 
-//		
-		
-		//****************************************************************************
-		// TO DO: (when user handling is enabled)
-		// - add all OWN wishlists as attribute myWishlists (only titles would be required)
-		// - add all wishlists I'm invited to... model attribute still tbd  (only titles would be required)
-		//   (requires action also in other controllers and in header.html)
-		// - add current wishlist Id (or better add full wishlist instead of wishes?)
-		//*****************************************************************************
-		model.addAttribute("myWishlists", wishlistRepository.findFirstByReceiver(userRepository.findByEmail(principal.getName()).get()));
-		model.addAttribute("friendWishlist", wishlist);
-		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
-		return "giver";
+	public String giverWishlistView(Model model, Principal principal, Authentication authentication,
+			@RequestParam(required = false) Long id) {
+
+		Wishlist wishlist = userArtifactsService.friendWishlist(id);
+		if (wishlist != null) {
+			model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
+			model.addAttribute("thisWishlistId", wishlist.getId());
+			model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+			model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+			model.addAttribute("wishlist", wishlist);
+			model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+			return "giver";
+		}
+		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
+		// werden kann.
+		return "redirect:/under_construction";
+
 	}
 
 	@PostMapping("/giver")
-	public String updateWish(@ModelAttribute(value = "wishId") Long wishId,
-			@ModelAttribute(value = "giverId") Long giverId) {
-		//System.out.println("Wish ID = " + wishId);
+	public String updateWish(@ModelAttribute(value = "wishId") Long wishId) {
+		// System.out.println("Wish ID = " + wishId);
 		Wish wish = wishRepository.findById(wishId).get();
-		if (giverId == 0) {
-			wish.setGiver(null);
-		} else {
-			wish.setGiver(userRepository.findById(giverId).get());
-		}
-		wishRepository.save(wish);
-		return "redirect:/giver";
-	}
-	
-	@GetMapping("/receiver")
-	public String displayWishlist(Model model, @RequestParam(required=false) Long id) {
-		
-		Wishlist wishlist = new Wishlist();
-		if (id != null) {
-			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
-			if (optionalWishlist.isPresent()) {
-				wishlist = optionalWishlist.get();
-			} else {
-				id = null;
+		Wishlist wishlist = userArtifactsService.friendWishlist(wish.getWishlist().getId());
+		if (wishlist != null) { // Current User admitted for this wish's wishlist
+			if (wish.getGiver() == null) {
+				wish.setGiver(userArtifactsService.getCurrentUser());
+			} else if (userArtifactsService.getCurrentUser() == wish.getGiver()) {
+				wish.setGiver(null);
 			}
-		} 
-		if (id == null){
+			wishRepository.save(wish);
+			return "redirect:/giver?id=" + wishlist.getId();
+		}
+		// Sollte nur nach Manipulation (e.g. curl) erreicht werden:
+		// User versucht, eine wishlist zu verändern, für die er nicht als giver
+		// registriert ist
+		return "redirect:/under_construction";
+	}
+
+	@GetMapping("/receiver")
+	public String displayWishlist(Model model, @RequestParam(required = false) Long id, HttpServletRequest request) {
+	
+//		hostname (e.g. localhost)
+//		GiftMeFive.debugOut(request.getLocalName());
+//		ip address (e.g. 127.0.0.1)
+//		GiftMeFive.debugOut(request.getLocalAddr());
+//		GiftMeFive.debugOut(request.getLocalPort());
+//		GiftMeFive.debugOut(request.getProtocol());
+		Wishlist wishlist = new Wishlist();
+		if (id != null && userArtifactsService.ownWishlist(id) != null) {
+			wishlist = userArtifactsService.ownWishlist(id);
+		} else {
 			return ("redirect:/wishlist");
 		}
-		model.addAttribute("currentWishlist", wishlist);
-		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));		
-		model.addAttribute("wishlists", wishlistRepository.findAll());
+		model.addAttribute("thisWishlistId", wishlist.getId());
+		model.addAttribute("wishlist", wishlist);
+		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+		// todo: add protocol to model (invite url, receiver.html)
+		model.addAttribute("hostname", request.getLocalName());
+		model.addAttribute("port", request.getLocalPort());
 		return ("receiver");
 	}
-	
-	@GetMapping("/wishlist")
-	public String upsertWishList(Model model, @RequestParam(required = false) Long id) {
+
+	@GetMapping({ "/wishlist", "/newwishlist" })
+	public String upsertWishList(Model model, Principal principal, @RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = new Wishlist();
 
-		// *****************************************************
-		// TO DO: Default values must be defined!!!
-		// Wishlists of current user must be added to model instead of all wishlists!
-		// *****************************************************
-		Long receiverId = 1L; // receiver Id default Wert
-		Long themeId = 1L; // theme Id default Wert
-
-		if (id != null) {
-			Optional<Wishlist> optionalWishlist = wishlistRepository.findById(id);
-			if (optionalWishlist.isPresent()) {
-				wishlist = optionalWishlist.get();
-			} else {
-				// Selected wishlist doesn't exist!
-				id = null;
-			}
+		// Anonymous user should not be allowed to do /wishlist?id=x
+		if (principal == null && id != null) {
+			return "redirect:/wishlist";
 		}
-		if (id == null) {
-			// No wishlist - create new!
-			wishlist.setReceiver(receiverRepository.findById(receiverId).get());
+
+		// If wishlist exists and belongs to logged in user, update it. Else create a
+		// new one.
+		if (id != null && userArtifactsService.ownWishlist(id) != null) {
+			wishlist = userArtifactsService.ownWishlist(id);
+		} else {
+			id = null;
+			Long themeId = 1L; // theme Id default value for new wishlist
+			wishlist.setReceiver(userArtifactsService.getCurrentUser());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
 		}
-		model.addAttribute("wishlists", wishlistRepository.findAll());
+
+		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("themes", themeRepository.findAll());
 		return "wishlist";
 	}
 
 	@PostMapping("/wishlist")
-	public String saveWishList(@ModelAttribute Wishlist wishlist) {
+	public String saveWishList(@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
 
-		System.out.println("*****Innerhalb von  /wishlist PostMapping ********\n");
-		System.out.println("Wishlist Id: " + wishlist.getId());
+		if (wishlist.getId() == null) {
+			
+			wishlist.setReceiver(userArtifactsService.getCurrentUser());
+			
+			//if null or empty, create UUID as uniqueUrlReceiver
+			if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+				String uniqueUrlReceiver;
+				do {
+				uniqueUrlReceiver = UUID.randomUUID().toString();
+				} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
+				wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+			}
 
-//		wishlist.setReceiver(recRepository.findById(receiverId).get());
-//		wishlist.setTheme(thRepository.findById(themeId).get());
+			//if null or empty, create UUID as uniqueUrlGiver
+			if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
+				String uniqueUrlGiver;
+				do {
+				uniqueUrlGiver = UUID.randomUUID().toString();
+				} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null); 
+				wishlist.setUniqueUrlGiver(uniqueUrlGiver);
+			}
 
-		wishlistRepository.save(wishlist);
+			wishlistRepository.save(wishlist);
+		} else {
+			// Check if own wishlist; only then modify.
+			// Only take over title and theme
+			Wishlist myWishlist = userArtifactsService.ownWishlist(wishlist.getId());
+			if (myWishlist != null) {
+				myWishlist.setTheme(wishlist.getTheme());
+				myWishlist.setTitle(wishlist.getTitle());
+				wishlist = myWishlist;
+				
+				//if null or empty, create UUID as uniqueUrlReceiver
+				if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+					String uniqueUrlReceiver;
+					do {
+					uniqueUrlReceiver = UUID.randomUUID().toString();
+					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
+					wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+				}				
+
+				//if null or empty, create UUID as uniqueUrlGiver
+				if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
+					String uniqueUrlGiver;
+					do {
+					uniqueUrlGiver = UUID.randomUUID().toString();
+					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null); 
+					wishlist.setUniqueUrlGiver(uniqueUrlGiver);
+				}
+				
+				wishlistRepository.save(wishlist);
+			}
+		}
+
+		if ("Add Wish".equals(submit)) {
+			return "redirect:/wish?wishlistId=" + wishlist.getId();
+		}
 
 		return "redirect:/receiver?id=" + wishlist.getId();
 	}
 
 	@GetMapping("/wishlist/delete")
 	public String deleteWishList(@RequestParam Long id) {
-
-		wishlistRepository.deleteById(id);
-		
-		// *****************************************************
-		// TO DO: Receiver must be defined!!!
-		// *****************************************************
-		
-		Wishlist wishlist = wishlistRepository.findFirstByIdGreaterThan(0L);
-		String wishlistIdTag = (wishlist != null) ? "?id=" + wishlist.getId(): "" ;
-		return "redirect:/receiver" + wishlistIdTag;
+		// Check if own wishlist - otherwise don't delete
+		if (userArtifactsService.ownWishlist(id) != null) {
+			wishlistRepository.deleteById(id);
+		}
+		// redirect to another own wishlist if exists,
+		// otherwise to new wishlist page.
+		List<Wishlist> myWishlist = userArtifactsService.allOwnWishlists();
+		if (myWishlist.size() > 0) {
+			return "redirect:/receiver?id=" + myWishlist.get(0).getId();
+		} else {
+			return "redirect:/newwishlist";
+		}
 	}
 
 }

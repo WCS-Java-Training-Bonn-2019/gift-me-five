@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Gift Me Five Create a wishlist</title>
+<title>Gift Me Five</title>
 <meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
-<meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1 shrink-to-fit=no">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -21,52 +22,66 @@
 	crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/wishlistStyle.css">
+<link rel="stylesheet" href="css/wishStyle.css">
 
 </head>
 <body>
 	<div id="GM5wrapper">
 		<header
 			th:replace="header.html :: navigation(view=(${wishlist.id} == null ? 'newWishlist' : 'wishlist'),
-			myWishlists=${wishlists}, thisWishlistId=${wishlist.id})">
+            thisWishlistId=${wishlist.id})">
 		</header>
 
 		<!-- Create a wishlist page  -->
-
 		<main>
-			<section id="wishlist_control">
-			 
-				<h1 th:text="${wishlist.id}==null ? 'Create a wishlist' : ('Edit ' + ${wishlist.title})">Create a wishlist</h1>
-				
+			<div class="GM5spacer"></div>
+			<section>
 				<form method="post" th:action="@{/wishlist}" th:object="${wishlist}">
-					<input name="wishlistId" type="hidden" th:field="*{id}"> <input
-						name="receiverId" type="hidden" th:field="*{receiver}"> <label
-						for="wishlist-title">Wishlist title:</label>
-						<input
-						placeholder="My cool wishlist" required th:field="*{title}"
-						type="text" class="GM5input">
-
+					<div class="headline_buttons">
+						<h1
+							th:text="${wishlist.id}==null ? 'Create a wishlist' :
+						('Edit ' + ${wishlist.title})">
+							Create a wishlist</h1>
+						<div id="buttons">
+							<input type="submit" name="submit" value="Show"
+								class="btn btn-success GM5buttonGreen">
+							<input type="submit" name="submit" value="Add Wish"
+								class="btn btn-success GM5buttonGreen">
+							<!-- Button "Cancel" -->
+							<input type="button" class="btn btn-success GM5buttonGreen"
+								value="Cancel" onclick="history.back()">
+						</div>
+					</div>
+					<input name="id" th:field="*{id}" type="hidden">
+					<div class="GM5input">
+						<label for="wishlist-title">Wishlist title:</label>
+						<input placeholder="My cool wishlist" required th:field="*{title}"
+							type="text">
+					</div>
 					<hr>
-					<p>Select Background: </p>
-					<nav id="theme_grid">
-						<div th:each="theme : ${themes}" th:object="${theme}"
-							th:class="*{id}==${wishlist.theme.id} ? 'selected'">
-							<input type="radio" name="nav" th:id="'a' + *{id}"
-								th:field="${wishlist.theme.id}" th:value="*{id}"> 
-							<label th:for="'a' + *{id}">
-							<img th:src="@{/pics/themes/} + *{backgroundPicture}"
-								width="110" height="130" />
-							</label>
+					<h4>Select Background:</h4>
+					<nav>
+						<div class="container-fluid">
+							<div class="row">
+								<div th:each="theme : ${themes}" th:object="${theme}"
+									class="col-sm-4">
+									<input type="radio" name="nav" th:id="'a' + *{id}"
+										th:field="${wishlist.theme.id}" th:value="*{id}">
+									<label th:for="'a' + *{id}">
+										<img class="img-fluid img-thumbnail"
+											th:src="@{/pics/themes/} + *{backgroundPicture}"
+											alt="theme_background" />
+									</label>
+								</div>
+							</div>
 						</div>
 					</nav>
-					<input type="submit" value="Save" class="btn btn-success">
-					<!-- Button "Cancel" -->
-					<input type="button" class="btn btn-success" value="Cancel" onclick="history.back()">
+
 				</form>
-
 			</section>
-
+			<div class="GM5spacer"></div>
 		</main>
+
 		<footer th:replace="footer.html :: footer">Footer</footer>
 	</div>
 </body>

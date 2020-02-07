@@ -1,12 +1,15 @@
 package com.gift_me_five.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @EnableWebSecurity
 public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -37,12 +40,15 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 	    http
 	        .authorizeRequests()
-	        	.antMatchers("/", "/css/**", "/pics/**").permitAll()
+	        	.antMatchers("/", "/css/**", "/pics/**", "/newwishlist/**", "/showRegistrationForm/**", "/processRegistrationForm/**" , "/under_construction/**", "/wishlist").permitAll()
 	        	.antMatchers("/admin/**").hasRole("admin")
 	        	.anyRequest().authenticated()
 	        	.and()
 	        	.formLogin()
-	        	.loginPage("/showMyLoginPage")
+	        	//.failureUrl("/?loginFailure=1")
+	        	.failureHandler(customAuthenticationFailureHandler())
+	        	.successHandler(customAuthenticationSuccessHandler())
+	        	.loginPage("/")
 	        	.loginProcessingUrl("/authenticateTheUser")
 	        	.permitAll()
 	        	.and()
@@ -55,4 +61,14 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 	      //     .and()
 	      //  .httpBasic();
 	}
+
+	  @Bean
+	    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+	        return new CustomAuthenticationFailureHandler();
+	    }
+	  
+	  @Bean
+	  public AuthenticationSuccessHandler customAuthenticationSuccessHandler(){
+		  return new CustomAuthenticationSuccessHandler();
+	  }
 }

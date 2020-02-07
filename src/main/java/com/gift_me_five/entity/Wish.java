@@ -14,10 +14,12 @@ import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class Wish {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,14 +55,5 @@ public class Wish {
     private  Wishlist wishlist;
 	
 	public Wish() {
-	}
-
-	@Override
-	public String toString() {
-		return "Wish [id=" + id + ", title=" + title + ", item=" + item + ", description=" + description + ", link="
-				+ link + ", image=" + image + ", price=" + price + ", createDate=" + createDate + ", modifyDate="
-				+ modifyDate + ", giver=" + giver + ", wishlist=" + wishlist + "]";
-	}
-	
-	
+	}	
 }

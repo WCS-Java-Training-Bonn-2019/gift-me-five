@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
 <style
-	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${friendWishlist.theme.backgroundPicture} +');}'">
+	th:text="'#GM5wishlist_details { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
 #wishlist_details {
 	background-image: url(../pics/christmas-2946698_1920_mod.png);
 }
@@ -32,56 +32,53 @@
 </head>
 <body>
 	<header
-		th:replace="header.html :: navigation(view='receiver')">
+		th:replace="header.html :: navigation(view='giver')">
 	</header>
-	<div id="GM5wrapper">
+<!-- 	<div id="GM5wrapper"> -->
 		<main>
-			<div class="GM5spacerLeft"></div>
+<!-- 			<div class="GM5spacerLeft"></div> -->
 			<section id="GM5wishlist_details">
-			<div class="GM5wishlistBlock">
-				<div class="GM5wishlistElement GM5wishlistTitle">
-					<h1 th:text="${friendWishlist.title}">My Christmas Wishes</h1>
-				</div>
+				<div class="GM5wishlistBlock">
+					<div class="GM5wishlistElement GM5wishlistTitle">
+						<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
+					</div>
 
-				<ul>
-					<li th:each="wish : ${wishes}" th:object="${wish}"
-						th:class="'GM5wishlistElement ' + (*{giver}!=null ? 'GM5selected' : '')">
-						<form method="post" th:action="@{/giver}">
-							<div class="GM5wishlistTitle">
-								<h2 th:text="*{title}">title</h2>
-								<div class="GM5button_holder">
-									<!-- **************** TO DO ******************** -->
-									<!-- The actual user id of the giver must be set -->
-									<div id="GM5hideInput">
-										<input th:name="wishId" th:id="*{id}" th:value="*{id}"
-											type="hidden"> <input th:name="giverId"
-											th:value="*{giver} ? '0' : '1'" type="hidden"> <input
-											type="submit" th:name="Submit" value="" th:id="'a' + *{id}">
-										<label th:for="'a' + *{id}"> <span
-											class="btn btn-primary GM5button" data-toggle="tooltip"
-											data-placement="right" title="(De-)select wish"> <img
-												class="GM5icon"
-												th:src="@{/pics/icons/} + (*{giver} ? 'checked_white.png' : 'nonchecked_white.png')" />
-										</span>
-										</label>
+					<ul>
+						<li th:each="wish : ${wishes}" th:object="${wish}"
+							th:class="'GM5wishlistElement ' + (*{giver}!=null ? 'GM5selected' : '')">
+							<form method="post" th:action="@{/giver}">
+								<div class="GM5wishlistTitle">
+									<h2 th:text="*{title}">title</h2>
+									<div class="GM5button_holder"
+										th:if="*{giver}==null or ${myUserId} == *{giver.id}">
+										<div id="GM5hideInput">
+								 		<input type="hidden" th:name="wishId" th:value="*{id}">
+											<input type="submit" value="" th:id="'a' + *{id}"> <label th:for="'a' + *{id}">
+												<span class="btn btn-primary GM5button"
+												data-toggle="tooltip" data-placement="right"
+												title="(De-)select wish"> <img class="GM5icon"
+													th:src="@{/pics/icons/} + (*{giver} ? 'checked_white.png' : 'nonchecked_white.png')" />
+											</span>
+											</label>
+										</div>
 									</div>
 								</div>
-							</div>
-							<p th:text="*{description}">description</p>
-							<img  class="GM5giftImage" th:if="${wish.image != ''} and ${wish.image != null}"
-								th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
-							<h3>
-								<a th:if="${wish.link != ''} and ${wish.link != null}"
-									th:href="@{${wish.link}}">Link</a>
-							</h3>
-						</form>
-					</li>
-				</ul>
-			</div>
+								<p th:text="*{description}">description</p>
+								<img class="GM5giftImage"
+									th:if="${wish.image != ''} and ${wish.image != null}"
+									th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
+								<h3>
+									<a th:if="${wish.link != ''} and ${wish.link != null}"
+										th:href="@{${wish.link}}">Link</a>
+								</h3>
+							</form>
+						</li>
+					</ul>
+				</div>
 			</section>
-			<div class="GM5spacerRight"></div>
+<!-- 			<div class="GM5spacerRight"></div> -->
 		</main>
-	</div>
+<!-- 	</div> -->
 	<footer th:replace="footer.html :: footer">Footer</footer>
 </body>
 </html>

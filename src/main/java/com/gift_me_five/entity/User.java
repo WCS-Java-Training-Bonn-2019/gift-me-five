@@ -25,10 +25,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 7089309836794614341L;
@@ -39,7 +41,7 @@ public class User implements UserDetails {
 
 	@Column(nullable = false, unique = true)
 	private String email;
-	
+
 //	no more login, use email
 //	@Column(nullable = false, unique = true)
 //	private String login;
@@ -50,7 +52,7 @@ public class User implements UserDetails {
 	private String firstname;
 	private String lastname;
 
-	private Long failedLogins = 0L;
+	private Long failedLogins;
 
 	// admin or user
 	// todo default value "" or null?!
@@ -94,6 +96,8 @@ public class User implements UserDetails {
 	private List<GiverSeeWishlist> giverSeeWishLists = new ArrayList<>();
 
 	public User() {
+		this.failedLogins = 0L;
+		this.role = "pending";
 	}
 
 	@Override
@@ -115,7 +119,10 @@ public class User implements UserDetails {
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO locked if failedLogins > 3
-		return true;
+		if (this.getFailedLogins() > 3) {
+			return false;
+		} else
+			return true;
 	}
 
 	@Override
@@ -125,16 +132,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO role == registered 
+		// TODO role == registered
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", password=" + password + ", firstname=" + firstname
-				+ ", lastname=" + lastname + ", email=" + email + ", failedLogins=" + failedLogins + ", role=" + role
-				+ ", lastLogin=" + lastLogin + ", createDate=" + createDate + ", modifyDate=" + modifyDate
-				+ ", wishlists=" + wishlists + ", wishes=" + wishes + ", giverSeeWishLists=" + giverSeeWishLists + "]";
-	}
-
 }
