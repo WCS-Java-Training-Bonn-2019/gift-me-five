@@ -36,39 +36,44 @@
 		<main>
 			<div class="GM5spacer"></div>
 			<section>
-					<h1
-						th:text="${wishlist.id}==null ? 'Create a wishlist' :
-						('Edit ' + ${wishlist.title})">
-						Create a wishlist</h1>
 				<form method="post" th:action="@{/wishlist}" th:object="${wishlist}">
+					<div class="headline_buttons">
+						<h1
+							th:text="${wishlist.id}==null ? 'Create a wishlist' :
+						('Edit ' + ${wishlist.title})">
+							Create a wishlist</h1>
+						<div id="buttons">
+							<input type="submit" name="submit" value="Show"
+								class="btn btn-success GM5buttonGreen">
+							<input type="submit" name="submit" value="Add Wish"
+								class="btn btn-success GM5buttonGreen">
+							<!-- Button "Cancel" -->
+							<input type="button" class="btn btn-success GM5buttonGreen"
+								value="Cancel" onclick="history.back()">
+						</div>
+					</div>
 					<input name="id" th:field="*{id}" type="hidden">
 					<div class="GM5input">
 						<label for="wishlist-title">Wishlist title:</label>
 						<input placeholder="My cool wishlist" required th:field="*{title}"
 							type="text">
 					</div>
-					<div id="buttons">
-						<input type="submit" name="submit" value="Show"
-							class="btn btn-success GM5buttonGreen">
-						<input type="submit" name="submit" value="Add Wish"
-							class="btn btn-success GM5buttonGreen">
-						<!-- Button "Cancel" -->
-						<input type="button" class="btn btn-success GM5buttonGreen" value="Cancel"
-							onclick="history.back()">
-					</div>
-
 					<hr>
-					<p>Select Background:</p>
-					<nav id="theme_grid">
-						<div th:each="theme : ${themes}" th:object="${theme}"
-							th:class="*{id}==${wishlist.theme.id} ? 'selected'">
-							<input type="radio" name="nav" th:id="'a' + *{id}"
-								th:field="${wishlist.theme.id}" th:value="*{id}">
-							<label th:for="'a' + *{id}">
-								<img class="img-fluid"
-									th:src="@{/pics/themes/} + *{backgroundPicture}"
-									alt="theme_background" />
-							</label>
+					<h4>Select Background:</h4>
+					<nav>
+						<div class="container-fluid">
+							<div class="row">
+								<div th:each="theme : ${themes}" th:object="${theme}"
+									class="col-sm-4">
+									<input type="radio" name="nav" th:id="'a' + *{id}"
+										th:field="${wishlist.theme.id}" th:value="*{id}">
+									<label th:for="'a' + *{id}">
+										<img class="img-fluid img-thumbnail"
+											th:src="@{/pics/themes/} + *{backgroundPicture}"
+											alt="theme_background" />
+									</label>
+								</div>
+							</div>
 						</div>
 					</nav>
 
