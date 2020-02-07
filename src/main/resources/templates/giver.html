@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
 <style
-	th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
+	th:text="'#GM5wishlist_details { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
 #wishlist_details {
 	background-image: url(../pics/christmas-2946698_1920_mod.png);
 }
@@ -34,9 +34,9 @@
 	<header
 		th:replace="header.html :: navigation(view='giver')">
 	</header>
-	<div id="GM5wrapper">
+<!-- 	<div id="GM5wrapper"> -->
 		<main>
-			<div class="GM5spacerLeft"></div>
+<!-- 			<div class="GM5spacerLeft"></div> -->
 			<section id="GM5wishlist_details">
 				<div class="GM5wishlistBlock">
 					<div class="GM5wishlistElement GM5wishlistTitle">
@@ -76,9 +76,9 @@
 					</ul>
 				</div>
 			</section>
-			<div class="GM5spacerRight"></div>
+<!-- 			<div class="GM5spacerRight"></div> -->
 		</main>
-	</div>
+<!-- 	</div> -->
 	<footer th:replace="footer.html :: footer">Footer</footer>
 </body>
 </html>

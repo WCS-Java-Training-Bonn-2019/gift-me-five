@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
 <style
-	th:text="'main { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
+	th:text="'#GM5wishlist_details { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
 #wishlist_details {
 	background-image: url(../pics/christmas-2946698_1920_mod.png);
 }
@@ -35,9 +35,9 @@
 		th:replace="header.html :: navigation(view='receiver', thisWishlistId=${wishlist.id})">
 	</header>
 	<!-- 	<div id="GM5wrapper"> -->
-	<main id="GM5wishlist_details">
+	<main>
 		<!-- 			<div class="GM5spacerLeft"></div> -->
-		<section>
+		<section id="GM5wishlist_details">
 			<div class="GM5wishlistBlock">
 				<div class="GM5wishlistElement GM5wishlistTitle">
 					<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
