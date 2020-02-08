@@ -44,7 +44,10 @@ public class RegistrationController {
 	@GetMapping("/profile")
 	public String editProfile(Model model, Principal principal) {
 		// todo get user credential via principal
-		model.addAttribute("user", new User());
+		Optional<User> optionalUser = userRepository.findByEmail(principal.getName());
+		if (optionalUser.isPresent()) {
+			model.addAttribute("user", optionalUser.get());
+		}
 
 		return "registration-form";
 	}
@@ -59,7 +62,7 @@ public class RegistrationController {
 
 	@PostMapping("/processRegistrationForm")
 	public String processRegistrationForm(@Valid @ModelAttribute("user") User theUser, BindingResult theBindingResult,
-			Model theModel) {
+			Model theModel, Principal principal) {
 
 		String newEmailLogin = theUser.getEmail();
 		logger.info("Processing registration form for: " + newEmailLogin);
@@ -70,20 +73,19 @@ public class RegistrationController {
 		}
 
 		// check the database if user already exists
+		// and no principal, because edit WILL perform on existing account
 		Optional<User> existing = userRepository.findByEmail(newEmailLogin);
-		if (existing.isPresent()) {
+		if (existing.isPresent() && !existing.get().getEmail().equals(principal.getName())) {
 			theModel.addAttribute("user", new User());
 			theModel.addAttribute("registrationError", "User name already exists.");
 
-			if (!theUser.getPassword().equals(existing.get().getPassword())) {
-				// password encrypten
-				theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
-			}
 			logger.warning("User name already exists.");
 			return "registration-form";
 
-		} else {
+		} 
 
+		// password check and encode must be done for new and existing user (edit profile)
+		if (!theUser.getPassword().equals(existing.get().getPassword())) {
 			// password encrypten
 			theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
 		}
