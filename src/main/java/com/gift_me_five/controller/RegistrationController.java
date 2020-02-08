@@ -16,9 +16,13 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
+import com.gift_me_five.entity.Wish;
 import com.gift_me_five.repository.UserRepository;
 
 @Controller
@@ -40,7 +44,7 @@ public class RegistrationController {
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 
 	}
-	
+
 	@GetMapping("/profile")
 	public String editProfile(Model model, Principal principal) {
 		// todo get user credential via principal
@@ -51,10 +55,10 @@ public class RegistrationController {
 
 		return "registration-form";
 	}
-	
+
 	@GetMapping("/showRegistrationForm")
 	public String showMyRegistrationPage(Model model) {
-		
+
 		model.addAttribute("user", new User());
 
 		return "registration-form";
@@ -78,14 +82,14 @@ public class RegistrationController {
 		if (existing.isPresent() && !existing.get().getEmail().equals(principal.getName())) {
 			theModel.addAttribute("user", new User());
 			theModel.addAttribute("registrationError", "User name already exists.");
-
 			logger.warning("User name already exists.");
 			return "registration-form";
 
-		} 
+		}
 
-		// password check and encode must be done for new and existing user (edit profile)
-		if (!theUser.getPassword().equals(existing.get().getPassword())) {
+		// password check and encode must be done for new and existing user (edit
+		// profile)
+		if (!existing.isPresent() || !theUser.getPassword().equals(existing.get().getPassword())) {
 			// password encrypten
 			theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
 		}
@@ -97,6 +101,16 @@ public class RegistrationController {
 		logger.info("Successfully created user: " + newEmailLogin);
 
 		return "registration-confirmation";
+	}
+
+	@GetMapping("/delete_profile")
+	public String deleteUser(Principal principal) {
+// todo delete is working, force logout not yet, so no delete for comfort! :)
+//		if (principal != null) {
+//			User user = userRepository.findByEmail(principal.getName()).get();
+//			userRepository.deleteById(user.getId());
+//		}
+		return "/";
 	}
 
 }
