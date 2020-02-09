@@ -29,7 +29,7 @@ public class LoginController {
 		} else {
 			GiftMeFive.debugOut("no principal, yet!!!");
 		}
-
+		
 		return "index";
 	}
 

@@ -22,13 +22,14 @@
 
 				<form action="#" th:action="@{/processRegistrationForm}" th:object="${user}" method="post">
 					<input type="hidden" th:field="*{id}">
-					<input type="hidden" sec:authorize="isAuthenticated()" th:field="*{email}">
+<!-- 					<input type="hidden" sec:authorize="isAuthenticated()" th:field="*{email}"> -->
 					<table>
 
 						<tr>
 							<td>
-								<input sec:authorize="isAnonymous()" th:field="*{email}" type="email" placeholder="E-Mail">
-								<p sec:authorize="isAuthenticated()" th:text="'User: ' + *{email}"></p>
+<!-- 								<input sec:authorize="isAnonymous()" th:field="*{email}" type="email" placeholder="E-Mail"> -->
+								<input th:field="*{email}" type="email" placeholder="E-Mail">
+<!-- 								<p sec:authorize="isAuthenticated()" th:text="'User: ' + *{email}"></p> -->
 							</td>
 						</tr>
 

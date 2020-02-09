@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
-import com.gift_me_five.entity.Wish;
 import com.gift_me_five.repository.UserRepository;
 
 @Controller
@@ -66,8 +64,10 @@ public class RegistrationController {
 
 	@PostMapping("/processRegistrationForm")
 	public String processRegistrationForm(@Valid @ModelAttribute("user") User theUser, BindingResult theBindingResult,
-			Model theModel, Principal principal) {
+			Model theModel, Principal principal, HttpServletRequest request) {
 
+		GiftMeFive.debugOut("theUser: " + theUser.toString());
+		
 		String newEmailLogin = theUser.getEmail();
 		logger.info("Processing registration form for: " + newEmailLogin);
 
@@ -99,18 +99,21 @@ public class RegistrationController {
 		userRepository.save(theUser);
 
 		logger.info("Successfully created user: " + newEmailLogin);
-
+		
 		return "registration-confirmation";
 	}
 
 	@GetMapping("/delete_profile")
-	public String deleteUser(Principal principal) {
-// todo delete is working, force logout not yet, so no delete for comfort! :)
-//		if (principal != null) {
-//			User user = userRepository.findByEmail(principal.getName()).get();
-//			userRepository.deleteById(user.getId());
-//		}
-		return "/";
+	public String deleteUser(Principal principal, HttpServletRequest request) {
+		// delete user in DB
+		if (principal != null) {
+			User user = userRepository.findByEmail(principal.getName()).get();
+			userRepository.deleteById(user.getId());
+		}
+
+		//terminate session -> force logout
+		request.getSession().invalidate();
+		return "redirect:/";
 	}
 
 }
