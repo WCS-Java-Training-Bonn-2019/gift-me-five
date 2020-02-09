@@ -79,7 +79,7 @@ public class RegistrationController {
 		// check the database if user already exists
 		// and no principal, because edit WILL perform on existing account
 		Optional<User> existing = userRepository.findByEmail(newEmailLogin);
-		if (existing.isPresent() && !existing.get().getEmail().equals(principal.getName())) {
+		if (existing.isPresent() && principal == null) {
 			theModel.addAttribute("user", new User());
 			theModel.addAttribute("registrationError", "User name already exists.");
 			logger.warning("User name already exists.");
