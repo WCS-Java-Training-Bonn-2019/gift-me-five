@@ -118,15 +118,16 @@ public class RegistrationController {
 
 			// todo change credentials without logout
 			// force logout
-			request.getSession().invalidate();
+//			request.getSession().invalidate();
 			
 //			GiftMeFive.debugOut("Change principal");
 //			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //			Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials());
 //			SecurityContextHolder.getContext().setAuthentication(newAuth);
+			Authentication authentication = new UsernamePasswordAuthenticationToken(theUser, theUser.getPassword(), theUser.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 			
-			
-			return "redirect:/?loginFailure=4";
+			return "redirect:/";
 		}
 
 		logger.info("Successfully created/edited user: " + newEmailLogin);
