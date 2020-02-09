@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
@@ -55,10 +56,10 @@ public class RegistrationController {
 	}
 
 	@GetMapping("/showRegistrationForm")
-	public String showMyRegistrationPage(Model model) {
+	public String showMyRegistrationPage(Model model, @RequestParam(required = false) Long loginFailure) {
 
 		model.addAttribute("user", new User());
-
+		model.addAttribute("loginFailure", loginFailure);
 		return "registration-form";
 	}
 
@@ -67,7 +68,7 @@ public class RegistrationController {
 			Model theModel, Principal principal, HttpServletRequest request) {
 
 		GiftMeFive.debugOut("theUser: " + theUser.toString());
-		
+
 		String newEmailLogin = theUser.getEmail();
 		logger.info("Processing registration form for: " + newEmailLogin);
 
@@ -78,12 +79,18 @@ public class RegistrationController {
 
 		// check the database if user already exists
 		// and no principal, because edit WILL perform on existing account
-		Optional<User> existing = userRepository.findByEmail(newEmailLogin);
+		// must use findById if possible because email might have changed
+		Optional<User> existing;
+		if (theUser.getId() == null) {
+			existing = userRepository.findByEmail(newEmailLogin);
+		} else {
+			existing = userRepository.findById(theUser.getId());
+		}
 		if (existing.isPresent() && principal == null) {
 			theModel.addAttribute("user", new User());
 			theModel.addAttribute("registrationError", "User name already exists.");
 			logger.warning("User name already exists.");
-			return "registration-form";
+			return "redirect:/showRegistrationForm/?loginFailure=3";
 
 		}
 
@@ -98,8 +105,21 @@ public class RegistrationController {
 
 		userRepository.save(theUser);
 
-		logger.info("Successfully created user: " + newEmailLogin);
-		
+		// user has changed his email
+		// user is logged in (still old email)
+		// findByEmail does NOT get a result (isEmpty)
+		// findById is still working (Not isEmpty)
+		if (principal != null && userRepository.findByEmail(principal.getName()).isEmpty()
+				&& !userRepository.findById(theUser.getId()).isEmpty()) {
+
+			// todo change credentials without logout
+// force logout
+			request.getSession().invalidate();
+			return "redirect:/";
+		}
+
+		logger.info("Successfully created/edited user: " + newEmailLogin);
+
 		return "registration-confirmation";
 	}
 
@@ -111,7 +131,7 @@ public class RegistrationController {
 			userRepository.deleteById(user.getId());
 		}
 
-		//terminate session -> force logout
+		// terminate session -> force logout
 		request.getSession().invalidate();
 		return "redirect:/";
 	}
