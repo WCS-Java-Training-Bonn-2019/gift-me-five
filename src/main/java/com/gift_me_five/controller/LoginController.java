@@ -24,11 +24,11 @@ public class LoginController {
 		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("loginFailure", loginFailure);
 
-		if (principal != null) {
-			GiftMeFive.debugOut(principal.getName());
-		} else {
-			GiftMeFive.debugOut("no principal, yet!!!");
-		}
+//		if (principal != null) {
+//			GiftMeFive.debugOut(principal.getName());
+//		} else {
+//			GiftMeFive.debugOut("no principal, yet!!!");
+//		}
 		
 		return "index";
 	}

@@ -27,7 +27,6 @@ import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.repository.UserRepository;
 
-
 @Controller
 public class RegistrationController {
 
@@ -70,8 +69,6 @@ public class RegistrationController {
 	@PostMapping("/processRegistrationForm")
 	public String processRegistrationForm(@Valid @ModelAttribute("user") User theUser, BindingResult theBindingResult,
 			Model theModel, Principal principal, HttpServletRequest request) {
-
-		GiftMeFive.debugOut("theUser: " + theUser.toString());
 
 		String newEmailLogin = theUser.getEmail();
 		logger.info("Processing registration form for: " + newEmailLogin);
@@ -116,17 +113,11 @@ public class RegistrationController {
 		if (principal != null && userRepository.findByEmail(principal.getName()).isEmpty()
 				&& !userRepository.findById(theUser.getId()).isEmpty()) {
 
-			// todo change credentials without logout
-			// force logout
-//			request.getSession().invalidate();
-			
-//			GiftMeFive.debugOut("Change principal");
-//			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//			Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials());
-//			SecurityContextHolder.getContext().setAuthentication(newAuth);
-			Authentication authentication = new UsernamePasswordAuthenticationToken(theUser, theUser.getPassword(), theUser.getAuthorities());
+			// change credentials without logout
+			Authentication authentication = new UsernamePasswordAuthenticationToken(theUser, theUser.getPassword(),
+					theUser.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			
+
 			return "redirect:/";
 		}
 
