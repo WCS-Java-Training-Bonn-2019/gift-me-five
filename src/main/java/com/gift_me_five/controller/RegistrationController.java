@@ -9,6 +9,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.repository.UserRepository;
+
 
 @Controller
 public class RegistrationController {
@@ -113,9 +117,16 @@ public class RegistrationController {
 				&& !userRepository.findById(theUser.getId()).isEmpty()) {
 
 			// todo change credentials without logout
-// force logout
+			// force logout
 			request.getSession().invalidate();
-			return "redirect:/";
+			
+//			GiftMeFive.debugOut("Change principal");
+//			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//			Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials());
+//			SecurityContextHolder.getContext().setAuthentication(newAuth);
+			
+			
+			return "redirect:/?loginFailure=4";
 		}
 
 		logger.info("Successfully created/edited user: " + newEmailLogin);
