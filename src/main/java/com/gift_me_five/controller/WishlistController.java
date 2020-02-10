@@ -39,12 +39,12 @@ public class WishlistController {
 
 	@GetMapping("/giver")
 	public String giverWishlistView(Model model, Principal principal, Authentication authentication,
-			@RequestParam(required = false) Long id) {
+			@RequestParam(required = false) Long id, @RequestParam(required = false) boolean hide) {
 
 		Wishlist wishlist = userArtifactsService.friendWishlist(id);
 		if (wishlist != null) {
 			model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
-			model.addAttribute("thisWishlistId", wishlist.getId());
+            model.addAttribute("hide", hide);
 			model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
 			model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 			model.addAttribute("wishlist", wishlist);
@@ -58,11 +58,12 @@ public class WishlistController {
 	}
 
 	@PostMapping("/giver")
-	public String updateWish(@ModelAttribute(value = "wishId") Long wishId) {
+	public String updateWish(@RequestParam(required = false) Long wishId, @RequestParam(required = false) boolean hide) {
 		// System.out.println("Wish ID = " + wishId);
-		Wish wish = wishRepository.findById(wishId).get();
-		Wishlist wishlist = userArtifactsService.friendWishlist(wish.getWishlist().getId());
-		if (wishlist != null) { // Current User admitted for this wish's wishlist
+		
+		Wish wish = userArtifactsService.friendWish(wishId);
+		if (wish != null) {
+			Wishlist wishlist = wish.getWishlist();
 			if (wish.getGiver() == null) {
 				wish.setGiver(userArtifactsService.getCurrentUser());
 			} else if (userArtifactsService.getCurrentUser() == wish.getGiver()) {
