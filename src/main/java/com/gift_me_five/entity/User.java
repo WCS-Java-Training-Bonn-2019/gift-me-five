@@ -55,9 +55,11 @@ public class User implements UserDetails {
 	private Long failedLogins;
 
 	// admin or user
-	// todo default value "" or null?!
 	private String role;
 
+	// unique key for user mail handling - confirmation, pw reset
+	private String reason;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "lastLogin", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date lastLogin;
@@ -96,8 +98,8 @@ public class User implements UserDetails {
 	private List<GiverSeeWishlist> giverSeeWishLists = new ArrayList<>();
 
 	public User() {
-		this.failedLogins = 0L;
-		this.role = "pending";
+		this.failedLogins = 0L; // default: no failedLogins at registration
+		this.role = "pending";  // default: new users are pending
 	}
 
 	@Override

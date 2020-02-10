@@ -2,10 +2,12 @@ package com.gift_me_five.controller;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -20,12 +22,14 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.repository.UserRepository;
+import com.gift_me_five.service.SimpleEmailService;
 
 @Controller
 public class RegistrationController {
@@ -35,6 +39,9 @@ public class RegistrationController {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	SimpleEmailService simpleEmailSerive;
 
 	private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -98,12 +105,26 @@ public class RegistrationController {
 		// password check and encode must be done for new and existing user (edit
 		// profile)
 		if (!existing.isPresent() || !theUser.getPassword().equals(existing.get().getPassword())) {
-			// password encrypten
+			// password encrypt if new or changed
 			theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
 		}
 
-		// create user account
+		// new user, send email address validation
+		if (theUser.getId() == null) {
+			try {
 
+				// create unique key for confirmation URL
+				theUser.setReason(UUID.randomUUID().toString());
+				GiftMeFive.debugOut("http://" + request.getLocalName() + request.getLocalPort() + "/confirm/"
+						+ theUser.getEmail() + "/" + theUser.getReason() + "/");
+				String response = simpleEmailSerive.email(theUser.getEmail(), "Confirm Registration",
+						request.getLocalName() + request.getLocalPort() + "/confirm/" + theUser.getReason() + "/");
+			} catch (Exception ex) {
+				return "Error in sending email: " + ex;
+			}
+		}
+
+		// create user account
 		userRepository.save(theUser);
 
 		// user has changed his email
@@ -124,6 +145,23 @@ public class RegistrationController {
 		logger.info("Successfully created/edited user: " + newEmailLogin);
 
 		return "registration-confirmation";
+	}
+
+	@GetMapping("/asdf")
+	public String confirmEmpty() {
+		GiftMeFive.debugOut("asdf");
+		return "redirect:/?loginFailure=4";
+	}
+	
+	// Mapping for confirmation mails
+	@GetMapping("/confirm/{email}/{reasonKey}")
+	public String confirmEmail(Principal principal, @PathVariable String email, @PathVariable String reasonKey) {
+		if (email == null || reasonKey == null) {
+			
+		}
+		GiftMeFive.debugOut("PathVarible test: " + email + " " + reasonKey);
+		
+		return "redirect:/";
 	}
 
 	@GetMapping("/delete_profile")
