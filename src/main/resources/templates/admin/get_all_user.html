@@ -59,8 +59,10 @@
 						<td th:text="*{failedLogins}">Failed Logins</td>
 						<td th:text="*{createDate}">Create Date</td>
 						<td th:text="*{modifyDate}">Modify Date</td>
-						<td><a th:href="@{'/admin/edit_user/' + *{id}}">Edit</a> <a
-							th:href="@{'/admin/delete_user/' + *{id}}">Delete</a></td>
+						<td>
+							<a th:href="@{'/admin/edit_user/' + *{id}}">Edit</a>
+							<a th:href="@{'/admin/delete_user/' + *{id}}">Delete</a>
+						</td>
 					</tr>
 				</table>
 			</section>

@@ -26,14 +26,14 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 			AuthenticationException exception) throws IOException, ServletException {
 
 		GiftMeFive.debugOut(exception.getMessage());
-				
+
 		// is user locked ?
 		if (exception.getMessage().equals("User account is locked")) {
-			
+
 			GiftMeFive.debugOut("User is lockded");
-			
+
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			
+
 			response.sendRedirect("/?loginFailure=2");
 
 		} else {
@@ -53,20 +53,13 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 				// set new number for failed_login in db
 				existing.get().setFailedLogins(countFailedLogin);
 				userRepository.save(existing.get());
-				
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
-
-				response.sendRedirect("/?loginFailure=1");
-
-			} else {
-				// user not in db
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
-
-				response.sendRedirect("/?loginFailure=1");
 			}
-		}
+			// doesn't matter if user is in DB or not
+			// user is not allowed to login
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.sendRedirect("/?loginFailure=1");
 
-		
+		}
 
 	}
 
