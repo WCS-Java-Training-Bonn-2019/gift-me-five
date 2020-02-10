@@ -39,16 +39,21 @@ public class WishlistController {
 
 	@GetMapping("/giver")
 	public String giverWishlistView(Model model, Principal principal, Authentication authentication,
-			@RequestParam(required = false) Long id) {
+			@RequestParam(required = false) Long id, @RequestParam(required = false) boolean hide) {
 
 		Wishlist wishlist = userArtifactsService.friendWishlist(id);
 		if (wishlist != null) {
 			model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
-			model.addAttribute("thisWishlistId", wishlist.getId());
+			// Flag to indicate whether wishes selected by other friends shall be hidden
+            model.addAttribute("hide", hide);
+            // Populate menu item for own wishlists (titles needed)
 			model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+			// Populate menu item for friends wishlists  (titles needed)
 			model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+			// Title, id and theme of current wishlist needed to build the page:
 			model.addAttribute("wishlist", wishlist);
-			model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+			//model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+			model.addAttribute("wishes", userArtifactsService.unSelectedWishes(wishlist));
 			return "giver";
 		}
 		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
@@ -58,11 +63,12 @@ public class WishlistController {
 	}
 
 	@PostMapping("/giver")
-	public String updateWish(@ModelAttribute(value = "wishId") Long wishId) {
+	public String updateWish(@RequestParam(required = false) Long wishId, @RequestParam(required = false) boolean hide) {
 		// System.out.println("Wish ID = " + wishId);
-		Wish wish = wishRepository.findById(wishId).get();
-		Wishlist wishlist = userArtifactsService.friendWishlist(wish.getWishlist().getId());
-		if (wishlist != null) { // Current User admitted for this wish's wishlist
+		
+		Wish wish = userArtifactsService.friendWish(wishId);
+		if (wish != null) {
+			Wishlist wishlist = wish.getWishlist();
 			if (wish.getGiver() == null) {
 				wish.setGiver(userArtifactsService.getCurrentUser());
 			} else if (userArtifactsService.getCurrentUser() == wish.getGiver()) {
