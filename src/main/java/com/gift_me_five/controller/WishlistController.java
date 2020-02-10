@@ -44,11 +44,16 @@ public class WishlistController {
 		Wishlist wishlist = userArtifactsService.friendWishlist(id);
 		if (wishlist != null) {
 			model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
+			// Flag to indicate whether wishes selected by other friends shall be hidden
             model.addAttribute("hide", hide);
+            // Populate menu item for own wishlists (titles needed)
 			model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+			// Populate menu item for friends wishlists  (titles needed)
 			model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+			// Title, id and theme of current wishlist needed to build the page:
 			model.addAttribute("wishlist", wishlist);
-			model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+			//model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+			model.addAttribute("wishes", userArtifactsService.unSelectedWishes(wishlist));
 			return "giver";
 		}
 		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt

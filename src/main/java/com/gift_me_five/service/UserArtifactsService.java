@@ -1,5 +1,6 @@
 package com.gift_me_five.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +66,25 @@ public class UserArtifactsService {
 		}
 		return null;
 	}
+	
+	public List<Wish> unSelectedWishes(Wishlist wishlist) {
+		// Returns a list of all wishes on a wishlist, sorted so that
+		// all wishes with current user as giver are at the beginning.
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		List<Wish> wishes = new ArrayList<>();
+		List<Wish> unselectedWishes = new ArrayList<>();
+		for (Wish wish : wishlist.getWishes()) {
+			if (wish.getGiver() != null && authentication.getName().equals(wish.getGiver().getEmail())) {
+				wishes.add(wish);
+			} else {
+				unselectedWishes.add(wish);
+			}
+		}
+		wishes.addAll(unselectedWishes);
+		return wishes;
+	}
+
 	
 	public Wishlist ownWishlist(Long id) {
 

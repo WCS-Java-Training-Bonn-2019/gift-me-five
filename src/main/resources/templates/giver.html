@@ -45,7 +45,7 @@
 							th:src="@{/pics/icons/} + (${hide==true} ? 'unhide_white.png' : 'hide_white.png')" />
 					</a>
 				</div>
-				<ul>
+				<ul>				
 					<li th:each="wish : ${wishes}" th:object="${wish}"
 						th:class="'GM5wishlistElement ' + (*{giver}!=null ? 'GM5selected' : '')">
 						<div
