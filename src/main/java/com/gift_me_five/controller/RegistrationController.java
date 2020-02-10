@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -115,10 +114,9 @@ public class RegistrationController {
 
 				// create unique key for confirmation URL
 				theUser.setReason(UUID.randomUUID().toString());
-				GiftMeFive.debugOut("http://" + request.getLocalName() + request.getLocalPort() + "/confirm/"
-						+ theUser.getEmail() + "/" + theUser.getReason() + "/");
-				String response = simpleEmailSerive.email(theUser.getEmail(), "Confirm Registration",
-						request.getLocalName() + request.getLocalPort() + "/confirm/" + theUser.getReason() + "/");
+				simpleEmailSerive.email(theUser.getEmail(), "Confirm Registration",
+						"http://" + request.getLocalName() + ":" + request.getLocalPort() + "/confirm/"
+								+ theUser.getEmail() + "/" + theUser.getReason() + "/");
 			} catch (Exception ex) {
 				return "Error in sending email: " + ex;
 			}
@@ -147,20 +145,31 @@ public class RegistrationController {
 		return "registration-confirmation";
 	}
 
-	@GetMapping("/asdf")
-	public String confirmEmpty() {
-		GiftMeFive.debugOut("asdf");
+	@GetMapping({ "/confirm", "/confirm/{onlyone}" })
+	public String confirmEmpty(@PathVariable String onlyone) {
 		return "redirect:/?loginFailure=4";
 	}
-	
+
 	// Mapping for confirmation mails
 	@GetMapping("/confirm/{email}/{reasonKey}")
-	public String confirmEmail(Principal principal, @PathVariable String email, @PathVariable String reasonKey) {
-		if (email == null || reasonKey == null) {
-			
+	public String confirmEmail(Principal principal, @PathVariable(required = true) String email,
+			@PathVariable(required = true) String reasonKey) {
+		Optional<User> user = userRepository.findByEmail(email);
+		if (!email.equals(user.get().getEmail()) && reasonKey.equals(user.get().getReason())) {
+			return "redirect:/?loginFailure=4";
 		}
-		GiftMeFive.debugOut("PathVarible test: " + email + " " + reasonKey);
-		
+		// user confirmation ok, email and reasonKey matching!
+		User existing = user.get();
+		existing.setReason(null);
+		existing.setFailedLogins(0L);
+		if ("pending".equals(existing.getRole())) {
+			existing.setRole("registered");
+		}
+		userRepository.save(existing);
+		// change credentials without logout
+		Authentication authentication = new UsernamePasswordAuthenticationToken(existing, existing.getPassword(),
+				existing.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return "redirect:/";
 	}
 

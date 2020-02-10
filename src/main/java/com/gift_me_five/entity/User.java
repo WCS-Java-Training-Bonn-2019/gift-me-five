@@ -23,6 +23,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.gift_me_five.GiftMeFive;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -59,7 +61,7 @@ public class User implements UserDetails {
 
 	// unique key for user mail handling - confirmation, pw reset
 	private String reason;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "lastLogin", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date lastLogin;
@@ -99,7 +101,7 @@ public class User implements UserDetails {
 
 	public User() {
 		this.failedLogins = 0L; // default: no failedLogins at registration
-		this.role = "pending";  // default: new users are pending
+		this.role = "pending"; // default: new users are pending
 	}
 
 	@Override
@@ -115,7 +117,11 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		if (this.getRole().equals("pending")) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override
