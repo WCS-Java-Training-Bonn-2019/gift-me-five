@@ -62,6 +62,14 @@
 		<div class="GM5_header_right_nav_logged_in">
 			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 3}">Registration failed, user already exists.</span>
 		</div>
+		<!-- Print Confirm error, no parameters. -->
+		<div class="GM5_header_right_nav_logged_in">
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 4}">Confirm error, no parameters.</span>
+		</div>
+		<!-- Print Please confirm E-Mail. -->
+		<div class="GM5_header_right_nav_logged_in">
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 5}">Please confirm E-Mail.</span>
+		</div>
 
 		<div>
 			<div th:fragment="loginButton" class="btn-group dropleft">
@@ -102,7 +110,7 @@
 						<div class="dropdown-divider"></div>
 						<div sec:authorize="isAnonymous()">
 							<a class="dropdown-item" method="GET" th:href="@{/showRegistrationForm}">New around here? Sign up</a>
-							<a class="dropdown-item" title="Password Recovery" href="#">Forgot password?</a>
+							<a class="dropdown-item" title="Password Recovery" href="/forgot_password">Forgot password?</a>
 						</div>
 						<div sec:authorize="isAuthenticated()">
 							<a class="dropdown-item" title="Profile" href="/profile">Edit Profile</a>
