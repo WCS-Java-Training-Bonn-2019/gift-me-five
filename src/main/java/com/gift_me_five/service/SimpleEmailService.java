@@ -32,4 +32,12 @@ public class SimpleEmailService {
          
         sender.send(mail);
     }
+    
+    public String emailDummy(String receiver, String subject, String message) {
+    	
+    	String emailText = "SendTo: " + receiver + "\n" +
+    	          "Subject: " + subject + "\n" + 
+    		      "Message: \n" + message + "\n\n";
+    	return emailText;
+    }
 }
