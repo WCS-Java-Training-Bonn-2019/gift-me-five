@@ -83,7 +83,6 @@ public class LoginController {
 	@PostMapping("/reset")
 	public String finishReset(@Valid @ModelAttribute("user") User user, Model model, Principal principal) {
 		Optional<User> existing = userRepository.findById(user.getId());
-		GiftMeFive.debugOut(existing.get().toString());
 		if (existing.isPresent()) {
 			User confirmedUser = existing.get();
 			confirmedUser.setPassword(passwordEncoder.encode(user.getPassword()));
