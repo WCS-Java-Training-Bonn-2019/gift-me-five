@@ -23,6 +23,14 @@ th, td {
 	padding: 5px;
 }
 
-#GM5loginForm{
-	 margin-left: 10px;
+
+#GM5loginForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#GM5wrapper main {
+    justify-content: center;
 }
