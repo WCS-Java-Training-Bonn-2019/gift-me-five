@@ -58,6 +58,7 @@ public class RegistrationController {
 		Optional<User> optionalUser = userRepository.findByEmail(principal.getName());
 		if (optionalUser.isPresent()) {
 			model.addAttribute("user", optionalUser.get());
+			model.addAttribute("view", "edit");
 		}
 
 		return "registration-form";
