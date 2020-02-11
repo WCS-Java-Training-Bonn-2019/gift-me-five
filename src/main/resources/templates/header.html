@@ -70,11 +70,15 @@
 		<div class="GM5_header_right_nav_logged_in">
 			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 5}">Please confirm E-Mail.</span>
 		</div>
+		<!-- Print Reset error, no parameters. -->
+		<div class="GM5_header_right_nav_logged_in">
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 6}">Reset error, no parameters.</span>
+		</div>
 
 		<div>
 			<div th:fragment="loginButton" class="btn-group dropleft">
 				<button type="button" class="GM5login_frame btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Login">
-					<img th:src="@{/pics/User_account_Login_free_icon_1.png}">
+					<img th:src="@{/pics/icons/User_account_Login_free_icon_1.png}">
 				</button>
 				<div class="dropdown-menu">
 					<form th:action="@{/authenticateTheUser}" method="POST" class="px-4 py-3">
@@ -95,7 +99,7 @@
 						</div>
 
 						<button sec:authorize="isAnonymous()" type="submit" class="btn btn-primary GM5buttonGreen">
-							<img src="pics/Login-512-white.png">
+							<img src="/pics/icons/Login-512-white.png">
 						</button>
 					</form>
 
@@ -103,7 +107,7 @@
 						<!-- Add a logout -->
 						<form th:action="@{/logout}" method="POST" title="Logout">
 							<button sec:authorize="isAuthenticated()" type="submit" class="GM5buttonGreen">
-								<img src="/pics/Logout-512-white.png">
+								<img src="/pics/icons/Logout-512-white.png">
 							</button>
 						</form>
 
