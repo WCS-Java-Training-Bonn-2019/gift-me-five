@@ -2,6 +2,7 @@ package com.gift_me_five.controller;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.repository.UserRepository;
+import com.gift_me_five.service.SimpleEmailService;
 
 @Controller
 public class RegistrationController {
@@ -35,6 +38,9 @@ public class RegistrationController {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	SimpleEmailService simpleEmailSerive;
 
 	private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -98,12 +104,25 @@ public class RegistrationController {
 		// password check and encode must be done for new and existing user (edit
 		// profile)
 		if (!existing.isPresent() || !theUser.getPassword().equals(existing.get().getPassword())) {
-			// password encrypten
+			// password encrypt if new or changed
 			theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
 		}
 
-		// create user account
+		// new user, send email address validation
+		if (theUser.getId() == null) {
+			try {
 
+				// create unique key for confirmation URL
+				theUser.setReason(UUID.randomUUID().toString());
+				simpleEmailSerive.email(theUser.getEmail(), "Confirm Registration",
+						"http://" + request.getLocalName() + ":" + request.getLocalPort() + "/confirm/"
+								+ theUser.getEmail() + "/" + theUser.getReason() + "/");
+			} catch (Exception ex) {
+				return "Error in sending email: " + ex;
+			}
+		}
+
+		// create user account
 		userRepository.save(theUser);
 
 		// user has changed his email
@@ -124,6 +143,34 @@ public class RegistrationController {
 		logger.info("Successfully created/edited user: " + newEmailLogin);
 
 		return "registration-confirmation";
+	}
+
+	@GetMapping({ "/confirm", "/confirm/{onlyone}" })
+	public String confirmEmpty(@PathVariable String onlyone) {
+		return "redirect:/?loginFailure=4";
+	}
+
+	// Mapping for confirmation mails
+	@GetMapping("/confirm/{email}/{reasonKey}")
+	public String confirmEmail(Principal principal, @PathVariable(required = true) String email,
+			@PathVariable(required = true) String reasonKey) {
+		Optional<User> user = userRepository.findByEmail(email);
+		if (!email.equals(user.get().getEmail()) && reasonKey.equals(user.get().getReason())) {
+			return "redirect:/?loginFailure=4";
+		}
+		// user confirmation ok, email and reasonKey matching!
+		User existing = user.get();
+		existing.setReason(null);
+		existing.setFailedLogins(0L);
+		if ("pending".equals(existing.getRole())) {
+			existing.setRole("registered");
+		}
+		userRepository.save(existing);
+		// change credentials without logout
+		Authentication authentication = new UsernamePasswordAuthenticationToken(existing, existing.getPassword(),
+				existing.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		return "redirect:/";
 	}
 
 	@GetMapping("/delete_profile")

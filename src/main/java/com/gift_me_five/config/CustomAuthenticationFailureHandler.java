@@ -25,19 +25,10 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 
-		GiftMeFive.debugOut(exception.getMessage());
+//		GiftMeFive.debugOut(exception.getMessage());
 
-		// is user locked ?
-		if (exception.getMessage().equals("User account is locked")) {
-
-			GiftMeFive.debugOut("User is lockded");
-
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-
-			response.sendRedirect("/?loginFailure=2");
-
-		} else {
-
+		switch (exception.getMessage()) {
+		case "Bad credentials":
 			// get the user from Http-Request --Yeah--
 			String loginFailureUser = request.getParameter("username");
 
@@ -58,9 +49,20 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 			// user is not allowed to login
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			response.sendRedirect("/?loginFailure=1");
+			break;
+		case "User account is locked":
+			// is user locked ?
+			response.setStatus(HttpStatus.LOCKED.value());
+			response.sendRedirect("/?loginFailure=2");
+			break;
+		case "User account has expired":
+			// user status still pending / no email confirmation
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.sendRedirect("/?loginFailure=5");
+			break;
 
+		default:
+			break;
 		}
-
 	}
-
 }

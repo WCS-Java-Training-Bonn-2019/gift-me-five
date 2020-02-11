@@ -10,8 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/receiverStyle.css">
-<style
-	th:text="'#GM5wishlist_details { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
+<style th:text="'#GM5wishlist_details { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
 </style>
 
 </head>
@@ -40,14 +39,9 @@
 							</a>
 							<!-- todo addPerson -->
 
-							<input type="text"
-								th:value="${hostname} + ':' + ${port} + @{/invite/} + ${wishlist.uniqueUrlReceiver}"
-								id="GM5uniqueUrlReceiverHideInput">
-							<a onclick="myFunction()" class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
-								data-placement="right" title="Add wish">
-									<img class="GM5icon"
-										th:src="@{/pics/icons/addPerson_white.png}"
-										title="uniqueUrlReceiver/invitelink">
+							<input type="text" th:value="${hostname} + ':' + ${port} + @{/invite/} + ${wishlist.uniqueUrlReceiver}" id="GM5uniqueUrlReceiverHideInput">
+							<a onclick="myFunction()" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add wish">
+								<img class="GM5icon" th:src="@{/pics/icons/addPerson_white.png}" title="uniqueUrlReceiver/invitelink">
 							</a>
 							<script>
 								function myFunction() {
@@ -84,10 +78,13 @@
 							</div>
 						</div>
 						<p th:text="*{description}">description</p>
-						<img class="GM5giftImage" th:if="${wish.image != ''} and ${wish.image != null}" th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
-						<h3>
-							<a th:if="${wish.link != ''} and ${wish.link != null}" th:href="@{${wish.link}}">Link</a>
-						</h3>
+						<div class="GM5_description_optional_details">
+							<p>
+								<span th:text="'$: ' + ${#numbers.formatDecimal(wish.price, 1, 'COMMA', 2, 'POINT')}">Price: </span>
+								<img class="GM5giftImage" th:if="${wish.image != ''} and ${wish.image != null}" th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
+								<a th:if="${wish.link != ''} and ${wish.link != null}" th:href="@{${wish.link}}">Link</a>
+							</p>
+						</div>
 					</li>
 				</ul>
 			</div>
