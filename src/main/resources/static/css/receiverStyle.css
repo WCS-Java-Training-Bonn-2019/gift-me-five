@@ -1,7 +1,3 @@
-#GM5hideInput input {
-	display: none;
-}
-
 .GM5selected {
 	color: inactivecaptiontext;
 }
@@ -22,10 +18,6 @@
 	justify-content: flex-end;
 	align-items: flex-end;
 	flex-wrap: wrap;
-}
-
-.GM5icon {
-	width: 25px;
 }
 
 #GM5uniqueUrlReceiverHideInput {

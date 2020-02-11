@@ -22,14 +22,14 @@
 
 				<form action="#" th:action="@{/processRegistrationForm}" th:object="${user}" method="post">
 					<input type="hidden" th:field="*{id}">
-<!-- 					<input type="hidden" sec:authorize="isAuthenticated()" th:field="*{email}"> -->
+					<!-- 					<input type="hidden" sec:authorize="isAuthenticated()" th:field="*{email}"> -->
 					<table>
 
 						<tr>
 							<td>
-<!-- 								<input sec:authorize="isAnonymous()" th:field="*{email}" type="email" placeholder="E-Mail"> -->
+								<!-- 								<input sec:authorize="isAnonymous()" th:field="*{email}" type="email" placeholder="E-Mail"> -->
 								<input th:field="*{email}" type="email" placeholder="E-Mail">
-<!-- 								<p sec:authorize="isAuthenticated()" th:text="'User: ' + *{email}"></p> -->
+								<!-- 								<p sec:authorize="isAuthenticated()" th:text="'User: ' + *{email}"></p> -->
 							</td>
 						</tr>
 
@@ -61,9 +61,22 @@
 					</table>
 
 					<p></p>
-
-					<input type="submit" value="Save">
-					<input type="reset" value="Reset">
+					<div class="GM5button_holder">
+						<div id="GM5hideInput">
+							<input type="submit" value="" id="password recovery" name="password recovery">
+							<label for="password recovery">
+								<span class="btn btn-primary GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Send">
+									<img class="GM5icon" src="/pics/icons/send-white.png" />
+								</span>
+							</label>
+							<input type="reset" value="" id="reset" name="reset">
+							<label for="reset">
+								<span class="btn btn-primary GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Reset">
+									<img class="GM5icon" src="/pics/icons/cancel-white.png" />
+								</span>
+							</label>
+						</div>
+					</div>
 				</form>
 				<form action="#" th:action="@{'/delete_profile'}" id="id" method="get">
 					<button sec:authorize="isAuthenticated()">Delete Profile</button>
