@@ -67,15 +67,21 @@ public class UserArtifactsService {
 		return null;
 	}
 	
-	public List<Wish> unSelectedWishes(Wishlist wishlist) {
+	public List<Wish> unSelectedWishes(Wishlist wishlist, boolean sort) {
 		// Returns a list of all wishes on a wishlist, sorted so that
 		// all wishes with current user as giver are at the beginning.
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		List<Wish> wishes = new ArrayList<>();
 		List<Wish> unselectedWishes = new ArrayList<>();
-		for (Wish wish : wishlist.getWishes()) {
-			if (wish.getGiver() != null && authentication.getName().equals(wish.getGiver().getEmail())) {
+		List<Wish> unorderedWishes;
+		if (sort) {
+			unorderedWishes = wishRepository.findByWishlistOrderByPrice(wishlist);
+		} else {
+			unorderedWishes = wishlist.getWishes();
+		}
+		for (Wish wish : unorderedWishes) {
+			if (wish.getGiver() != null && authentication.getName().equals(wish.getGiver().getEmail())) {			
 				wishes.add(wish);
 			} else {
 				unselectedWishes.add(wish);

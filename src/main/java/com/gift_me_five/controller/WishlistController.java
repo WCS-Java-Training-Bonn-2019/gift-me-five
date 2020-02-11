@@ -39,11 +39,14 @@ public class WishlistController {
 
 	@GetMapping("/giver")
 	public String giverWishlistView(Model model, Principal principal, Authentication authentication,
-			@RequestParam(required = false) Long id, @RequestParam(required = false) boolean hide) {
+			@RequestParam(required = false) Long id, @RequestParam(required = false) boolean hide,
+			@RequestParam(required = false) boolean sort) {
 
 		Wishlist wishlist = userArtifactsService.friendWishlist(id);
 		if (wishlist != null) {
 			model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
+			// Flag to indicate whether wishes should be sorted by price
+            model.addAttribute("sort", sort);
 			// Flag to indicate whether wishes selected by other friends shall be hidden
             model.addAttribute("hide", hide);
             // Populate menu item for own wishlists (titles needed)
@@ -53,7 +56,7 @@ public class WishlistController {
 			// Title, id and theme of current wishlist needed to build the page:
 			model.addAttribute("wishlist", wishlist);
 			//model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
-			model.addAttribute("wishes", userArtifactsService.unSelectedWishes(wishlist));
+			model.addAttribute("wishes", userArtifactsService.unSelectedWishes(wishlist, sort));
 			return "giver";
 		}
 		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
@@ -63,7 +66,8 @@ public class WishlistController {
 	}
 
 	@PostMapping("/giver")
-	public String updateWish(@RequestParam(required = false) Long wishId, @RequestParam(required = false) boolean hide) {
+	public String updateWish(@RequestParam(required = false) Long wishId, @RequestParam(required = false) boolean hide,
+			 @RequestParam(required = true) boolean sort) {
 		// System.out.println("Wish ID = " + wishId);
 		
 		Wish wish = userArtifactsService.friendWish(wishId);
