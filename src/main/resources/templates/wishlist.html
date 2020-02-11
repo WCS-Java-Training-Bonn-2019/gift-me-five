@@ -3,23 +3,11 @@
 <head>
 <title>Gift Me Five</title>
 <meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1 shrink-to-fit=no">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-	crossorigin="anonymous"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-	crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/wishStyle.css">
@@ -27,10 +15,8 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header
-			th:replace="header.html :: navigation(view=(${wishlist.id} == null ? 'newWishlist' : 'wishlist'),
-            thisWishlistId=${wishlist.id})">
-		</header>
+		<header th:replace="header.html :: navigation(view=(${wishlist.id} == null ? 'newWishlist' : 'wishlist'),
+            thisWishlistId=${wishlist.id})"> </header>
 
 		<!-- Create a wishlist page  -->
 		<main>
@@ -38,45 +24,58 @@
 			<section>
 				<form method="post" th:action="@{/wishlist}" th:object="${wishlist}">
 					<div class="headline_buttons">
-						<h1
-							th:text="${wishlist.id}==null ? 'Create a wishlist' :
-						('Edit ' + ${wishlist.title})">
-							Create a wishlist</h1>
+						<h1 th:text="${wishlist.id}==null ? 'Create a wishlist' :
+						('Edit ' + ${wishlist.title})">Create a wishlist</h1>
+
+
 						<div id="buttons">
-							<input type="submit" name="submit" value="Show"
-								class="btn btn-success GM5buttonGreen">
-							<input type="submit" name="submit" value="Add Wish"
-								class="btn btn-success GM5buttonGreen">
-							<!-- Button "Cancel" -->
-							<input type="button" class="btn btn-success GM5buttonGreen"
-								value="Cancel" onclick="history.back()">
+							<div class="GM5button_holder">
+								<div id="GM5hideInput">
+									<input type="submit" name="submit" value="Show" id="Show">
+									<label for="Show">
+										<span class="btn btn-primary GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Show">
+											<img class="GM5icon" src="/pics/icons/upload_white.png" />
+										</span>
+									</label>
+																		
+									<input type="submit" name="submit" value="Add Wish" id="Add Wish">
+									<label for="Add Wish">
+										<span class="btn btn-primary GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add Wish">
+											<img class="GM5icon" src="/pics/icons/plus_white.png" />
+										</span>
+									</label>
+									
+									<input type="button" value="Cancel" id="Cancel" onclick="history.back()">
+									<label for="Cancel">
+										<span class="btn btn-primary GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Cancel">
+											<img class="GM5icon" src="/pics/icons/cancel-white.png" />
+										</span>
+									</label>
+									
+								</div>
+							</div>
 						</div>
 					</div>
+
 					<input name="id" th:field="*{id}" type="hidden">
 					<div class="GM5input">
 						<label for="wishlist-title">Wishlist title:</label>
-						<input placeholder="My cool wishlist" required th:field="*{title}"
-							type="text">
+						<input placeholder="My cool wishlist" required th:field="*{title}" type="text">
 					</div>
 					<hr>
 					<h4>Select Background:</h4>
 					<nav>
 						<div class="container-fluid">
 							<div class="row">
-								<div th:each="theme : ${themes}" th:object="${theme}"
-									class="col-sm-4">
-									<input type="radio" name="nav" th:id="'a' + *{id}"
-										th:field="${wishlist.theme.id}" th:value="*{id}">
+								<div th:each="theme : ${themes}" th:object="${theme}" class="col-sm-4">
+									<input type="radio" name="nav" th:id="'a' + *{id}" th:field="${wishlist.theme.id}" th:value="*{id}">
 									<label th:for="'a' + *{id}">
-										<img class="img-fluid img-thumbnail"
-											th:src="@{/pics/themes/} + *{backgroundPicture}"
-											alt="theme_background" />
+										<img class="img-fluid img-thumbnail" th:src="@{/pics/themes/} + *{backgroundPicture}" alt="theme_background" />
 									</label>
 								</div>
 							</div>
 						</div>
 					</nav>
-
 				</form>
 			</section>
 			<div class="GM5spacer"></div>
