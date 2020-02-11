@@ -130,6 +130,9 @@
 
 .GM5_description_optional_details {
     font-size: large;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 @media ( min-width : 500px) {

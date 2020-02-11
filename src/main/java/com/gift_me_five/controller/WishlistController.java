@@ -67,7 +67,7 @@ public class WishlistController {
 
 	@PostMapping("/giver")
 	public String updateWish(@RequestParam(required = false) Long wishId, @RequestParam(required = false) boolean hide,
-			 @RequestParam(required = true) boolean sort) {
+			 @RequestParam(required = false) boolean sort) {
 		// System.out.println("Wish ID = " + wishId);
 		
 		Wish wish = userArtifactsService.friendWish(wishId);
@@ -79,7 +79,7 @@ public class WishlistController {
 				wish.setGiver(null);
 			}
 			wishRepository.save(wish);
-			return "redirect:/giver?id=" + wishlist.getId();
+			return "redirect:/giver?id=" + wishlist.getId() + "&hide=" + hide + "&sort=" + sort;
 		}
 		// Sollte nur nach Manipulation (e.g. curl) erreicht werden:
 		// User versucht, eine wishlist zu verändern, für die er nicht als giver

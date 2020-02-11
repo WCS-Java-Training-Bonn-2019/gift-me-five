@@ -38,19 +38,28 @@
 			<div class="GM5wishlistBlock">
 				<div class="GM5wishlistElement GM5wishlistTitle">
 					<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
-					<a class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
-						data-placement="right" title="(Un-)hide reserved wishes"
-						th:href="@{/giver(id=${wishlist.id}, hide=(${hide==true} ? false : true))}">
-						<img class="GM5icon"
-							th:src="@{/pics/icons/} + (${hide==true} ? 'unhide_white.png' : 'hide_white.png')" />
-					</a>
+					<div class="GM5button_holder">
+						<a class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
+							data-placement="right" title="Sort by price"
+							th:href="@{/giver(id=${wishlist.id}, sort=(${sort==true} ? false : true), hide=${hide})}">
+							<img class="GM5icon"
+								th:src="@{/pics/icons/} + (${sort==true} ? 'no_price_white.png' : 'price_white.png')" />
+						</a>
+						<a class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
+							data-placement="right" title="(Un-)hide reserved wishes"
+							th:href="@{/giver(id=${wishlist.id}, sort=${sort}, hide=(${hide==true} ? false : true))}">
+							<img class="GM5icon"
+								th:src="@{/pics/icons/} + (${hide==true} ? 'unhide_white.png' : 'hide_white.png')" />
+						</a>
+					</div>
 				</div>
-				<ul>				
+				<ul>
 					<li th:each="wish : ${wishes}" th:object="${wish}"
 						th:class="'GM5wishlistElement ' + (*{giver}!=null ? 'GM5selected' : '')">
 						<div
 							th:if="${hide}!=true or *{giver}==null or ${myUserId} == *{giver.id}">
-							<form method="post" th:action="@{/giver}">
+							<form method="post"
+								th:action="@{/giver(sort=${sort}, hide=${hide})}">
 								<div class="GM5wishlistTitle">
 									<h2 th:text="*{title}">title</h2>
 									<div class="GM5button_holder"
@@ -70,13 +79,17 @@
 									</div>
 								</div>
 								<p th:text="*{description}">description</p>
-								<img class="GM5giftImage"
-									th:if="${wish.image != ''} and ${wish.image != null}"
-									th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
-								<h3>
+								<p class="GM5_description_optional_details">
 									<a th:if="${wish.link != ''} and ${wish.link != null}"
 										th:href="@{${wish.link}}">Link</a>
-								</h3>
+									<span th:if="${wish.link == ''} or ${wish.link == null}">
+										&nbsp; </span>
+									<img class="GM5giftImage"
+										th:if="${wish.image != ''} and ${wish.image != null}"
+										th:src="@{${'pics/' + wish.image}}" th:title="${wish.image}" />
+									<span
+										th:text="'$: ' + ${#numbers.formatDecimal(wish.price, 1, 'COMMA', 2, 'POINT')}">Price:
+									</span>
 							</form>
 						</div>
 					</li>
