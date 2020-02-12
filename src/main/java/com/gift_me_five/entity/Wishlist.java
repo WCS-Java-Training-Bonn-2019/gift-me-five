@@ -25,6 +25,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
 @Entity
 @Getter
 @Setter
@@ -56,7 +57,7 @@ public class Wishlist {
 	private Theme theme;
 
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "GiverSeeWishlist", joinColumns = @JoinColumn(name = "wishlist_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JoinTable(name = "wishlist_givers", joinColumns = @JoinColumn(name = "wishlist_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private List<User> givers = new ArrayList<>();
 
 	@OneToMany(mappedBy = "wishlist", cascade = CascadeType.REMOVE)
@@ -64,9 +65,9 @@ public class Wishlist {
 	private List<Wish> wishes = new ArrayList<>();
 
 	// wishlist in join table 
-	@OneToMany(mappedBy = "wishlist", cascade = CascadeType.REMOVE)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<GiverSeeWishlist> giverSeeWishlists = new ArrayList<>();
+//	@OneToMany(mappedBy = "wishlist", cascade = CascadeType.REMOVE)
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private List<GiverSeeWishlist> giverSeeWishlists = new ArrayList<>();
 
 	public Wishlist() {
 	}

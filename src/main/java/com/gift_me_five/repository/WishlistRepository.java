@@ -20,5 +20,6 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
 	Wishlist findFirstByIdGreaterThan(long l);
 	List<Wishlist> findByGiversEmail(String email);
 	List<Wishlist> findByReceiverEmail(String email);
-	Wishlist findByUniqueUrlReceiver(String string);
+	Wishlist findByUniqueUrlReceiver(String uniqueURL);
+	Wishlist findByUniqueUrlGiver(String uniqueURL);
 }

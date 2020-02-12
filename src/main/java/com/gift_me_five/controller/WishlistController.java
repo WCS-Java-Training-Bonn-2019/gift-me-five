@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -65,6 +68,7 @@ public class WishlistController {
 			model.addAttribute("wishes", userArtifactsService.unSelectedWishes(wishlist, sort));
 			return "giver";
 		}
+		// TODO:
 		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
 		// werden kann.
 		return "redirect:/under_construction";
@@ -87,6 +91,7 @@ public class WishlistController {
 			wishRepository.save(wish);
 			return "redirect:/giver?id=" + wishlist.getId() + "&hide=" + hide + "&sort=" + sort;
 		}
+		// TODO:
 		// Sollte nur nach Manipulation (e.g. curl) erreicht werden:
 		// User versucht, eine wishlist zu verändern, für die er nicht als giver
 		// registriert ist
@@ -261,15 +266,34 @@ public class WishlistController {
 			format = false;
 			System.out.println("Name format wrong " + emailComponents[0]);
 		}
+		String[] domainComponents = emailComponents[1].split(".");
+		if (domainComponents.length < 2) {
+			// Must contain at least one . character
+			format = false;
+			System.out.println("Top Level Domain not specified");
+		}
+		if (!domainComponents[domainComponents.length - 1].matches("[A-Za-z]{2,4}")) {
+			// TLD only letters and two to four characters
+			format = false;
+			System.out.println("Top Level Domain format wrong");
+		}
+		for (String domainComponent : domainComponents) {
+			if (!domainComponent.matches("[\\w\\-_]+")) {
+				// domain components only contain letters, numbers, - and _
+				format = false;
+				System.out.println("Domain component format wrong");
+			}
+		}
 		// ...
 		// further checks to be added!
-		System.out.println(emailAddress + " format correct: " + format);
 		return format;
 	}
 
 	@PostMapping("/wishlist/invite")
 	public String addWishlistGivers(Model model, Principal principal, HttpServletRequest request, @RequestParam Long id,
 			@RequestParam String giversList) {
+		// HttpServletRequest request,
+
 		Wishlist wishlist = userArtifactsService.ownWishlist(id);
 		if (wishlist != null) {
 			String[] giversEmails = giversList.strip().split("[,;]");
@@ -288,16 +312,12 @@ public class WishlistController {
 				//
 				// get unique key for confirmation URL
 				String uuid = wishlist.getUniqueUrlGiver();
-				if (uuid == null) {
-					uuid = UUID.randomUUID().toString();
-					wishlist.setUniqueUrlGiver(uuid);
-				}
 				String subject = "Please check out my wishlist!";
-				String messageBody =
-						"Hi,\n" + 
-				        "I'm" + userArtifactsService.getCurrentUser().getFirstname() +
-						" and I would like to invite you to my new wishlist: \n\n" + 
-						"http://" + request.getLocalName() + ":" + request.getLocalPort() + "/invite/" + uuid + "/";
+				String messageBody = "Hi,\n" + "I'm " + userArtifactsService.getCurrentUser().getFirstname()
+						+ " and I would like to invite you to my new wishlist: \n\n" + "http://" + "localhost:8080"
+						+ "/wishlist/inviteAccept/" + uuid + "/";
+				// + request.getLocalName() + ":" + request.getLocalPort() + "/wishlist/invite/"
+				// + uuid + "/";
 				for (String email : giversEmails) {
 					try {
 						simpleEmailService.emailDummy(email, subject, messageBody);
@@ -311,10 +331,41 @@ public class WishlistController {
 			model.addAttribute("giversList", giversList);
 			return "invite-givers-form";
 		}
-
+        // TODO:
 		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
 		// (Wishlist gehört anderem User)
 		// werden kann.
 		return "redirect:/under_construction";
 	}
+
+	// Mapping for invitation accept -- User must be logged in!
+	@GetMapping("/wishlist/invite/{uuid}")
+	public String confirmEmail(Model model, Principal principal, HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(required = true) String uuid) {
+
+		User newGiver = userArtifactsService.getCurrentUser();
+		if (newGiver == null) {
+			// User gets a message that login or registration is required.
+			Cookie cookie = new Cookie("invite", uuid);
+			cookie.setMaxAge(2*24*60*60);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			return "login_or_register";
+		}
+		Wishlist wishlist = wishlistRepository.findByUniqueUrlGiver(uuid);
+		if (wishlist == null) {
+			// TODO:
+			// User should get a message that the unique URL is invalid.
+			return "invalid_giver_uuid";
+		}
+		if (!wishlist.getGivers().contains(newGiver)) {
+
+			wishlist.getGivers().add(newGiver);
+			wishlistRepository.save(wishlist);
+		}
+
+		return "redirect:/giver?id=" + wishlist.getId();
+
+	}
+
 }
