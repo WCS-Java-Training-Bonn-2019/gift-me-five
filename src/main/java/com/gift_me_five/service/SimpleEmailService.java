@@ -38,6 +38,7 @@ public class SimpleEmailService {
     	String emailText = "SendTo: " + receiver + "\n" +
     	          "Subject: " + subject + "\n" + 
     		      "Message: \n" + message + "\n\n";
+    	System.out.println(emailText);
     	return emailText;
     }
 }

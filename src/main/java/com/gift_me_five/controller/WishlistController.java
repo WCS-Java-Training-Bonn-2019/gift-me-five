@@ -268,7 +268,7 @@ public class WishlistController {
 	}
 
 	@PostMapping("/wishlist/invite")
-	public String addWishlistGivers(Model model, Principal principal, @RequestParam Long id,
+	public String addWishlistGivers(Model model, Principal principal, HttpServletRequest request, @RequestParam Long id,
 			@RequestParam String giversList) {
 		Wishlist wishlist = userArtifactsService.ownWishlist(id);
 		if (wishlist != null) {
@@ -281,10 +281,8 @@ public class WishlistController {
 			}
 			if (malformedEmails.size() > 0) {
 				// Request correct address format
-				model.addAttribute("wishlistId", id);
 				model.addAttribute("malformed", malformedEmails);
-				model.addAttribute("giversList", giversList);
-				return "invite-givers-form";
+				model.addAttribute("invitationSent", false);
 			} else {
 				// Send out emails to givers
 				//
@@ -294,23 +292,29 @@ public class WishlistController {
 					uuid = UUID.randomUUID().toString();
 					wishlist.setUniqueUrlGiver(uuid);
 				}
-				String messageBody = "";
+				String subject = "Please check out my wishlist!";
+				String messageBody =
+						"Hi,\n" + 
+				        "I'm" + userArtifactsService.getCurrentUser().getFirstname() +
+						" and I would like to invite you to my new wishlist: \n\n" + 
+						"http://" + request.getLocalName() + ":" + request.getLocalPort() + "/invite/" + uuid + "/";
 				for (String email : giversEmails) {
 					try {
-						simpleEmailService.emailDummy(email, "Please check out my wishlist!",
-								"http://" + request.getLocalName() + ":" + request.getLocalPort() + "/confirm/"
-										+ theUser.getEmail() + "/" + theUser.getReason() + "/");
+						simpleEmailService.emailDummy(email, subject, messageBody);
 					} catch (Exception ex) {
 						return "Error in sending email: " + ex;
 					}
 				}
-					
-				}
+				model.addAttribute("invitationSent", true);
 			}
-
+			model.addAttribute("wishlistId", id);
+			model.addAttribute("giversList", giversList);
+			return "invite-givers-form";
 		}
-	// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
-	// (Wishlist gehört anderem User)
-	// werden kann.
-	return"redirect:/under_construction";
-}}
+
+		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
+		// (Wishlist gehört anderem User)
+		// werden kann.
+		return "redirect:/under_construction";
+	}
+}

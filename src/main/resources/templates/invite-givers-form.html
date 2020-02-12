@@ -46,6 +46,14 @@
 					<h4>Malformed Email Addresses - please check!</h4>
 					<span th:each="email : ${malformed}" th:text="${email} + ', '"></span>
 				</div>
+				<div th:if="${invitationSent==true}">
+					<h4>Invitation Emails were sent! Go to wishlist?</h4>
+							<a th:href="@{/receiver(id=${wishlistId})}"
+								class="btn GM5buttonGreen" data-toggle="tooltip"
+								data-placement="top" title="Go to wishlist">
+								<img class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
+							</a>
+				</div>
 			</section>
 			<div class="GM5spacer"></div>
 		</main>
