@@ -20,7 +20,7 @@
 		<header th:replace="header.html :: navigation(view='receiver', thisWishlistId=${wishlist.id})"> </header>
 		<main>
 			<section id="GM5wishlist_details">
-		<p th:text="'http://' + ${hostname} + ':' + ${port} + @{/invite/} + ${wishlist.uniqueUrlReceiver}">uniqueUrlReceiver</p>
+		<a th:if="${visibility} == 'public'" th:href="'http://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}" th:text="'http://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}">uniqueUrlReceiver</a>
 				<div class="GM5wishlistBlock">
 					<div class="GM5wishlistElement GM5wishlistTitle">
 						<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
@@ -38,7 +38,7 @@
 								</a>
 							</div>
 							<div>
-								<a th:href="@{/wish?wishlistId=} + ${wishlist.id}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add wish">
+								<a th:href="(${visibility} == 'public' ? '/public' : '') + @{/wish?wishlistId=} + ${wishlist.id}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add wish">
 									<img class="GM5icon" th:src="@{/pics/icons/plus_white.png}">
 								</a>
 								<!-- todo addPerson -->
