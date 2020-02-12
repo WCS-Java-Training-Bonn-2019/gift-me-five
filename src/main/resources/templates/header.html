@@ -13,7 +13,8 @@
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<div class="navbar-nav">
 				<a class="navbar-brand" href="/">Gift me five</a>
-				<a th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')" th:href="@{/wishlist}">New Wishlist</a>
+				<a sec:authorize="isAuthenticated()" th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')" th:href="@{/wishlist}">New Wishlist</a>
+				<a sec:authorize="isAnonymous()" th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')" th:href="@{/public/wishlist}">New Wishlist</a>
 				<div sec:authorize="isAuthenticated()">
 					<!-- Dropdown for My Wishlists -->
 					<a th:class="'nav-item nav-link dropdown-toggle ' + (${view=='receiver'} ? 'active GM5_header_left_nav_active')" data-toggle="dropdown" href="#">My Wishlists</a>
