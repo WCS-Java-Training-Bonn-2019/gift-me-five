@@ -109,7 +109,8 @@ public class GiftMeFiveConfig {
 			wish.setTitle(wishTitle[i]);
 			wish.setDescription(wishDescription[i]);
 			wish.setLink(wishLink[i]);
-			wish.setImage(wishImage[i]);
+			//***************** ToDo set picture ***************************
+			//wish.setImage(wishImage[i]);
 			wish.setWishlist(wishlist);
 			wishRepository.save(wish);
 			wishes.add(wish);
