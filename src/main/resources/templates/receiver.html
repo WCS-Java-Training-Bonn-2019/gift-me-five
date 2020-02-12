@@ -8,8 +8,8 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/receiverStyle.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/receiverStyle.css">
 <!-- <style th:text="'#GM5wishlist_details { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'"> -->
 <style th:text="'#GM5wrapper main { background-image: url(' + @{/pics/themes/} + ${wishlist.theme.backgroundPicture} +');}'">
 </style>
@@ -20,18 +20,20 @@
 		<header th:replace="header.html :: navigation(view='receiver', thisWishlistId=${wishlist.id})"> </header>
 		<main>
 			<section id="GM5wishlist_details">
+		<p th:text="'http://' + ${hostname} + ':' + ${port} + @{/invite/} + ${wishlist.uniqueUrlReceiver}">uniqueUrlReceiver</p>
 				<div class="GM5wishlistBlock">
 					<div class="GM5wishlistElement GM5wishlistTitle">
 						<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
-
+<!-- 							<p th:text="${visibility} == 'public' ? ${wishlist.uniqueUrlReceiver}">uniqueUrlReceiver</p> -->
 						<div class="GM5button_holder">
 							<!-- Modify wishlist -->
 							<div>
-								<a th:href="@{/wishlist(id=${wishlist.id})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="top" title="Modify wishlist">
+<!-- 							<form method="post" th:action="${visibility} == 'public' ? @{/public/wishlist} : @{/wishlist}" th:object="${wishlist}"> -->
+					<a th:href="${visibility} == 'public' ? @{/public/wishlist/} + ${wishlist.uniqueUrlReceiver} : @{/wishlist(id=${wishlist.id})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="top" title="Modify wishlist">
 									<img class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
 								</a>
 								<!-- Delete wishlist -->
-								<a th:href="@{/wishlist/delete(id=${wishlist.id})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete wishlist" onclick="if (!(confirm('Are you sure?'))) return false">
+								<a th:href="(${visibility} == 'public' ? '/public' : '') + @{/wishlist/delete(id=${wishlist.id})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete wishlist" onclick="if (!(confirm('Are you sure?'))) return false">
 									<img class="GM5icon" th:src="@{/pics/icons/cross2.png}">
 								</a>
 							</div>
