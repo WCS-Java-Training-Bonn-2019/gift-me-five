@@ -8,8 +8,8 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/wishStyle.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/wishStyle.css">
 </head>
 <body>
 	<div id="GM5wrapper">
@@ -17,12 +17,10 @@
 		<main>
 			<div class="GM5spacer"></div>
 			<section>
-				<form method="post" th:action="@{/wish}" th:object="${wish}">
+				<form method="post" th:action="(${visibility} == 'public' ? '/public' : '') + @{/wish}" th:object="${wish}">
 					<div class="headline_buttons">
 						<h1 th:text="(${wish.id} ? 'Update a wish on ' : 'Create a wish on: ') + ${wish.wishlist.title}">My Wish</h1>
 						<div id="buttons">
-
-
 							<div class="GM5button_holder">
 								<div id="GM5hideInput">
 									<input type="submit" name="submit" value="Show" id="Show">
@@ -40,12 +38,11 @@
 
 								</div>
 							</div>
-
-
 						</div>
 					</div>
 					<input name="id" th:field="*{id}" type="hidden">
 					<input name="wishlistId" th:field="${wish.wishlist.id}" type="hidden">
+					<input name="uniqueUrlReceiver" th:field="${wish.wishlist.uniqueUrlReceiver}" type="hidden">
 					<label for="wish-title">Short Description:</label>
 					<br>
 					<input id="wish-title" name="title" placeholder="X-Box One" required th:field="*{title}" type="text" class="GM5input">

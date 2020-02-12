@@ -1,5 +1,6 @@
 package com.gift_me_five.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,9 @@ public class WishController {
 	@Autowired
 	private WishlistRepository wishlistRepository;
 
-	@GetMapping("/wish")
+	@GetMapping({ "/wish", "/public/wish" })
 	public String upsertWish(Model model, @RequestParam(required = false) Long wishlistId,
 			@RequestParam(required = false) Long id) {
-//		System.out.println("WishlistId" + wishlistId);
 		Wish wish = new Wish();
 		if (id != null) {
 			Optional<Wish> optionalWish = repository.findById(id);
@@ -41,6 +41,10 @@ public class WishController {
 			wish.setWishlist(wishlist);
 		}
 
+		// public wishlist (Receiver = 2), add visibility = public
+		if (wish.getWishlist().getReceiver().getId() == 2) {
+			model.addAttribute("visibility", "public");
+		}
 		model.addAttribute("wish", wish);
 		// **********************************************************************************
 		// TO DO: Retrieve wishlists only for current user, not all wishlists!
@@ -51,8 +55,8 @@ public class WishController {
 		return "wishForm";
 	}
 
-	@PostMapping("/wish")
-	public String saveWish(@ModelAttribute Wish wish) {
+	@PostMapping({ "/wish", "/public/wish" })
+	public String saveWish(@ModelAttribute Wish wish, Principal principal) {
 
 		Wish wishOld = new Wish();
 
@@ -69,7 +73,11 @@ public class WishController {
 		repository.save(wish);
 
 		// return "redirect:/wish?id=" + wish.getId();
-		return "redirect:/receiver?id=" + wish.getWishlist().getId();
+		if (principal == null) {
+			return "redirect:/public/receiver/" + wish.getWishlist().getUniqueUrlReceiver();
+		} else {
+			return "redirect:/receiver?id=" + wish.getWishlist().getId();
+		}
 	}
 
 	@GetMapping("/wish/delete")
