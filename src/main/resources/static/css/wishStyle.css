@@ -45,9 +45,9 @@ main h1 {
 	flex-grow: 1;
 }
 
-.GM5buttonGreen {
-	width: 5.2em;
-}
+/* .GM5buttonGreen { */
+/* 	width: 5.2em; */
+/* } */
 
 #buttons{
 	display: flex;
