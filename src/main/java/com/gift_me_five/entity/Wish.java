@@ -36,7 +36,7 @@ public class Wish {
 	private String link;
 	
 	private String image;
-	private Float price = 0F;
+	private Float price;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createDate", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -55,5 +55,6 @@ public class Wish {
     private  Wishlist wishlist;
 	
 	public Wish() {
+		this.price = 0F;
 	}	
 }

@@ -3,50 +3,39 @@
 <head>
 <title>Gift Me Five</title>
 <meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1 shrink-to-fit=no">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-	crossorigin="anonymous"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-	crossorigin="anonymous"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/indexStyle.css">
+
 </head>
 <body>
-	<header
-		th:replace="header.html :: navigation">
-	</header>
-	<main>
-	   <div></div>
-		<div id="GM5centralpic">
-			<h1>Gift me five</h1>
-		</div>
-		<!-- Info box start page  -->
-		<section>
-			<p>
-				Creating and sharing wishlists… <br> Your birthday is coming
-				up, tired of lame gifts? Create your wishlist without registering
-				and share it with your friends! Try it now:
-			</p>
-			<!-- Button "Create a wish" -->
-			<p>
-				<a href="/newwishlist" class="btn btn-success">Create a wishlist</a>
-			</p>
-			<p>If you need to manage multiple wishlists or want to ensure
-				privacy of your wishlists, it is recommended to create an account.</p>
-		</section>
-	</main>
-	<footer th:replace="footer.html :: footer">Footer</footer>
+	<div id="GM5wrapper">
+		<header th:replace="header.html :: navigation"> </header>
+		<main>
+			<div></div>
+			<div id="GM5centralpic">
+				<h1>Gift me five</h1>
+			</div>
+			<!-- Info box start page  -->
+			<section>
+				<p>
+					Creating and sharing wishlists…
+					<br>
+					Your birthday is coming up, tired of lame gifts? Create your wishlist without registering and share it with your friends! Try it now:
+				</p>
+				<!-- Button "Create a wish" -->
+				<p>
+					<a href="/newwishlist" class="btn btn-success">Create a wishlist</a>
+				</p>
+				<p>If you need to manage multiple wishlists or want to ensure privacy of your wishlists, it is recommended to create an account.</p>
+			</section>
+		</main>
+		<footer th:replace="footer.html :: footer">Footer</footer>
+	</div>
 </body>
 </html>

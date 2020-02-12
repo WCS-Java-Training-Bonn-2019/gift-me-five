@@ -22,6 +22,10 @@
 	}
 }
 
+.GM5icon {
+	width: 25px;
+}
+
 /*
 html {
 	font-size: calc(0.7em + 1vw) !important;
@@ -73,6 +77,10 @@ header ul, section ul {
 	flex-direction: column;
 	flex-wrap: wrap;
 	list-style-type: none;
+}
+
+#GM5hideInput input {
+	display: none;
 }
 
 .GM5_header_right_nav {

@@ -13,12 +13,11 @@ public class SimpleEmailService {
     @Autowired
     private JavaMailSender sender;
  
-    public String email(String receiver, String subject, String message) {
+    public void email(String receiver, String subject, String message) {
         try {
             sendEmail(receiver, subject, message);
-            return "Email Sent!";
         }catch(Exception ex) {
-            return "Error in sending email: "+ex;
+        	throw new RuntimeException(ex.getMessage());
         }
     }
  

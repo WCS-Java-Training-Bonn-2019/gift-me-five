@@ -58,6 +58,7 @@ public class RegistrationController {
 		Optional<User> optionalUser = userRepository.findByEmail(principal.getName());
 		if (optionalUser.isPresent()) {
 			model.addAttribute("user", optionalUser.get());
+			model.addAttribute("view", "edit");
 		}
 
 		return "registration-form";
@@ -91,6 +92,8 @@ public class RegistrationController {
 			existing = userRepository.findByEmail(newEmailLogin);
 		} else {
 			existing = userRepository.findById(theUser.getId());
+			//existing user, don't change the role to default (pending)
+			theUser.setRole(existing.get().getRole());
 		}
 		if (existing.isPresent() && principal == null) {
 			theModel.addAttribute("user", new User());
@@ -145,14 +148,15 @@ public class RegistrationController {
 	}
 
 	@GetMapping({ "/confirm", "/confirm/{onlyone}" })
-	public String confirmEmpty(@PathVariable String onlyone) {
+	public String confirmEmpty(@PathVariable(required = false) String onlyone) {
 		return "redirect:/?loginFailure=4";
 	}
-
-	// Mapping for confirmation mails
+	
+	// Mapping for confirmation/reset mails
 	@GetMapping("/confirm/{email}/{reasonKey}")
 	public String confirmEmail(Principal principal, @PathVariable(required = true) String email,
 			@PathVariable(required = true) String reasonKey) {
+
 		Optional<User> user = userRepository.findByEmail(email);
 		if (!email.equals(user.get().getEmail()) && reasonKey.equals(user.get().getReason())) {
 			return "redirect:/?loginFailure=4";
