@@ -49,16 +49,17 @@ public class WishlistController {
 	public String giverWishlistView(Model model, Principal principal, Authentication authentication,
 			@RequestParam(required = false) Long id, @RequestParam(required = false) boolean hide,
 			@RequestParam(required = false) boolean sort, @PathVariable(required = false) String uniqueUrlGiver) {
+		
+		Wishlist wishlist = userArtifactsService.friendWishlist(id);
+		
 		if (id == null && uniqueUrlGiver != null) {
 			model.addAttribute("visibility", "public");
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findByUniqueUrlGiver(uniqueUrlGiver);
 			if (optionalWishlist.isPresent() && optionalWishlist.get().getReceiver().getId() == 2) {
-				id = optionalWishlist.get().getId();
+				wishlist = optionalWishlist.get();
 			}
 		}
 		
-		Wishlist wishlist = userArtifactsService.friendWishlist(id);
-
 		if (wishlist != null) {
 			if (principal != null) {
 				model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
