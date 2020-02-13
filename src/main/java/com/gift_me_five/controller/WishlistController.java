@@ -242,7 +242,7 @@ public class WishlistController {
 				giversList += giver.getEmail() + ", ";
 			}
 			model.addAttribute("wishlistId", id);
-			model.addAttribute("giversList", giversList);
+			//model.addAttribute("giversList", giversList);
 			// model.addAttribute("malformed", null);
 			return "invite-givers-form";
 		}
@@ -253,79 +253,80 @@ public class WishlistController {
 	}
 
 	private boolean emailAddressFormatCheck(String emailAddress) {
-		boolean format = true;
+
 		String[] emailComponents = emailAddress.split("@");
 		if (emailComponents.length > 2) {
 			// Must contain exactly one @ character
-			format = false;
 			System.out.println("Too many @");
+			return false;
 		}
-		if (!emailComponents[0].matches("\\w[\\w\\.\\-_]*")) {
+		if (!emailComponents[0].matches("\\w[\\w\\.\\_\\-]*")) { //
 			// Component before @ must start with word character and contain letters,
 			// digits, '.', '_', '-' (to be expanded if needed)
-			format = false;
-			System.out.println("Name format wrong " + emailComponents[0]);
+			System.out.println("/" + emailComponents[0] + "/ : Name format wrong ");
+			return false;
 		}
-		String[] domainComponents = emailComponents[1].split(".");
+		String[] domainComponents = emailComponents[1].split("\\.");
 		if (domainComponents.length < 2) {
 			// Must contain at least one . character
-			format = false;
-			System.out.println("Top Level Domain not specified");
+			System.out.println("/" + emailComponents[1] + "/ : Top Level Domain not specified");
+			return false;
 		}
 		if (!domainComponents[domainComponents.length - 1].matches("[A-Za-z]{2,4}")) {
 			// TLD only letters and two to four characters
-			format = false;
-			System.out.println("Top Level Domain format wrong");
+			System.out.println("/" + domainComponents[domainComponents.length - 1] + "/ : Top Level Domain format wrong");
+			return false;
 		}
 		for (String domainComponent : domainComponents) {
 			if (!domainComponent.matches("[\\w\\-_]+")) {
 				// domain components only contain letters, numbers, - and _
-				format = false;
-				System.out.println("Domain component format wrong");
+				System.out.println("/" + domainComponent + "/ : Domain component format wrong");
+				return false;
 			}
 		}
 		// ...
 		// further checks to be added!
-		return format;
+		return true;
 	}
 
 	@PostMapping("/wishlist/invite")
-	public String addWishlistGivers(Model model, Principal principal, HttpServletRequest request, @RequestParam Long id,
-			@RequestParam String giversList) {
-		// HttpServletRequest request,
+	public String addWishlistGivers(Model model, Principal principal, HttpServletRequest request, @RequestParam String giversList, @RequestParam Long id) {
 
 		Wishlist wishlist = userArtifactsService.ownWishlist(id);
+		System.out.println("***" + giversList + "***");
 		if (wishlist != null) {
 			String[] giversEmails = giversList.strip().split("[,;]");
 			List<String> malformedEmails = new ArrayList<>();
 			for (String email : giversEmails) {
+				email = email.strip();
 				if (!emailAddressFormatCheck(email)) {
 					malformedEmails.add(email);
 				}
 			}
-			if (malformedEmails.size() > 0) {
-				// Request correct address format
-				model.addAttribute("malformed", malformedEmails);
-				model.addAttribute("invitationSent", false);
-			} else {
+
+			if (malformedEmails.size()== 0) {
 				// Send out emails to givers
-				//
-				// get unique key for confirmation URL
 				String uuid = wishlist.getUniqueUrlGiver();
 				String subject = "Please check out my wishlist!";
 				String messageBody = "Hi,\n" + "I'm " + userArtifactsService.getCurrentUser().getFirstname()
 						+ " and I would like to invite you to my new wishlist: \n\n" + "http://" + "localhost:8080"
-						+ "/wishlist/inviteAccept/" + uuid + "/";
+						+ "/wishlist/invite/" + uuid + "/";
 				// + request.getLocalName() + ":" + request.getLocalPort() + "/wishlist/invite/"
 				// + uuid + "/";
 				for (String email : giversEmails) {
 					try {
 						simpleEmailService.emailDummy(email, subject, messageBody);
 					} catch (Exception ex) {
-						return "Error in sending email: " + ex;
+						System.out.println("Error in sending email: " + ex);
 					}
 				}
+				// Inform user about success
 				model.addAttribute("invitationSent", true);
+			} else {
+				// There are some malformed email addresses!
+				// Request correct address format
+				model.addAttribute("malformed", malformedEmails);
+				model.addAttribute("invitationSent", false);
 			}
 			model.addAttribute("wishlistId", id);
 			model.addAttribute("giversList", giversList);

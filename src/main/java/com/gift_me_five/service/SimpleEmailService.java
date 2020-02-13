@@ -34,7 +34,7 @@ public class SimpleEmailService {
     
     public String emailDummy(String receiver, String subject, String message) {
     	
-    	String emailText = "SendTo: " + receiver + "\n" +
+    	String emailText = "SendTo: /" + receiver + "/\n" +
     	          "Subject: " + subject + "\n" + 
     		      "Message: \n" + message + "\n\n";
     	System.out.println(emailText);
