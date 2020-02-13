@@ -236,11 +236,11 @@ public class WishlistController {
 	public String inviteWishlistGivers(Model model, Principal principal, @RequestParam Long id) {
 		Wishlist wishlist = userArtifactsService.ownWishlist(id);
 		if (wishlist != null) {
-			List<User> givers = wishlist.getGivers();
-			String giversList = "";
-			for (User giver : givers) {
-				giversList += giver.getEmail() + ", ";
-			}
+//			List<User> givers = wishlist.getGivers();
+//			String giversList = "";
+//			for (User giver : givers) {
+//				giversList += giver.getEmail() + ", ";
+//			}
 			model.addAttribute("wishlistId", id);
 			//model.addAttribute("giversList", giversList);
 			// model.addAttribute("malformed", null);
@@ -309,10 +309,11 @@ public class WishlistController {
 				String uuid = wishlist.getUniqueUrlGiver();
 				String subject = "Please check out my wishlist!";
 				String messageBody = "Hi,\n" + "I'm " + userArtifactsService.getCurrentUser().getFirstname()
-						+ " and I would like to invite you to my new wishlist: \n\n" + "http://" + "localhost:8080"
+						+ " and I would like to invite you to my new wishlist: \n\n" + "http://"
+						+ request.getLocalName() + ":" + request.getLocalPort()
+						//+ "localhost:8080"
 						+ "/wishlist/invite/" + uuid + "/";
-				// + request.getLocalName() + ":" + request.getLocalPort() + "/wishlist/invite/"
-				// + uuid + "/";
+
 				for (String email : giversEmails) {
 					try {
 						simpleEmailService.emailDummy(email, subject, messageBody);

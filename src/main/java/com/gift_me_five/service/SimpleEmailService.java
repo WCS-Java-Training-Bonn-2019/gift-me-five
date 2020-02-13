@@ -34,9 +34,11 @@ public class SimpleEmailService {
     
     public String emailDummy(String receiver, String subject, String message) {
     	
-    	String emailText = "SendTo: /" + receiver + "/\n" +
-    	          "Subject: " + subject + "\n" + 
-    		      "Message: \n" + message + "\n\n";
+    	String emailText = "\n\n" + "*".repeat(50) + "\n"
+    			+ "SendTo: |" + receiver + "|\n"
+    	        + "Subject: " + subject + "\n" 
+    		    + "Message: \n" + message + "\n"
+    		    + "*".repeat(50) + "\n\n";
     	System.out.println(emailText);
     	return emailText;
     }
