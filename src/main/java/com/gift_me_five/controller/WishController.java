@@ -66,6 +66,7 @@ public class WishController {
 				wish.setWishlist(wishlist);
 			}
 		}
+		
 
 		model.addAttribute("wish", wish);
 		// **********************************************************************************
