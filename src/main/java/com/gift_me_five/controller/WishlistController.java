@@ -2,6 +2,7 @@ package com.gift_me_five.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,14 +45,23 @@ public class WishlistController {
 	@Autowired
 	private UserArtifactsService userArtifactsService;
 
-	@GetMapping("/giver")
+	@GetMapping({ "/giver", "/public/giver/{uniqueUrlGiver}" })
 	public String giverWishlistView(Model model, Principal principal, Authentication authentication,
 			@RequestParam(required = false) Long id, @RequestParam(required = false) boolean hide,
-			@RequestParam(required = false) boolean sort) {
-
+			@RequestParam(required = false) boolean sort, @PathVariable(required = false) String uniqueUrlGiver) {
+		if (id == null && uniqueUrlGiver != null) {
+			Optional<Wishlist> optionalWishlist = wishlistRepository.findByUniqueUrlGiver(uniqueUrlGiver);
+			if (optionalWishlist.isPresent() && optionalWishlist.get().getReceiver().getId() == 2) {
+				id = optionalWishlist.get().getId();
+			}
+		}
+		
 		Wishlist wishlist = userArtifactsService.friendWishlist(id);
+
 		if (wishlist != null) {
-			model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
+			if (principal != null) {
+				model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
+			}
 			// Flag to indicate whether wishes should be sorted by price
 			model.addAttribute("sort", sort);
 			// Flag to indicate whether wishes selected by other friends shall be hidden
@@ -68,7 +78,9 @@ public class WishlistController {
 		}
 		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
 		// werden kann.
-		return "redirect:/under_construction";
+//		return "redirect:/under_construction";
+		GiftMeFive.debugOut("retry", 60);
+		return "redirect:/public/giver/fafc85b1-a07b-4866-9ba8-6d6a2f5d9bc0";
 
 	}
 
@@ -97,7 +109,7 @@ public class WishlistController {
 	@GetMapping({ "/public/receiver", "/public/receiver/{uniqueUrlReceiver}" })
 	public String displayPublicWishlist(Principal principal, Model model, HttpServletRequest request,
 			@PathVariable(required = false) String uniqueUrlReceiver) {
-		
+
 		// only Anonymous user should be here
 		if (principal != null) {
 			return "redirect:/";
@@ -105,8 +117,9 @@ public class WishlistController {
 
 		model.addAttribute("visibility", "public");
 		Wishlist wishlist = new Wishlist();
-		
-		if (uniqueUrlReceiver != null && wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).getReceiver().getId() == 2) {
+
+		if (uniqueUrlReceiver != null
+				&& wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).getReceiver().getId() == 2) {
 			wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver);
 		} else {
 			return "redirect:/public/wishlist";
@@ -115,7 +128,7 @@ public class WishlistController {
 		model.addAttribute("thisWishlistId", wishlist.getId());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
-		
+
 		model.addAttribute("thisWishlistId", wishlist.getId());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
@@ -245,7 +258,7 @@ public class WishlistController {
 			// unless public
 			Wishlist myWishlist = userArtifactsService.ownWishlist(wishlist.getId());
 
-			if (myWishlist == null  ) {
+			if (myWishlist == null) {
 				myWishlist = wishlistRepository.findById(wishlist.getId()).get();
 			}
 
@@ -287,11 +300,12 @@ public class WishlistController {
 		}
 	}
 
-	@GetMapping({"/wishlist/delete", "/public/wishlist/delete"})
+	@GetMapping({ "/wishlist/delete", "/public/wishlist/delete" })
 	public String deleteWishList(@RequestParam Long id) {
 		// Check if own wishlist - otherwise don't delete
 		// unless its public
-		if (userArtifactsService.ownWishlist(id) != null || wishlistRepository.findById(id).get().getReceiver().getId() == 2) {
+		if (userArtifactsService.ownWishlist(id) != null
+				|| wishlistRepository.findById(id).get().getReceiver().getId() == 2) {
 			wishlistRepository.deleteById(id);
 		}
 		// redirect to another own wishlist if exists,

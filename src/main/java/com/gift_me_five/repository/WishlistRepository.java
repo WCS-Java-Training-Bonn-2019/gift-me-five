@@ -11,14 +11,24 @@ import com.gift_me_five.entity.Wishlist;
 
 @Repository
 public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
-	
+
 	Optional<Wishlist> findFirstByReceiver(User user);
+
 	List<Wishlist> findByReceiver(User user);
+
 	List<Wishlist> findByGivers(User currentUser);
+
 	List<Wishlist> findByIdAndGivers(Long id, User currentUser);
+
 	List<Wishlist> findByIdAndReceiver(Long id, User currentUser);
+
 	Wishlist findFirstByIdGreaterThan(long l);
+
 	List<Wishlist> findByGiversEmail(String email);
+
 	List<Wishlist> findByReceiverEmail(String email);
-	Wishlist findByUniqueUrlReceiver(String string);
+
+	Wishlist findByUniqueUrlReceiver(String uniqueUrlReceiver);
+
+	Optional<Wishlist> findByUniqueUrlGiver(String uniqueUrlGiver);
 }
