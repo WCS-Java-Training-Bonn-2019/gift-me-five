@@ -26,10 +26,13 @@
 					<div class="GM5wishlistElement GM5wishlistTitle">
 						<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
 						<div class="GM5button_holder">
-							<a class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Sort by price" th:href="@{/giver(id=${wishlist.id}, sort=(${sort==true} ? false : true), hide=${hide})}">
+							<a class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Sort by price" th:href="${visibility} == 'public' ? @{/public/giver/} + ${wishlist.uniqueUrlGiver} + '?sort=' + (${sort==true} ? false : true) + '&hide=' + ${hide} : @{/giver(id=${wishlist.id}, sort=(${sort==true} ? false : true), hide=${hide})}">
 								<img class="GM5icon" th:src="@{/pics/icons/} + (${sort==true} ? 'no_price_white.png' : 'price_white.png')" />
 							</a>
-							<a class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="(Un-)hide reserved wishes" th:href="@{/giver(id=${wishlist.id}, sort=${sort}, hide=(${hide==true} ? false : true))}">
+							
+														<a class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="(Un-)hide reserved wishes" th:href="${visibility} == 'public' ? @{/public/giver/} + ${wishlist.uniqueUrlGiver} + '?hide=' + (${hide==true} ? false : true) + '&sort=' + ${sort} : @{/giver(id=${wishlist.id}, hide=(${hide==true} ? false : true), sort=${hide})}">							
+							
+<!-- 							<a class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="(Un-)hide reserved wishes" th:href="@{/giver(id=${wishlist.id}, sort=${sort}, hide=(${hide==true} ? false : true))}"> -->
 								<img class="GM5icon" th:src="@{/pics/icons/} + (${hide==true} ? 'unhide_white.png' : 'hide_white.png')" />
 							</a>
 						</div>

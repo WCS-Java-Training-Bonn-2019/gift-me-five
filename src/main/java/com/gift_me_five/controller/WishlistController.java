@@ -50,6 +50,7 @@ public class WishlistController {
 			@RequestParam(required = false) Long id, @RequestParam(required = false) boolean hide,
 			@RequestParam(required = false) boolean sort, @PathVariable(required = false) String uniqueUrlGiver) {
 		if (id == null && uniqueUrlGiver != null) {
+			model.addAttribute("visibility", "public");
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findByUniqueUrlGiver(uniqueUrlGiver);
 			if (optionalWishlist.isPresent() && optionalWishlist.get().getReceiver().getId() == 2) {
 				id = optionalWishlist.get().getId();
@@ -78,9 +79,9 @@ public class WishlistController {
 		}
 		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
 		// werden kann.
-//		return "redirect:/under_construction";
-		GiftMeFive.debugOut("retry", 60);
-		return "redirect:/public/giver/fafc85b1-a07b-4866-9ba8-6d6a2f5d9bc0";
+		return "redirect:/under_construction";
+//		GiftMeFive.debugOut("retry", 60);
+//		return "redirect:/public/giver/fafc85b1-a07b-4866-9ba8-6d6a2f5d9bc0";
 
 	}
 
