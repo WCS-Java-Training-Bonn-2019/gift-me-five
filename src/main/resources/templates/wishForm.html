@@ -20,7 +20,7 @@
 			<section>
 
 				<!-- enctype="multipart/form-data" for fileupload -->
-				<form enctype="multipart/form-data" method="post" th:action="(${visibility} == 'public' ? '/public' : '') + @{/wish}"  th:object="${wish}">
+				<form enctype="multipart/form-data" method="post" th:action="@{/} + (${uniqueUrlReceiver} != null ? 'public/wish/' +${uniqueUrlReceiver} : 'wish')"  th:object="${wish}">
 					<div class="headline_buttons">
 						<h1 th:text="(${wish.id} ? 'Update a wish on ' : 'Create a wish on: ') + ${wish.wishlist.title}">My Wish</h1>
 						<div id="buttons">
