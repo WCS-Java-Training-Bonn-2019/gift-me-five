@@ -1,6 +1,5 @@
 package com.gift_me_five.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +26,6 @@ public class WishController {
 	@Autowired
 	private UserArtifactsService userArtifactsService;
 
-
 	@GetMapping({ "/wish", "/public/wish/{uniqueUrlReceiver}" })
 	public String upsertWish(Model model, @PathVariable(required = false) String uniqueUrlReceiver,
 			@RequestParam(required = false) Long wishlistId, @RequestParam(required = false) Long id) {
@@ -44,7 +42,7 @@ public class WishController {
 					// Fehlermeldung - Zugriff nicht erlaubt
 					return "redirect:/under_construction";
 				}
-			//	model.addAttribute("visibility", "public");
+				// model.addAttribute("visibility", "public");
 			}
 			wish = myWish;
 		} else { // no wish id -- try with wishlist id resp. uniqueUrlReceiver for public wish
@@ -57,13 +55,13 @@ public class WishController {
 					// Fehlermeldung - Zugriff nicht erlaubt
 					return "redirect:/under_construction";
 				}
-			//	model.addAttribute("visibility", "public");
+				// model.addAttribute("visibility", "public");
 			}
 			// wish will be a new wish on the found wishlist
 			wish.setWishlist(wishlist);
 		}
-		
-        model.addAttribute("uniqueUrlReceiver", uniqueUrlReceiver);
+
+		model.addAttribute("uniqueUrlReceiver", uniqueUrlReceiver);
 		model.addAttribute("wish", wish);
 
 		// Populate menu item for own wishlists (titles needed)
@@ -115,9 +113,9 @@ public class WishController {
 		}
 	}
 
-	@GetMapping({ "/wish/delete", "/public/wish/delete/{uniqueUrlReceiver}" })
+	@GetMapping({ "/wish/delete", "/public/wish/{uniqueUrlReceiver}/delete" })
 	public String deleteWish(@PathVariable(required = false) String uniqueUrlReceiver, @RequestParam Long id) {
-		
+
 		Wish wish;
 		if (uniqueUrlReceiver == null) {
 			wish = userArtifactsService.ownWish(id);
@@ -131,18 +129,22 @@ public class WishController {
 		} else {
 			Long wishlistId = wish.getWishlist().getId();
 			repository.deleteById(id);
-			return "redirect:/receiver?id=" + wishlistId;
+			if (uniqueUrlReceiver == null) {
+				return "redirect:/receiver?id=" + wishlistId;
+			} else {
+				return "redirect:/public/receiver/" + uniqueUrlReceiver;
+			}
 		}
 	}
 
 	// sample /wish/25/picture
 
-	@GetMapping({"/wish/{wishId}/picture", "/public/wish/{uniqueUrl}/{wishId}/picture"})
+	@GetMapping({ "/wish/{wishId}/picture", "/public/wish/{uniqueUrl}/{wishId}/picture" })
 	public ResponseEntity<byte[]> loadImage(@PathVariable(required = false) String uniqueUrl,
 			@PathVariable Long wishId) {
-		
-		Wish wish = (uniqueUrl == null ?
-				userArtifactsService.ownWish(wishId) : userArtifactsService.publicWishGiver(wishId, uniqueUrl));
+
+		Wish wish = (uniqueUrl == null ? userArtifactsService.ownWish(wishId)
+				: userArtifactsService.publicWishGiver(wishId, uniqueUrl));
 
 		if (wish != null && wish.getPicture() != null) {
 			return ResponseEntity.status(HttpStatus.OK)//
@@ -155,4 +157,3 @@ public class WishController {
 	}
 
 }
-

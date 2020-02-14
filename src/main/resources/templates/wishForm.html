@@ -69,7 +69,10 @@
 						title="Image upload">
 						<img class="GM5icon" src="/pics/icons/upload_white.png" />
 					</label>
-					<img id="output" class="GM5giftImage" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? @{'/wish/' + *{id} + '/picture'} : @{''}" alt="" th:title="WishImage.jpg" />
+					<img id="output" class="GM5giftImage"
+					th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? (@{'/'} + (${uniqueUrlReceiver} != null ? 'public/wish/' + ${uniqueUrlReceiver} + '/' : 'wish/') + ${wish.id} + '/picture') : @{''}" alt="" th:title="WishImage.jpg" />
+					
+
 					<br>
 					<input id="file-upload" type="file" accept="image/*" onchange="loadFile(event)" th:field="*{picture}"
 						th:value="*{picture}">
