@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.WishRepository;
@@ -102,10 +103,11 @@ public class WishController {
 			}
 			// Found an allowed existing wish.
 			// keep picture if no picture in posted wish ?
-//			if (wish.getPicture().length == 0) {
-//				wish.setPicture(wishOld.getPicture());
-//			}
+			if (wish.getPicture().length == 0) {
+				wish.setPicture(wishOld.getPicture());
+			}
 		}
+//		GiftMeFive.debugOut(wish, 30);
 		repository.save(wish);
 		if (uniqueUrlReceiver == null) {
 			return "redirect:/receiver?id=" + wish.getWishlist().getId();
