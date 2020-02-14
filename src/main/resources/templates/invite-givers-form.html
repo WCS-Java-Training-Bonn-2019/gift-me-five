@@ -36,18 +36,18 @@
 					<input type="submit" value="Invite" id="invite" class="GM5invisible">
 					<label for="invite">
 						<span class="btn GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Send">
-							<img class="GM5icon" src="/pics/icons/send-white.png" />
+							<img class="GM5icon" src="/pics/icons/send_white.png" />
 						</span>
 					</label>
 					<input type="reset" value="Reset" id="reset" class="GM5invisible">
 					<label for="reset">
 						<span class="btn GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Reset">
-							<img class="GM5icon" src="/pics/icons/cancel-white.png" />
+							<img class="GM5icon" src="/pics/icons/cancel_white.png" />
 						</span>
 					</label>
 					<a th:href="@{/receiver(id=${wishlistId})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
 						data-placement="top" title="Go to wishlist">
-						<img class="GM5icon" th:src="@{/pics/icons/go_back_white.png}">
+						<img class="GM5icon" th:src="@{/pics/icons/go_back.png}">
 					</a>
 				</form>
 				<div th:if="${not #lists.isEmpty(malformed)}">
