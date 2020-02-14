@@ -224,9 +224,6 @@ public class WishlistController {
 			wishlist.setReceiver(userArtifactsService.getCurrentUser());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
 		}
-
-		GiftMeFive.debugOut(wishlist.toString());
-		
 		
 		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
 		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
