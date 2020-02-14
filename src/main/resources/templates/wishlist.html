@@ -28,7 +28,7 @@
 		<main>
 			<div class="GM5spacer"></div>
 			<section>
-				<form method="post" th:action="${visibility} == 'public' ? @{/public/wishlist} : @{/wishlist}" th:object="${wishlist}">
+				<form method="post" th:action="${visibility} == 'public' ? @{/public/wishlist/} + ${wishlist.uniqueUrlReceiver} : @{/wishlist}" th:object="${wishlist}">
 					<div class="headline_buttons">
 						<h1 th:text="${wishlist.id}==null ? 'Create a wishlist' :
 						('Edit ' + ${wishlist.title})">Create a

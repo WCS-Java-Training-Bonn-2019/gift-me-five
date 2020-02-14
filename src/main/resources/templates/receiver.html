@@ -4,10 +4,14 @@
 <title>Gift Me Five</title>
 <meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
 <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/receiverStyle.css">
 
@@ -21,25 +25,34 @@
 		<header th:replace="header.html :: navigation(view='receiver', thisWishlistId=${wishlist.id})"> </header>
 		<main>
 			<section id="GM5wishlist_details">
-		<a th:if="${visibility} == 'public'" th:href="'http://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}" th:text="'Admin URL = http://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}">uniqueUrlReceiver</a>
-		<a th:if="${visibility} == 'public'" th:href="'http://' + ${hostname} + ':' + ${port} + @{/public/giver/} + ${wishlist.uniqueUrlGiver}" th:text="'Giver URL = http://' + ${hostname} + ':' + ${port} + @{/public/giver/} + ${wishlist.uniqueUrlGiver}">uniqueUrlGiver</a>
+				<a th:if="${visibility} == 'public'"
+					th:href="'http://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}"
+					th:text="'Admin URL = http://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}">uniqueUrlReceiver</a>
+				<a th:if="${visibility} == 'public'"
+					th:href="'http://' + ${hostname} + ':' + ${port} + @{/public/giver/} + ${wishlist.uniqueUrlGiver}"
+					th:text="'Giver URL = http://' + ${hostname} + ':' + ${port} + @{/public/giver/} + ${wishlist.uniqueUrlGiver}">uniqueUrlGiver</a>
 				<div class="GM5wishlistBlock">
 					<div class="GM5wishlistElement GM5wishlistTitle">
 						<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
 						<div class="GM5button_holder">
 							<!-- Modify wishlist -->
 							<div>
-					<a th:href="${visibility} == 'public' ? @{/public/wishlist/} + ${wishlist.uniqueUrlReceiver} : @{/wishlist(id=${wishlist.id})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="top" title="Modify wishlist">
+								<a
+									th:href="${visibility} == 'public' ? @{/public/wishlist/} + ${wishlist.uniqueUrlReceiver} : @{/wishlist(id=${wishlist.id})}"
+									class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="top" title="Modify wishlist">
 									<img class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
 								</a>
 								<!-- Delete wishlist -->
-								<a th:href="(${visibility} == 'public' ? '/public' : '') + @{/wishlist/delete(id=${wishlist.id})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete wishlist" onclick="if (!(confirm('Are you sure?'))) return false">
+								<a th:href="(${visibility} == 'public' ? '/public' : '') + @{/wishlist/delete(id=${wishlist.id})}"
+									class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete wishlist"
+									onclick="if (!(confirm('Are you sure?'))) return false">
 
 									<img class="GM5icon" th:src="@{/pics/icons/cross2.png}">
 								</a>
 							</div>
 							<div>
-								<a th:href="(${visibility} == 'public' ? '/public' : '') + @{/wish?wishlistId=} + ${wishlist.id}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add wish">
+								<a th:href="(${visibility} == 'public' ? '/public' : '') + @{/wish?wishlistId=} + ${wishlist.id}"
+									class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add wish">
 									<img class="GM5icon" th:src="@{/pics/icons/plus_white.png}">
 								</a>
 								<!-- todo addPerson -->
@@ -57,8 +70,9 @@
 								<h2 th:text="*{title}">title</h2>
 								<div class="GM5button_holder">
 									<!-- Modify wish -->
-									<a th:href="@{/wish(id=${wish.id})}" class="btn btn-primary GM5button" data-toggle="tooltip"
-										data-placement="right" title="Modify wish">
+									<a
+										th:href="@{/} + (${visibility} == 'public' ? 'public/wish/' + ${wishlist.uniqueUrlReceiver} : 'wish') +'?id=' + ${wish.id}"
+										class="btn btn-primary GM5button" data-toggle="tooltip" data-placement="right" title="Modify wish">
 										<img class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
 									</a>
 									<!-- Delete wish -->
@@ -72,7 +86,9 @@
 							<p class="GM5_description_optional_details">
 								<a th:if="${wish.link != ''} and ${wish.link != null}" th:href="@{${wish.link}}">Link</a>
 								<span th:if="${wish.link == ''} or ${wish.link == null}"> &nbsp; </span>
-								<img class="GM5giftImage" alt="" th:src="@{'/wish/' + *{id} + '/picture'}" th:title="WishImage.jpg" />
+								<img class="GM5giftImage" alt=""
+									th:src="@{'/'} + (${visibility} == 'public' ? 'public/wish/' + ${wishlist.uniqueUrlReceiver} + '/' : 'wish/') + *{id} + '/picture'"
+									th:title="WishImage.jpg" />
 								<span th:text="'$: ' + ${#numbers.formatDecimal(wish.price, 1, 'COMMA', 2, 'POINT')}">Price: </span>
 							</p>
 						</li>

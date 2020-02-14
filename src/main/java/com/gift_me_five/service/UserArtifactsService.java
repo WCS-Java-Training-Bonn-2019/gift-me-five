@@ -70,11 +70,31 @@ public class UserArtifactsService {
 		return null;
 	}
 
-	public Wish publicWish(Long id, String uniqueUrlReceiver) {
+	public Wish publicWishReceiver(Long id, String uniqueUrlReceiver) {
 		if (uniqueUrlReceiver != null) {
 			Optional<Wish> optionalWish = wishRepository.findById(id);
 			if (optionalWish.isPresent()
 					&& uniqueUrlReceiver.equals(optionalWish.get().getWishlist().getUniqueUrlReceiver())) {
+				return optionalWish.get();
+			}
+		}
+		return null;
+	}
+	
+	//*************************************************************************************
+	//TODO:
+	//publicWishGiver can also be retrieved with uniqueUrlReceiver
+	//Reason: images for wishes must be displayed on Giver and Receiver wishlists
+	//Is this a problem?
+	//*************************************************************************************
+	
+	public Wish publicWishGiver(Long id, String uniqueUrl) {
+		// TODO Auto-generated method stub
+		if (uniqueUrl != null) {
+			Optional<Wish> optionalWish = wishRepository.findById(id);
+			if (optionalWish.isPresent()
+					&& (uniqueUrl.equals(optionalWish.get().getWishlist().getUniqueUrlGiver()))
+					|| uniqueUrl.equals(optionalWish.get().getWishlist().getUniqueUrlReceiver())) {
 				return optionalWish.get();
 			}
 		}
