@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
@@ -145,6 +146,9 @@ public class WishlistController {
 			wishlist.setTheme(themeRepository.findById(themeId).get());
 		}
 
+		GiftMeFive.debugOut(wishlist.toString());
+		
+		
 		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
 		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("wishlist", wishlist);
@@ -242,7 +246,7 @@ public class WishlistController {
 //				giversList += giver.getEmail() + ", ";
 //			}
 			model.addAttribute("wishlistId", id);
-			//model.addAttribute("giversList", giversList);
+			// model.addAttribute("giversList", giversList);
 			// model.addAttribute("malformed", null);
 			return "invite-givers-form";
 		}
@@ -274,7 +278,8 @@ public class WishlistController {
 		}
 		if (!domainComponents[domainComponents.length - 1].matches("[A-Za-z]{2,4}")) {
 			// TLD only letters and two to four characters
-			System.out.println("/" + domainComponents[domainComponents.length - 1] + "/ : Top Level Domain format wrong");
+			System.out
+					.println("/" + domainComponents[domainComponents.length - 1] + "/ : Top Level Domain format wrong");
 			return false;
 		}
 		for (String domainComponent : domainComponents) {
@@ -290,7 +295,8 @@ public class WishlistController {
 	}
 
 	@PostMapping("/wishlist/invite")
-	public String addWishlistGivers(Model model, Principal principal, HttpServletRequest request, @RequestParam String giversList, @RequestParam Long id) {
+	public String addWishlistGivers(Model model, Principal principal, HttpServletRequest request,
+			@RequestParam String giversList, @RequestParam Long id) {
 
 		Wishlist wishlist = userArtifactsService.ownWishlist(id);
 		System.out.println("***" + giversList + "***");
@@ -304,14 +310,14 @@ public class WishlistController {
 				}
 			}
 
-			if (malformedEmails.size()== 0) {
+			if (malformedEmails.size() == 0) {
 				// Send out emails to givers
 				String uuid = wishlist.getUniqueUrlGiver();
 				String subject = "Please check out my wishlist!";
 				String messageBody = "Hi,\n" + "I'm " + userArtifactsService.getCurrentUser().getFirstname()
 						+ " and I would like to invite you to my new wishlist: \n\n" + "http://"
 						+ request.getLocalName() + ":" + request.getLocalPort()
-						//+ "localhost:8080"
+						// + "localhost:8080"
 						+ "/wishlist/invite/" + uuid + "/";
 
 				for (String email : giversEmails) {
@@ -333,7 +339,7 @@ public class WishlistController {
 			model.addAttribute("giversList", giversList);
 			return "invite-givers-form";
 		}
-        // TODO:
+		// TODO:
 		// Hier sollte besser eine Meldung auftauchen, dass keine Wishlist angezeigt
 		// (Wishlist gehört anderem User)
 		// werden kann.
@@ -342,14 +348,14 @@ public class WishlistController {
 
 	// Mapping for invitation accept -- User must be logged in!
 	@GetMapping("/wishlist/invite/{uuid}")
-	public String confirmEmail(Model model, Principal principal, HttpServletRequest request, HttpServletResponse response,
-			@PathVariable(required = true) String uuid) {
+	public String confirmEmail(Model model, Principal principal, HttpServletRequest request,
+			HttpServletResponse response, @PathVariable(required = true) String uuid) {
 
 		User newGiver = userArtifactsService.getCurrentUser();
 		if (newGiver == null) {
 			// User gets a message that login or registration is required.
 			Cookie cookie = new Cookie("invite", uuid);
-			cookie.setMaxAge(2*24*60*60);
+			cookie.setMaxAge(2 * 24 * 60 * 60);
 			cookie.setPath("/");
 			response.addCookie(cookie);
 			return "login_or_register";
