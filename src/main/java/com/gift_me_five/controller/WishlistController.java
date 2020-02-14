@@ -128,7 +128,7 @@ public class WishlistController {
 
 		model.addAttribute("visibility", "public");
 		Wishlist wishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
-		
+
 		if (wishlist == null) {
 			// TODO:
 			// Fehlermeldung - Zugriff nicht erlaubt
@@ -209,6 +209,9 @@ public class WishlistController {
 		Wishlist wishlist = new Wishlist();
 
 		// Anonymous user should not be allowed to do /wishlist?id=x
+		//***********************************************************
+		// TODO:
+		// Check if we can take /wishlist/** from unauthenticated access routes list
 		if (principal == null && id != null) {
 			return "redirect:/wishlist";
 		}
@@ -223,7 +226,7 @@ public class WishlistController {
 			wishlist.setReceiver(userArtifactsService.getCurrentUser());
 			wishlist.setTheme(themeRepository.findById(themeId).get());
 		}
-		
+
 		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
 		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
 		model.addAttribute("wishlist", wishlist);
@@ -231,55 +234,59 @@ public class WishlistController {
 		return "wishlist";
 	}
 
-	@PostMapping({ "/wishlist", "/public/wishlist/{uniqueUrlReceiver}" })
-	public String saveWishList(@PathVariable(required = false) String uniqueUrlReceiver,
+	@PostMapping("/wishlist")
+	public String savePrivateWishList(@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
+
+		Wishlist myWishlist = userArtifactsService.ownWishlist(wishlist.getId());
+
+		if (myWishlist == null) {
+
+			if (wishlist.getId() == null) {
+				// New wishlist!
+				wishlist.setReceiver(userArtifactsService.getCurrentUser());
+				wishlist.setUniqueUrlReceiver(UUID.randomUUID().toString());
+				wishlist.setUniqueUrlGiver(UUID.randomUUID().toString());
+				wishlistRepository.save(wishlist);
+			} else { // wishlist id not allowed for this user
+				wishlist.setId(null);
+			}
+		} else { // wishlist belongs to this user - update.
+			// Only take over title and theme
+			myWishlist.setTheme(wishlist.getTheme());
+			myWishlist.setTitle(wishlist.getTitle());
+			wishlist = myWishlist;
+			wishlistRepository.save(wishlist);
+		}
+
+		if (wishlist.getId() != null) {
+			if ("Add Wish".equals(submit)) {
+				return "redirect:/wish?wishlistId=" + wishlist.getId();
+			}
+			return "redirect:/receiver?id=" + wishlist.getId();
+		}
+		// TODO:
+		// Fehlermeldung - Zugriff nicht erlaubt
+		return "redirect:/under_construction";
+	}
+
+	@PostMapping({ "public/wishlist", "/public/wishlist/{uniqueUrlReceiver}" })
+	public String savePublicWishlist(@PathVariable(required = false) String uniqueUrlReceiver,
 			@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
 
-		if (wishlist.getId() == null) {
-            // New wishlist! Need to identify receiver.
-			User current = userArtifactsService.getCurrentUser();
-			if (current == null && uniqueUrlReceiver == null) { // no current, so anonymous -> default public user
-				current = userRepository.findById(2L).get();
-			}
-            if (current == null) {
-    			// TODO:
-    			// Fehlermeldung - Zugriff nicht erlaubt
-    			return "redirect:/under_construction";
-    		}
+		if (wishlist.getId() == null && uniqueUrlReceiver == null) {
 
+			// New wishlist! Need to identify receiver.
+			User current = userRepository.findById(2L).get();
 			wishlist.setReceiver(current);
 			uniqueUrlReceiver = UUID.randomUUID().toString();
 			wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
 			wishlist.setUniqueUrlGiver(UUID.randomUUID().toString());
 
-			// if null or empty, create UUID as uniqueUrlReceiver
-//			if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
-//				String newUniqueUrlReceiver;
-//				do {
-//					newUniqueUrlReceiver = UUID.randomUUID().toString();
-//				} while (wishlistRepository.findByUniqueUrlReceiver(newUniqueUrlReceiver) != null);
-//				wishlist.setUniqueUrlReceiver(newUniqueUrlReceiver);
-//			}
-//
-//			// if null or empty, create UUID as uniqueUrlGiver
-//			if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
-//				String uniqueUrlGiver;
-//				do {
-//					uniqueUrlGiver = UUID.randomUUID().toString();
-//				} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null);
-//				wishlist.setUniqueUrlGiver(uniqueUrlGiver);
-//			}
-
 			wishlistRepository.save(wishlist);
-		} else {
+		} else if (uniqueUrlReceiver != null) {
 			// Check if own wishlist; only then modify.
 			// Only take over title and theme
-			// unless public
-			Wishlist myWishlist = userArtifactsService.ownWishlist(wishlist.getId());
-
-			if (myWishlist == null) {
-				myWishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
-			}
+			Wishlist myWishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
 
 			if (myWishlist != null && myWishlist.getId().equals(wishlist.getId())) {
 				myWishlist.setTheme(wishlist.getTheme());
@@ -287,23 +294,19 @@ public class WishlistController {
 				wishlist = myWishlist;
 
 				wishlistRepository.save(wishlist);
+			} else { // mismatch between uniqueUrlReceiver and wishlist Id
+				uniqueUrlReceiver = null;
 			}
 		}
-
-		if (uniqueUrlReceiver == null) {
-
-			if ("Add Wish".equals(submit)) {
-				return "redirect:/wish?wishlistId=" + wishlist.getId();
-			}
-			return "redirect:/receiver?id=" + wishlist.getId();
-		} else {
-			
+		if (uniqueUrlReceiver != null) {
 			if ("Add Wish".equals(submit)) {
 				return "redirect:/public/wish/" + uniqueUrlReceiver;
 			}
 			return "redirect:/public/receiver/" + uniqueUrlReceiver;
 		}
-
+		// TODO:
+		// Fehlermeldung - Zugriff nicht erlaubt
+		return "redirect:/under_construction";
 	}
 
 	@GetMapping({ "/wishlist/delete", "/public/wishlist/delete" })
@@ -323,11 +326,11 @@ public class WishlistController {
 			return "redirect:/newwishlist";
 		}
 	}
-	
-	//***********************************************************************************
-	//TODO:
-	//Invite for public wishlists
-	//***********************************************************************************
+
+	// ***********************************************************************************
+	// TODO:
+	// Invite for public wishlists
+	// ***********************************************************************************
 
 	@GetMapping("/wishlist/invite")
 	public String inviteWishlistGivers(Model model, Principal principal, @RequestParam Long id) {
