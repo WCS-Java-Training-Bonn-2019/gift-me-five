@@ -82,7 +82,7 @@ public class WishlistController {
 			// Title, id and theme of current wishlist needed to build the page:
 			model.addAttribute("wishlist", wishlist);
 			// model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
-			model.addAttribute("wishes", userArtifactsService.unSelectedWishes(wishlist, sort));
+			model.addAttribute("wishes", userArtifactsService.listUnSelectedWishesForGiver(wishlist, sort));
 			return "giver";
 		}
 		// TODO:
@@ -117,23 +117,22 @@ public class WishlistController {
 		return "redirect:/under_construction";
 	}
 
-	@GetMapping({ "/public/receiver", "/public/receiver/{uniqueUrlReceiver}" })
+	@GetMapping("/public/receiver/{uniqueUrlReceiver}")
 	public String displayPublicWishlist(Principal principal, Model model, HttpServletRequest request,
 			@PathVariable(required = false) String uniqueUrlReceiver) {
 
 		// only Anonymous user should be here
-		if (principal != null) {
-			return "redirect:/";
-		}
+//		if (principal != null) {
+//			return "redirect:/";
+//		}
 
 		model.addAttribute("visibility", "public");
-		Wishlist wishlist = new Wishlist();
-
-		if (uniqueUrlReceiver != null
-				&& wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).getReceiver().getId() == 2) {
-			wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver);
-		} else {
-			return "redirect:/public/wishlist";
+		Wishlist wishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
+		
+		if (wishlist == null) {
+			// TODO:
+			// Fehlermeldung - Zugriff nicht erlaubt
+			return "redirect:/under_construction";
 		}
 
 		model.addAttribute("thisWishlistId", wishlist.getId());
@@ -181,9 +180,9 @@ public class WishlistController {
 	public String newPublicWishlist(Model model, Principal principal,
 			@PathVariable(required = false) String uniqueUrlReceiver) {
 		// only Anonymous user should be here
-		if (principal != null) {
-			return "redirect:/wishlist";
-		}
+//		if (principal != null) {
+//			return "redirect:/wishlist";
+//		}
 
 		model.addAttribute("visibility", "public");
 		model.addAttribute("themes", themeRepository.findAll());
@@ -204,7 +203,7 @@ public class WishlistController {
 		return "wishlist";
 	}
 
-	@GetMapping({ "/wishlist", "/newwishlist" })
+	@GetMapping("/wishlist")
 	public String upsertWishList(Model model, Principal principal, @RequestParam(required = false) Long id) {
 
 		Wishlist wishlist = new Wishlist();
@@ -237,32 +236,39 @@ public class WishlistController {
 			@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
 
 		if (wishlist.getId() == null) {
-
-//			wishlist.setReceiver(userArtifactsService.getCurrentUser());
+            // New wishlist! Need to identify receiver.
 			User current = userArtifactsService.getCurrentUser();
-			if (current == null) { // no current, so anonymous -> default public user
+			if (current == null && uniqueUrlReceiver == null) { // no current, so anonymous -> default public user
 				current = userRepository.findById(2L).get();
 			}
-//				wishlist.setReceiver(userArtifactsService.getCurrentUser());
+            if (current == null) {
+    			// TODO:
+    			// Fehlermeldung - Zugriff nicht erlaubt
+    			return "redirect:/under_construction";
+    		}
+
 			wishlist.setReceiver(current);
+			uniqueUrlReceiver = UUID.randomUUID().toString();
+			wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+			wishlist.setUniqueUrlGiver(UUID.randomUUID().toString());
 
 			// if null or empty, create UUID as uniqueUrlReceiver
-			if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
-				String newUniqueUrlReceiver;
-				do {
-					newUniqueUrlReceiver = UUID.randomUUID().toString();
-				} while (wishlistRepository.findByUniqueUrlReceiver(newUniqueUrlReceiver) != null);
-				wishlist.setUniqueUrlReceiver(newUniqueUrlReceiver);
-			}
-
-			// if null or empty, create UUID as uniqueUrlGiver
-			if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
-				String uniqueUrlGiver;
-				do {
-					uniqueUrlGiver = UUID.randomUUID().toString();
-				} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null);
-				wishlist.setUniqueUrlGiver(uniqueUrlGiver);
-			}
+//			if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+//				String newUniqueUrlReceiver;
+//				do {
+//					newUniqueUrlReceiver = UUID.randomUUID().toString();
+//				} while (wishlistRepository.findByUniqueUrlReceiver(newUniqueUrlReceiver) != null);
+//				wishlist.setUniqueUrlReceiver(newUniqueUrlReceiver);
+//			}
+//
+//			// if null or empty, create UUID as uniqueUrlGiver
+//			if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
+//				String uniqueUrlGiver;
+//				do {
+//					uniqueUrlGiver = UUID.randomUUID().toString();
+//				} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null);
+//				wishlist.setUniqueUrlGiver(uniqueUrlGiver);
+//			}
 
 			wishlistRepository.save(wishlist);
 		} else {
@@ -279,24 +285,6 @@ public class WishlistController {
 				myWishlist.setTheme(wishlist.getTheme());
 				myWishlist.setTitle(wishlist.getTitle());
 				wishlist = myWishlist;
-
-				// if null or empty, create UUID as uniqueUrlReceiver
-//				if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
-//					String uniqueUrlReceiver;
-//					do {
-//						uniqueUrlReceiver = UUID.randomUUID().toString();
-//					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null);
-//					wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
-//				}
-
-				// if null or empty, create UUID as uniqueUrlGiver
-//				if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
-//					String uniqueUrlGiver;
-//					do {
-//						uniqueUrlGiver = UUID.randomUUID().toString();
-//					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null);
-//					wishlist.setUniqueUrlGiver(uniqueUrlGiver);
-//				}
 
 				wishlistRepository.save(wishlist);
 			}
