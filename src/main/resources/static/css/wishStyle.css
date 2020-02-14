@@ -92,6 +92,9 @@ main h1 {
    height: 100%;
 }
 
+img#output[src=""] {
+	display: none;
+}
 
 .GM5giftImage {
 	width: 200px;

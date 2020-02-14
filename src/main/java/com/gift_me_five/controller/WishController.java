@@ -62,6 +62,7 @@ public class WishController {
 			// wish will be a new wish on the found wishlist
 			wish.setWishlist(wishlist);
 		}
+		
 
 		model.addAttribute("wish", wish);
 
