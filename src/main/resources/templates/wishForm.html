@@ -10,14 +10,17 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/wishStyle.css">
+
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='receiver', myWishlists=${wishlists}, thisWishlistId=${wish.wishlist.id})"> </header>
+		<header th:replace="header.html :: navigation(view='receiver', thisWishlistId=${wish.wishlist.id})"> </header>
 		<main>
 			<div class="GM5spacer"></div>
 			<section>
-				<form method="post" th:action="(${visibility} == 'public' ? '/public' : '') + @{/wish}" th:object="${wish}">
+
+				<!-- enctype="multipart/form-data" for fileupload -->
+				<form enctype="multipart/form-data" method="post" th:action="(${visibility} == 'public' ? '/public' : '') + @{/wish}"  th:object="${wish}">
 					<div class="headline_buttons">
 						<h1 th:text="(${wish.id} ? 'Update a wish on ' : 'Create a wish on: ') + ${wish.wishlist.title}">My Wish</h1>
 						<div id="buttons">
@@ -45,7 +48,8 @@
 					<input name="uniqueUrlReceiver" th:field="${wish.wishlist.uniqueUrlReceiver}" type="hidden">
 					<label for="wish-title">Short Description:</label>
 					<br>
-					<input id="wish-title" name="title" placeholder="X-Box One" required th:field="*{title}" type="text" class="GM5input">
+					<input id="wish-title" name="title" placeholder="X-Box One" required th:field="*{title}" type="text"
+						class="GM5input">
 					<br>
 					<label for="wish-description">Additional Information:</label>
 					<br>
@@ -55,19 +59,36 @@
 					<br>
 					<label for="wish-link">Link:</label>
 					<br>
-					<input id="wish-link" name="link" placeholder="https://www.idealo.de/preisvergleich/OffersOfProduct/3922755_-xbox-one-microsoft.html" th:field="*{link}" type="url" class="GM5input">
+					<input id="wish-link" name="link"
+						placeholder="https://www.idealo.de/preisvergleich/OffersOfProduct/3922755_-xbox-one-microsoft.html"
+						th:field="*{link}" type="url" class="GM5input">
 					<br>
-					<label for="wish-image">Image source:</label>
+					<!-- New Image Loader -->
+					<label for="file-upload">Image:</label><br>
+					<img id="output" class="GM5giftImage" th:src="@{'/wish/' + *{id} + '/picture'}" alt="" th:title="WishImage.jpg" />
+					<label for="file-upload" class="btn GM5buttonGreen" data-toggle="tooltip" data-placement="right"
+						title="Image upload">
+						<img class="GM5icon" src="/pics/icons/upload_white.png" />
+					</label>
 					<br>
-					<input id="wish-image" name="image" th:field="*{image}" type="text" class="GM5input">
+					<input id="file-upload" type="file" accept="image/*" onchange="loadFile(event)" th:field="*{picture}"
+						th:value="*{picture}">
+					<script>
+						var loadFile = function(event) {
+							var output = document.getElementById('output');
+							output.src = URL
+									.createObjectURL(event.target.files[0]);
+						};
+					</script>
+					<!-- End New Image Loader -->
 					<br>
 					<label for="wish-price">Estimated Price:</label>
 					<br>
 					<!-- 					${#numbers.formatDecimal(wish.price, 1, 'COMMA', 2, 'POINT')} -->
 					<input id="wish-price" name="price" th:field="*{price}" type="number" step="0.01" min="0" class="GM5input">
-					<!-- ToDo implement upload image's 
-				<input id="wish-image" name="image" th:field="*{image}" type="file">
-				 -->
+
+
+
 				</form>
 			</section>
 			<div class="GM5spacer"></div>

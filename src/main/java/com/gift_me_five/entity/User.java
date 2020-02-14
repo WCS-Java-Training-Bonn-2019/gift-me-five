@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
 import javax.persistence.Temporal;
@@ -93,10 +94,13 @@ public class User implements UserDetails {
 
 	// join table user<->wishlist with userId
 	// if user is removed, remove all giverId in join for this user
-	@OneToMany(mappedBy = "wishlist", cascade = CascadeType.REMOVE)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<GiverSeeWishlist> giverSeeWishLists = new ArrayList<>();
+//	@OneToMany(mappedBy = "wishlist", cascade = CascadeType.REMOVE)
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private List<GiverSeeWishlist> giverSeeWishLists = new ArrayList<>();
 
+	@ManyToMany(mappedBy = "givers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<Wishlist> friendWishlists = new ArrayList<>();
+	
 	public User() {
 		this.failedLogins = 0L; // default: no failedLogins at registration
 		this.role = "pending"; // default: new users are pending

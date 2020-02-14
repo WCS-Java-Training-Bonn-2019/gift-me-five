@@ -7,7 +7,8 @@
 <header th:fragment="navigation">
 	<!-- (view, myWishlists, thisWishlistId) -->
 	<nav class="GM5_header_left_nav navbar navbar-expand-lg navbar-light bg-light">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+			aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -15,24 +16,33 @@
 				<a class="navbar-brand" href="/">Gift me five</a>
 				<a sec:authorize="isAuthenticated()" th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')" th:href="@{/wishlist}">New Wishlist</a>
 				<a sec:authorize="isAnonymous()" th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')" th:href="@{/public/wishlist}">New Wishlist</a>
+
 				<div sec:authorize="isAuthenticated()">
 					<!-- Dropdown for My Wishlists -->
-					<a th:class="'nav-item nav-link dropdown-toggle ' + (${view=='receiver'} ? 'active GM5_header_left_nav_active')" data-toggle="dropdown" href="#">My Wishlists</a>
+					<a th:class="'nav-item nav-link dropdown-toggle ' + (${view=='receiver'} ? 'active GM5_header_left_nav_active')"
+						data-toggle="dropdown" href="#">My Wishlists</a>
 					<div class="dropdown-menu">
-						<a th:each="wishlist : ${myWishlists}" th:object="${wishlist}" th:class="'dropdown-item' + ((${view=='receiver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')" th:text="*{title}" th:href="@{/receiver(id=*{id})}">Ben's Xmas</a>
+						<a th:each="wishlist : ${myWishlists}" th:object="${wishlist}"
+							th:class="'dropdown-item' + ((${view=='receiver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')"
+							th:text="*{title}" th:href="@{/receiver(id=*{id})}">Ben's Xmas</a>
 					</div>
 				</div>
 				<div sec:authorize="isAuthenticated()">
 					<!-- Dropdown for Friend's Wishlists -->
-					<a th:class="'nav-item nav-link dropdown-toggle ' + (${view=='giver'} ? 'active GM5_header_left_nav_active')" data-toggle="dropdown" href="#">Friend's Wishlists</a>
+					<a th:class="'nav-item nav-link dropdown-toggle ' + (${view=='giver'} ? 'active GM5_header_left_nav_active')"
+						data-toggle="dropdown" href="#">Friend's Wishlists</a>
 					<div class="dropdown-menu">
-						<a th:each="wishlist : ${friendWishlists}" th:object="${wishlist}" th:class="'dropdown-item' + ((${view=='giver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')" th:text="*{title}" th:href="@{/giver(id=*{id})}">Ben's Xmas</a>
+						<a th:each="wishlist : ${friendWishlists}" th:object="${wishlist}"
+							th:class="'dropdown-item' + ((${view=='giver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')"
+							th:text="*{title}" th:href="@{/giver(id=*{id})}">Ben's Xmas</a>
 					</div>
 				</div>
 				<div sec:authorize="hasRole('ROLE_admin')">
 					<!-- Dropdown for Admin -->
 					<!-- class="navbar-nav dropdown " -->
-					<a th:class="(${view=='admin'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link') + ' dropdown-toggle'" href="#" role="button" data-toggle="dropdown">Admin</a>
+					<a
+						th:class="(${view=='admin'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link') + ' dropdown-toggle'"
+						href="#" role="button" data-toggle="dropdown">Admin</a>
 					<!-- aria-haspopup="true" id="dropdownMenuLink" aria-expanded="false" -->
 					<div class="dropdown-menu">
 						<!-- aria-labelledby="dropdownMenuLink" -->
@@ -57,15 +67,18 @@
 		</div>
 		<!-- Print User is locked -->
 		<div class="GM5_header_right_nav_logged_in">
-			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 2}">User account is locked.</span>
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 2}">User account is
+				locked.</span>
 		</div>
 		<!-- Print Registration failed, user already exists. -->
 		<div class="GM5_header_right_nav_logged_in">
-			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 3}">Registration failed, user already exists.</span>
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 3}">Registration failed,
+				user already exists.</span>
 		</div>
 		<!-- Print Confirm error, no parameters. -->
 		<div class="GM5_header_right_nav_logged_in">
-			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 4}">Confirm error, no parameters.</span>
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 4}">Confirm error, no
+				parameters.</span>
 		</div>
 		<!-- Print Please confirm E-Mail. -->
 		<div class="GM5_header_right_nav_logged_in">
@@ -73,7 +86,8 @@
 		</div>
 		<!-- Print Reset error, no parameters. -->
 		<div class="GM5_header_right_nav_logged_in">
-			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 6}">Reset error, no parameters.</span>
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 6}">Reset error, no
+				parameters.</span>
 		</div>
 
 		<div>
@@ -91,7 +105,8 @@
 
 						<div sec:authorize="isAnonymous()" class="form-group">
 							<!-- Add Password Login -->
-							<input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password" name="password">
+							<input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password"
+								name="password">
 						</div>
 
 						<div sec:authorize="isAnonymous()" class="form-check">

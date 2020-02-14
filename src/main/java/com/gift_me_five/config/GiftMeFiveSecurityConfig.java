@@ -26,21 +26,16 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//		auth.inMemoryAuthentication()
-//		.withUser("michaela").password(encoder.encode("m")).roles("USER")
-//		.and()
-//		.withUser("alfred").password(encoder.encode("a")).roles("USER")
-//		.and()
-//		.withUser("admin").password(encoder.encode("a")).roles("ADMIN");
+
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+
 		http.authorizeRequests()
 				.antMatchers("/", "/css/**", "/pics/**", "/newwishlist/**", "/showRegistrationForm/**",
-						"/processRegistrationForm/**", "/under_construction/**", "/wishlist", "/confirm/**",
+						"/processRegistrationForm/**", "/under_construction/**", "/wishlist**", "/confirm/**",
 						"/forgot_password/**", "/reset/**", "/public/**")
 				.permitAll().antMatchers("/admin/**").hasRole("admin")//
 				.anyRequest().authenticated()//
@@ -66,6 +61,7 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public AuthenticationFailureHandler customAuthenticationFailureHandler() {
 		return new CustomAuthenticationFailureHandler();
+
 	}
 
 	@Bean

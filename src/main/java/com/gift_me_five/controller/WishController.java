@@ -1,5 +1,6 @@
 package com.gift_me_five.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +27,7 @@ public class WishController {
 	@Autowired
 	private UserArtifactsService userArtifactsService;
 
+
 	@GetMapping({ "/wish", "/public/wish/{uniqueUrlReceiver}" })
 	public String upsertWish(Model model, @PathVariable(required = false) String uniqueUrlReceiver,
 			@RequestParam(required = false) Long wishlistId, @RequestParam(required = false) Long id) {
@@ -33,6 +35,7 @@ public class WishController {
 		Wish wish = new Wish();
 		if (id != null) {
 			Wish myWish = userArtifactsService.ownWish(id);
+
 			if (myWish == null) {
 				// is it a public wish?
 				myWish = userArtifactsService.publicWish(id, uniqueUrlReceiver);
@@ -131,21 +134,23 @@ public class WishController {
 	}
 
 	// sample /wish/25/picture
-//	@GetMapping({"/wish/{wishId}/picture", "/public/wish/{uniqueUrlReceiver}/{wishId}/picture"})
-//	public ResponseEntity<byte[]> loadImage(@PathVariable(required = false) String uniqueUrlReceiver,
-//			@PathVariable Long wishId) {
-//		
-//		Wish wish = (uniqueUrlReceiver == null ?
-//				userArtifactsService.ownWish(wishId) : userArtifactsService.publicWish(wishId, uniqueUrlReceiver));
-//
-//		if (wish != null && wish.getPicture() != null) {
-//			return ResponseEntity.status(HttpStatus.OK)//
-//					.contentType(MediaType.IMAGE_JPEG)//
-//					.body(wish.getPicture());
-//		}
-//
-//		return ResponseEntity.status(HttpStatus.NOT_FOUND)//
-//				.build();
-//	}
+
+	@GetMapping({"/wish/{wishId}/picture", "/public/wish/{uniqueUrlReceiver}/{wishId}/picture"})
+	public ResponseEntity<byte[]> loadImage(@PathVariable(required = false) String uniqueUrlReceiver,
+			@PathVariable Long wishId) {
+		
+		Wish wish = (uniqueUrlReceiver == null ?
+				userArtifactsService.ownWish(wishId) : userArtifactsService.publicWish(wishId, uniqueUrlReceiver));
+
+		if (wish != null && wish.getPicture() != null) {
+			return ResponseEntity.status(HttpStatus.OK)//
+					.contentType(MediaType.IMAGE_JPEG)//
+					.body(wish.getPicture());
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)//
+				.build();
+	}
 
 }
+

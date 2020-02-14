@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,7 +36,6 @@ public class Wish {
 	@Column(columnDefinition = "TEXT")
 	private String link;
 	
-	private String image;
 	private Float price;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -53,6 +53,10 @@ public class Wish {
 	@ManyToOne
     @JoinColumn(name = "wishlistId", nullable=false)
     private  Wishlist wishlist;
+	
+	@Lob
+	private byte[] picture;
+
 	
 	public Wish() {
 		this.price = 0F;
