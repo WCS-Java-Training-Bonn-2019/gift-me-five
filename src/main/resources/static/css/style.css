@@ -22,14 +22,36 @@
 	}
 }
 
+.GM5icon {
+	width: 25px;
+}
+
 /*
 html {
 	font-size: calc(0.7em + 1vw) !important;
 }
 */
-
 .bg-light {
 	background-color: transparent !important;
+}
+
+header, footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: #ebf2f7;
+	padding: 10px;
+	height: 50px;
+	left: 0;
+	right: 0;
+	flex-grow: 0;
+}
+
+header {
+	height: 60px;
+	position: sticky;
+	top: 0;
+	z-index: 99;
 }
 
 html, body {
@@ -45,25 +67,6 @@ html, body {
 	position: relative;
 }
 
-header, footer {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	background-color: #c3dff0;
-	padding: 10px;
-	height: 50px;
-	left: 0;
-	right: 0;
-	flex-grow: 0;
-}
-
-header {
-	height: 60px;
-	position: sticky;
-	top: 0;
-	z-index: 99;
-}
-
 header img {
 	height: 30px;
 	width: 30px;
@@ -76,9 +79,22 @@ header ul, section ul {
 	list-style-type: none;
 }
 
+#GM5hideInput input {
+	display: none;
+}
+
 .GM5_header_right_nav {
 	display: flex;
-	align-items: center;	
+	align-items: center;
+}
+
+.GM5_header_right_nav span {
+	margin: 5px;
+}
+
+.GM5_header_right_nav_logged_in {
+	display: flex;
+	align-items: center;
 }
 
 /*
@@ -87,17 +103,16 @@ header ul, section ul {
 	margin-bottom: 20px;
 }
 */
-
 .GM5_header_left_nav_active {
-    background-color: #accae8;
+	background-color: #accae8;
 }
 
 .GM5_header_right_nav a {
 	display: flex;
-	align-items: center;	
+	align-items: center;
 	padding: 5px;
-    color: rgba(0,0,0,.5);
-    width: min-content;
+	color: rgba(0, 0, 0, .5);
+	width: min-content;
 }
 
 .GM5login_frame {
@@ -110,17 +125,25 @@ header ul, section ul {
 .show {
 	border-radius: 10px;
 	background-color: #e2f2ff;
+	left: auto;
+}
+
+.logged_in_dropdown {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
 #GM5wrapper main {
 	background-image: url("../pics/background_gift.png");
 	background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
 	display: flex;
 	flex-wrap: wrap;
-    flex-grow: 1;
+	flex-grow: 1;
 }
 
 /*
@@ -129,7 +152,6 @@ footer {
 	bottom: 0;
 }
 */
-
 .GM5button {
 	display: flex;
 	place-self: center;
@@ -141,5 +163,16 @@ footer {
 .selected .GM5button {
 	background-color: #0edd3c;
 	border-color: #1dee44;
-/*	padding: 5px; */
+	/*	padding: 5px; */
+}
+
+.GM5buttonGreen {
+	background-color: #288628;
+	margin: 5px;
+	width: max-content;
+	padding: 7px;
+}
+
+.GM5invisible {
+	display: none;
 }

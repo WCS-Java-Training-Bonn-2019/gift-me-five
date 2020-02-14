@@ -5,7 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
+@Getter
+@Setter
+@ToString
 public class GiverSeeWishlist {
 
 	@EmbeddedId
@@ -18,28 +25,7 @@ public class GiverSeeWishlist {
 	@ManyToOne
 	@MapsId("wishlistId")
 	private Wishlist wishlist;
-
-	public GiverSeeWishlistId getId() {
-		return id;
-	}
-
-	public void setId(GiverSeeWishlistId id) {
-		this.id = id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Wishlist getWishlist() {
-		return wishlist;
-	}
-
-	public void setWishlist(Wishlist wishlist) {
-		this.wishlist = wishlist;
+	
+	public GiverSeeWishlist() {
 	}
 }

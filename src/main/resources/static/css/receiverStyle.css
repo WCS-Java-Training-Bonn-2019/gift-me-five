@@ -1,30 +1,36 @@
-img {
-	width: 100px;
+.GM5selected {
+	color: inactivecaptiontext;
+}
+
+.GM5selected a {
+	color: inactivecaptiontext;
 }
 
 .GM5button {
 	background-color: #3583d7;
-	margin: 7px;
-	width: max-content;
-	padding: 7px;
-}
-
-.GM5buttonGreen {
-	background-color: #288628;
-	margin: 7px;
+	margin: 5px;
 	width: max-content;
 	padding: 7px;
 }
 
 .GM5button_holder {
 	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	flex-wrap: wrap;
 }
 
-.GM5icon {
-	width: 25px;
+#GM5uniqueUrlReceiverHideInput {
+	/* 	display: none is not working because no copy of value possible */
+	opacity: 0;
+	height: 0px;
+	width: 0px;
+	position: absolute;
+	left: -99999px;
+	top: -99999px;
 }
 
-#wishlist_control {
+#GM5wishlist_control {
 	width: max-content;
 	background-color: #e3eaf0;
 	border-color: #c8d6e4;
@@ -36,63 +42,48 @@ img {
 	left: 1%
 }
 
-#wishlist_details {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	background-attachment: fixed;
-	border-color: #c8d6e4;
-	border-style: solid;
-	border-radius: 6px;
-	padding-top: 10px;
-	padding-bottom: 50px;
-	font-family: "Chilanka" !important;
-	font-weight: 500;
-}
-
-@media ( min-width : 500px) {
-	main {
-		flex-direction: row;
-		justify-content: center;
-	}
-	#wishlist_details {
-		margin-left: 80px;
-		flex-grow: 1;
-	}
-	div.GM5spacerLeft {
-		flex-grow: 2;
-		min-width: 20px;
-	}
-	div.GM5spacerRight {
-		flex-grow: 5;
-		min-width: 20px;
-	}
-}
-
 .GM5wishlistElement {
-	background-color: rgba(226, 242, 255, 0.8);
+	background-color: rgba(226, 242, 255, 0.9);
 	border-radius: 10px;
+}
+
+.GM5wishlistBlock {
 	width: 90%;
-	margin: 10px auto;
-	padding: 3%;
+	max-width: 70em;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.GM5wishlistBlock ul {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	padding-left:4%;
+}
+
+
+.GM5wishlistBlock ul.GM5withSideButtons {
+	padding-left: 4%
+}
+
+
+.GM5wishlistBlock li {
+	width: 100%;
+	margin:0;
+	margin-top: 10px;
+	padding: 0%;
 }
 
 .GM5wishlistTitle {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-}
-
-li.GM5wishlistElement {
-	width: 95%;
-	margin-right: 5%
+	padding: 3%;
 }
 
 .GM5wishlistElement h1 {
 	font-size: 180%;
+	width: max-content;
 }
 
 .GM5wishlistElement h2 {
@@ -102,18 +93,43 @@ li.GM5wishlistElement {
 .GM5wishlistElement h3 {
 	font-size: 120%;
 	font-weight: bold;
+	padding: 0 3%;
 }
 
-.GM5wishlistElement ul {
+.GM5giftImage {
+	width: 200px;
+	padding: 0 3%;
+}
+
+.GM5wishlistElement p {
+	padding: 0 3%;
+}
+
+#GM5wishlist_details {
 	display: flex;
 	flex-direction: column;
-	padding-left: 1%;
+	justify-content: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-family: "Chilanka" !important;
+	font-weight: 500;
+	height: 100%;
+	width: 100%;
 }
 
-/*
-.input-group-text {
-	background-color: #d9e8fb;
-	flex-direction: column;
-    justify-content: space-evenly;
+.GM5_description_optional_details {
+    font-size: large;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-*/
+
+@media ( min-width : 500px) {
+	main {
+     height: 100%;
+	}
+}

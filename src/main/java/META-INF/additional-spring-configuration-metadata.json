@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "admin.password",
+    "type": "java.lang.String",
+    "description": "default 'admin.password' bcrypt"
+  },
+  {
+    "name": "admin.username",
+    "type": "java.lang.String",
+    "description": "default 'admin.username' bcrypt"
+  }
+]}

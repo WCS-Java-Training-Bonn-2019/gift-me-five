@@ -14,5 +14,6 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
 	List<Wish> findById(long l);
 	List<Wish> findByIdLessThan(long l);
 	List<Wish> findByWishlist(Wishlist l);
+	List<Wish> findByWishlistOrderByPrice(Wishlist l);
 
 }

@@ -25,7 +25,8 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="header.html :: navigation(view='', myWishlists=null, thisWishlistId=null)">	
+<!-- 	(view='', myWishlists=null, thisWishlistId=null) -->
+		<header th:replace="header.html :: navigation">	
 		</header>
 		<main>
 			<h1>Admin view - User</h1>
@@ -36,8 +37,9 @@
 						<th>Role</th>
 						<th>First Name</th>
 						<th>Last Name</th>
+						<!-- no login, use email
 						<th>Login</th>
-						<th>Password</th>
+						 -->
 						<th>E-Mail</th>
 						<th>Last Login</th>
 						<th>Failed Logins</th>
@@ -49,15 +51,18 @@
 						<td th:text="*{role}">Role</td>
 						<td th:text="*{firstname}">First Name</td>
 						<td th:text="*{lastname}">Last Name</td>
+						<!-- no login, use email
 						<td th:text="*{login}">Login</td>
-						<td th:text="*{password}">Password</td>
+						 -->
 						<td th:text="*{email}">E-Mail</td>
 						<td th:text="*{lastLogin}">Last Login</td>
 						<td th:text="*{failedLogins}">Failed Logins</td>
 						<td th:text="*{createDate}">Create Date</td>
 						<td th:text="*{modifyDate}">Modify Date</td>
-						<td><a th:href="@{'/admin/edit_user/' + *{id}}">Edit</a> <a
-							th:href="@{'/admin/delete_user/' + *{id}}">Delete</a></td>
+						<td>
+							<a th:href="@{'/admin/edit_user/' + *{id}}">Edit</a>
+							<a th:href="@{'/admin/delete_user/' + *{id}}">Delete</a>
+						</td>
 					</tr>
 				</table>
 			</section>

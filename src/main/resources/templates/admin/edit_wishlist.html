@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>User details</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/adminStyle.css">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<div id="GM5wrapper">
+		<header th:replace="header.html :: navigation">
+			<!-- (view='', myWishlists=null, thisWishlistId=null) -->
+		</header>
+		<main>
+			<h1>Wishlist details</h1>
+			<form action="#" th:action="@{/admin/upsert_wishlist}"
+				th:object="${wishlist}" method="post">
+				<table>
+					<tr>
+						
+						<td><label for="id">ID: </label><input th:field="*{id}" type="hidden"></td>
+						<td><span th:text="*{id}">ID: </span></td>
+					</tr>
+					<tr>
+						<td><label for="title">Title:</label></td>
+						<td><input th:field="*{title}" type="text"></td>
+					</tr>
+					<tr>
+						<td><label for="receiverId">ReceiverID:</label></td>
+						<td><input th:field="*{receiver.id}" type="text" required></td>
+					</tr>
+					<tr>
+						<td><label for="themeId">ThemeID:</label></td>
+						<td><input th:field="*{theme.id}" type="text" required></td>
+					</tr>
+					<tr>
+						<td><label for="*{uniqueUrlGiver}">Unique URL Giver</label></td>
+						<td><input th:field="*{uniqueUrlGiver}" type="text"></td>
+					</tr>
+					<tr>
+						<td><label for="*{uniqueUrlReceiver}">Unique URL
+								Receiver</label></td>
+						<td><input th:field="*{uniqueUrlReceiver}" type="text"></td>
+					</tr>
+
+					<tr>
+						<td><label for="createDate">Create Date: </label></td>
+						<td><span th:text="*{createDate}">Create Date</span></td>
+					</tr>
+					<tr>
+						<td><label for="modifyDate">Modify Date: </label></td>
+						<td><span th:text="*{modifyDate}">Modify Date: </span></td>
+					</tr>
+				</table>
+				<input type="submit" value="Save"> <input type="reset"
+					value="Reset" />
+			</form>
+		</main>
+		<footer th:replace="footer.html :: footer">Footer</footer>
+	</div>
+</body>
+</html>
