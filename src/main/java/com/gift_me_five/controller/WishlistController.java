@@ -232,8 +232,9 @@ public class WishlistController {
 		return "wishlist";
 	}
 
-	@PostMapping({ "/wishlist", "/public/wishlist" })
-	public String saveWishList(@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
+	@PostMapping({ "/wishlist", "/public/wishlist/{uniqueUrlReceiver}" })
+	public String saveWishList(@PathVariable(required = false) String uniqueUrlReceiver,
+			@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
 
 		if (wishlist.getId() == null) {
 
@@ -247,11 +248,11 @@ public class WishlistController {
 
 			// if null or empty, create UUID as uniqueUrlReceiver
 			if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
-				String uniqueUrlReceiver;
+				String newUniqueUrlReceiver;
 				do {
-					uniqueUrlReceiver = UUID.randomUUID().toString();
-				} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null);
-				wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+					newUniqueUrlReceiver = UUID.randomUUID().toString();
+				} while (wishlistRepository.findByUniqueUrlReceiver(newUniqueUrlReceiver) != null);
+				wishlist.setUniqueUrlReceiver(newUniqueUrlReceiver);
 			}
 
 			// if null or empty, create UUID as uniqueUrlGiver
@@ -271,45 +272,50 @@ public class WishlistController {
 			Wishlist myWishlist = userArtifactsService.ownWishlist(wishlist.getId());
 
 			if (myWishlist == null) {
-				myWishlist = wishlistRepository.findById(wishlist.getId()).get();
+				myWishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
 			}
 
-			if (myWishlist != null) {
+			if (myWishlist != null && myWishlist.getId().equals(wishlist.getId())) {
 				myWishlist.setTheme(wishlist.getTheme());
 				myWishlist.setTitle(wishlist.getTitle());
 				wishlist = myWishlist;
 
 				// if null or empty, create UUID as uniqueUrlReceiver
-				if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
-					String uniqueUrlReceiver;
-					do {
-						uniqueUrlReceiver = UUID.randomUUID().toString();
-					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null);
-					wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
-				}
+//				if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
+//					String uniqueUrlReceiver;
+//					do {
+//						uniqueUrlReceiver = UUID.randomUUID().toString();
+//					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null);
+//					wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+//				}
 
 				// if null or empty, create UUID as uniqueUrlGiver
-				if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
-					String uniqueUrlGiver;
-					do {
-						uniqueUrlGiver = UUID.randomUUID().toString();
-					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null);
-					wishlist.setUniqueUrlGiver(uniqueUrlGiver);
-				}
+//				if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
+//					String uniqueUrlGiver;
+//					do {
+//						uniqueUrlGiver = UUID.randomUUID().toString();
+//					} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null);
+//					wishlist.setUniqueUrlGiver(uniqueUrlGiver);
+//				}
 
 				wishlistRepository.save(wishlist);
 			}
 		}
 
-		if ("Add Wish".equals(submit)) {
-			return "redirect:/wish?wishlistId=" + wishlist.getId();
-		}
+		if (uniqueUrlReceiver == null) {
 
-		if (wishlist.getReceiver().getId() != 2) {
+			if ("Add Wish".equals(submit)) {
+				return "redirect:/wish?wishlistId=" + wishlist.getId();
+			}
 			return "redirect:/receiver?id=" + wishlist.getId();
 		} else {
-			return "redirect:/public/receiver/" + wishlist.getUniqueUrlReceiver();
+			
+			if ("Add Wish".equals(submit)) {
+				return "redirect:/public/wish/" + uniqueUrlReceiver;
+			}
+			return "redirect:/public/receiver/" + uniqueUrlReceiver;
 		}
+
 	}
 
 	@GetMapping({ "/wishlist/delete", "/public/wishlist/delete" })
@@ -329,6 +335,11 @@ public class WishlistController {
 			return "redirect:/newwishlist";
 		}
 	}
+	
+	//***********************************************************************************
+	//TODO:
+	//Invite for public wishlists
+	//***********************************************************************************
 
 	@GetMapping("/wishlist/invite")
 	public String inviteWishlistGivers(Model model, Principal principal, @RequestParam Long id) {

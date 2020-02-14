@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
 import com.gift_me_five.repository.WishRepository;
@@ -39,13 +38,13 @@ public class WishController {
 
 			if (myWish == null) {
 				// is it a public wish?
-				myWish = userArtifactsService.publicWish(id, uniqueUrlReceiver);
+				myWish = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
 				if (myWish == null) {
 					// TODO:
 					// Fehlermeldung - Zugriff nicht erlaubt
 					return "redirect:/under_construction";
 				}
-				model.addAttribute("visibility", "public");
+			//	model.addAttribute("visibility", "public");
 			}
 			wish = myWish;
 		} else { // no wish id -- try with wishlist id resp. uniqueUrlReceiver for public wish
@@ -58,13 +57,13 @@ public class WishController {
 					// Fehlermeldung - Zugriff nicht erlaubt
 					return "redirect:/under_construction";
 				}
-				model.addAttribute("visibility", "public");
+			//	model.addAttribute("visibility", "public");
 			}
 			// wish will be a new wish on the found wishlist
 			wish.setWishlist(wishlist);
 		}
 		
-
+        model.addAttribute("uniqueUrlReceiver", uniqueUrlReceiver);
 		model.addAttribute("wish", wish);
 
 		// Populate menu item for own wishlists (titles needed)
@@ -94,7 +93,7 @@ public class WishController {
 			Wish wishOld = userArtifactsService.ownWish(id);
 			if (wishOld == null && publicWishlist != null) {
 				// Is it a wish from a public wishlist?
-				wishOld = userArtifactsService.publicWish(id, uniqueUrlReceiver);
+				wishOld = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
 			}
 			if (wishOld == null) {
 				// TODO:
@@ -123,7 +122,7 @@ public class WishController {
 		if (uniqueUrlReceiver == null) {
 			wish = userArtifactsService.ownWish(id);
 		} else {
-			wish = userArtifactsService.publicWish(id, uniqueUrlReceiver);
+			wish = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
 		}
 		if (wish == null) {
 			// TODO:
@@ -138,12 +137,12 @@ public class WishController {
 
 	// sample /wish/25/picture
 
-	@GetMapping({"/wish/{wishId}/picture", "/public/wish/{uniqueUrlReceiver}/{wishId}/picture"})
-	public ResponseEntity<byte[]> loadImage(@PathVariable(required = false) String uniqueUrlReceiver,
+	@GetMapping({"/wish/{wishId}/picture", "/public/wish/{uniqueUrl}/{wishId}/picture"})
+	public ResponseEntity<byte[]> loadImage(@PathVariable(required = false) String uniqueUrl,
 			@PathVariable Long wishId) {
 		
-		Wish wish = (uniqueUrlReceiver == null ?
-				userArtifactsService.ownWish(wishId) : userArtifactsService.publicWish(wishId, uniqueUrlReceiver));
+		Wish wish = (uniqueUrl == null ?
+				userArtifactsService.ownWish(wishId) : userArtifactsService.publicWishGiver(wishId, uniqueUrl));
 
 		if (wish != null && wish.getPicture() != null) {
 			return ResponseEntity.status(HttpStatus.OK)//
