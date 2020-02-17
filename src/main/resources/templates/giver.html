@@ -41,7 +41,7 @@
 
 							<a class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right"
 								title="(Un-)hide reserved wishes"
-								th:href="${visibility} == 'public' ? @{/public/giver/} + ${wishlist.uniqueUrlGiver} + '?hide=' + (${hide==true} ? false : true) + '&sort=' + ${sort} : @{/giver(id=${wishlist.id}, hide=(${hide==true} ? false : true), sort=${hide})}">
+								th:href="${visibility} == 'public' ? @{/public/giver/} + ${wishlist.uniqueUrlGiver} + '?hide=' + (${hide==true} ? false : true) + '&sort=' + ${sort} : @{/giver(id=${wishlist.id}, hide=(${hide==true} ? false : true), sort=${sort})}">
 
 								<img class="GM5icon" th:src="@{/pics/icons/} + (${hide==true} ? 'unhide_white.png' : 'hide_white.png')" />
 							</a>

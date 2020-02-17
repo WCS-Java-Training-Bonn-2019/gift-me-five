@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
@@ -69,6 +70,8 @@ public class WishlistController {
 		if (wishlist != null) {
 			if (principal != null) {
 				model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
+			} else {
+				model.addAttribute("visibility", "public");
 			}
 			// Flag to indicate whether wishes should be sorted by price
 			model.addAttribute("sort", sort);
@@ -96,7 +99,7 @@ public class WishlistController {
 	@PostMapping("/giver")
 	public String updateWish(@RequestParam(required = false) Long wishId, @RequestParam(required = false) boolean hide,
 			@RequestParam(required = false) boolean sort) {
-		// System.out.println("Wish ID = " + wishId);
+		 System.out.println("Wish ID = " + wishId);
 
 		Wish wish = userArtifactsService.friendWish(wishId);
 		if (wish != null) {
