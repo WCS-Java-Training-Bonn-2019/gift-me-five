@@ -4,6 +4,10 @@ main {
 	flex-direction: column;	
 }
 
+.GM5giftImage {
+	height: 50px;
+}
+
 section table {
 	display: flex;
 	justify-content: center;

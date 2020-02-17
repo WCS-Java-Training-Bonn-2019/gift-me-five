@@ -50,7 +50,7 @@ public class UserArtifactsService {
 		User currentUser = getCurrentUser();
 		if (currentUser != null) {
 			Optional<Wish> optionalWish = wishRepository.findById(id);
-			if (optionalWish.isPresent() && optionalWish.get().getWishlist().getReceiver().equals(currentUser)) {
+			if (optionalWish.isPresent() && ( optionalWish.get().getWishlist().getReceiver().equals(currentUser) || "admin".equals(currentUser.getEmail()))) {
 				return optionalWish.get();
 			}
 		}

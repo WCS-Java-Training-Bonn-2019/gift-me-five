@@ -3,77 +3,69 @@
 <head>
 <title>Gift Me Five - admin view user</title>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-	crossorigin="anonymous"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/adminStyle.css">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header
-			th:replace="fragments.html :: navigation">
-<!-- 			(view='', myWishlists=null, thisWishlistId=null) -->
+		<header th:replace="fragments.html :: navigation">
+			<!-- 			(view='', myWishlists=null, thisWishlistId=null) -->
 		</header>
 		<main>
-		<h1>Admin view - Wish</h1>
-		<section>
-			<table border="1">
-				<tr>
-					<th>ID</th>
-					<th>Title</th>
-					<th>Description</th>
-					<!-- not used right now
+			<h1>Admin view - Wish</h1>
+			<section>
+				<table border="1">
+					<tr>
+						<th>ID</th>
+						<th>Title</th>
+						<th>Description</th>
+						<!-- not used right now
 						<th>Item</th> 
 					-->
-					<th>Image</th>
-					<th>Link</th>
-					<th>WishlistID</th>
-					<th>GiverID</th>
-					<th>Create Date</th>
-					<th>Modify Date</th>
-				</tr>
-				<tr th:each="wish : ${wishes}" th:object="${wish}">
-					<td th:text="*{id}">ID</td>
-					<td th:text="*{title}">Title</td>
-					<td th:text="*{description}">Description</td>
-					<!-- 
+						<th>Picture</th>
+						<th>Link</th>
+						<th>WishlistID</th>
+						<th>GiverID</th>
+						<th>Create Date</th>
+						<th>Modify Date</th>
+					</tr>
+					<tr th:each="wish : ${wishes}" th:object="${wish}">
+						<td th:text="*{id}">ID</td>
+						<td th:text="*{title}">Title</td>
+						<td th:text="*{description}">Description</td>
+						<!-- 
 						<td th:text="*{item}">Item</td>
 					 -->
-					<td th:text="*{image}">Image</td>
-					<td th:text="*{link}">Link</td>
-					<td th:text="*{wishlist.id}">WishlistID</td>
-					<td><a th:href="*{giver} ? @{edit_user/} + *{giver.id}"
-						th:text="*{giver} ? *{giver.id}">GiverID</td>
-					<td th:date="*{createDate}">Create Date</td>
-					<td th:date="*{modifyDate}">Modify Date</td>
-					<td><a th:href="@{'/admin/edit_wish/' + *{id}}">Edit</a> <a
-						th:href="@{'/admin/delete_wish/' + *{id}}">Delete</a></td>
-				</tr>
-			</table>
-		</section>
+						<td>
+							<img id="output" class="GM5giftImage" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? (@{'/'} + (${uniqueUrlReceiver} != null ? 'public/wish/' + ${uniqueUrlReceiver} + '/' : 'wish/') + ${wish.id} + '/picture') : @{''}" alt="" th:title="WishImage.jpg" />
+						</td>
+						<!-- 					<td th:text="*{picture}">Picture</td> -->
+						<td th:text="*{link}">Link</td>
+						<td th:text="*{wishlist.id}">WishlistID</td>
+						<td>
+							<a th:href="*{giver} ? @{edit_user/} + *{giver.id}" th:text="*{giver} ? *{giver.id}">GiverID 
+						</td>
+						<td th:date="*{createDate}">Create Date</td>
+						<td th:date="*{modifyDate}">Modify Date</td>
+						<td>
+							<a th:href="@{'/admin/edit_wish/' + *{id}}">Edit</a>
+							<a th:href="@{'/admin/delete_wish/' + *{id}}">Delete</a>
+						</td>
+					</tr>
+				</table>
+			</section>
 
-		<section>
-			<br>
-			<!-- no new wish because of missing wishlist ID
+			<section>
+				<br>
+				<!-- no new wish because of missing wishlist ID
 				<a th:href="@{'/admin/new_wish/'}">New wish</a><br> 
 			 -->
-			<a th:href="@{/}">Home</a>
-		</section>
+			</section>
 		</main>
 		<footer th:replace="fragments.html :: footer">Footer</footer>
 	</div>
