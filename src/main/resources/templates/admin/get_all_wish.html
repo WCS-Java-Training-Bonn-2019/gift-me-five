@@ -26,7 +26,7 @@
 <body>
 	<div id="GM5wrapper">
 		<header
-			th:replace="header.html :: navigation">
+			th:replace="fragments.html :: navigation">
 <!-- 			(view='', myWishlists=null, thisWishlistId=null) -->
 		</header>
 		<main>
@@ -75,7 +75,7 @@
 			<a th:href="@{/}">Home</a>
 		</section>
 		</main>
-		<footer th:replace="footer.html :: footer">Footer</footer>
+		<footer th:replace="fragments.html :: footer">Footer</footer>
 	</div>
 </body>
 </html>
