@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
@@ -176,7 +175,7 @@ public class WishlistController {
 		return ("receiver");
 	}
 
-	@GetMapping({ "/public/wishlist", "/public/wishlist/{uniqueUrlReceiver}" })
+	@GetMapping({"/public/wishlist", "/public/wishlist/{uniqueUrlReceiver}"})
 	public String newPublicWishlist(Model model, Principal principal,
 			@PathVariable(required = false) String uniqueUrlReceiver) {
 		// only Anonymous user should be here
@@ -269,11 +268,13 @@ public class WishlistController {
 		return "redirect:/under_construction";
 	}
 
-	@PostMapping({ "public/wishlist", "/public/wishlist/{uniqueUrlReceiver}" })
-	public String savePublicWishlist(@PathVariable(required = false) String uniqueUrlReceiver,
+	@PostMapping("/public/wishlist/{uniqueUrlReceiver}")
+	public String savePublicWishlist(@PathVariable String uniqueUrlReceiver,
 			@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
+		
+		System.out.println(uniqueUrlReceiver);
 
-		if (wishlist.getId() == null && uniqueUrlReceiver == null) {
+		if (wishlist.getId() == null && "null".equals(uniqueUrlReceiver)) {
 
 			// New wishlist! Need to identify receiver.
 			User current = userRepository.findById(2L).get();
@@ -355,9 +356,9 @@ public class WishlistController {
 	private boolean emailAddressFormatCheck(String emailAddress) {
 
 		String[] emailComponents = emailAddress.split("@");
-		if (emailComponents.length > 2) {
+		if (emailComponents.length != 2) {
 			// Must contain exactly one @ character
-			System.out.println("Too many @");
+			System.out.println("Too many @ or name or domain missing");
 			return false;
 		}
 		if (!emailComponents[0].matches("\\w[\\w\\.\\_\\-]*")) { //
@@ -372,8 +373,8 @@ public class WishlistController {
 			System.out.println("/" + emailComponents[1] + "/ : Top Level Domain not specified");
 			return false;
 		}
-		if (!domainComponents[domainComponents.length - 1].matches("[A-Za-z]{2,4}")) {
-			// TLD only letters and two to four characters
+		if (!domainComponents[domainComponents.length - 1].matches("[A-Za-z]+")) {
+			// TLD only letters and at least one character
 			System.out
 					.println("/" + domainComponents[domainComponents.length - 1] + "/ : Top Level Domain format wrong");
 			return false;
