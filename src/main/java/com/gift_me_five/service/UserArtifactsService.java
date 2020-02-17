@@ -64,7 +64,7 @@ public class UserArtifactsService {
 		// Returns null otherwise.
 
 		Optional<Wish> optionalWish = wishRepository.findById(id);
-		if (optionalWish.isPresent() && friendWishlist(optionalWish.get().getWishlist().getId()) != null) {
+		if (optionalWish.isPresent() && (optionalWish.get().getWishlist().getReceiver().getId() == 2 || friendWishlist(optionalWish.get().getWishlist().getId()) != null)) {
 			return optionalWish.get();
 		}
 		return null;

@@ -51,7 +51,7 @@
 						<li th:each="wish : ${wishes}" th:object="${wish}"
 							th:class="'GM5wishlistElement ' + (*{giver}!=null ? 'GM5selected' : '')">
 							<div th:if="${hide}!=true or *{giver}==null or ${myUserId} == *{giver.id}">
-								<form method="post" th:action="@{/giver(sort=${sort}, hide=${hide})}">
+								<form method="post" th:action="(${visibility} == 'public' ? @{/public/giver/} + ${wishlist.uniqueUrlGiver}: @{/giver}) + '?sort=' + ${sort} + '&hide=' + ${hide}">
 									<div class="GM5wishlistTitle">
 										<h2 th:text="*{title}">title</h2>
 										<div class="GM5button_holder" th:if="*{giver}==null or ${myUserId} == *{giver.id}">

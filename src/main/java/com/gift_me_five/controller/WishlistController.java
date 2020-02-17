@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gift_me_five.GiftMeFive;
 import com.gift_me_five.entity.User;
 import com.gift_me_five.entity.Wish;
 import com.gift_me_five.entity.Wishlist;
@@ -95,7 +94,30 @@ public class WishlistController {
 //		return "redirect:/public/giver/fafc85b1-a07b-4866-9ba8-6d6a2f5d9bc0";
 
 	}
+	
+	@PostMapping("/public/giver/{uniqueUrlGiver}")
+	public String updatePublicWish(@RequestParam(required = false) Long wishId, @PathVariable(required = false) String uniqueUrlGiver, @RequestParam(required = false) boolean hide,
+			@RequestParam(required = false) boolean sort) {
 
+		System.out.println("Wish ID = " + wishId);
+
+		Wish wish = userArtifactsService.friendWish(wishId);
+		if (wish != null) {
+//			Wishlist wishlist = wish.getWishlist();
+			if (wish.getGiver() == null) {
+				wish.setGiver(userRepository.findById(2L).get());
+			} else if (userArtifactsService.getCurrentUser() == wish.getGiver()) {
+				wish.setGiver(null);
+			}
+			wishRepository.save(wish);
+			return "redirect:/public/giver/" + uniqueUrlGiver + "?hide=" + hide + "&sort=" + sort;		}
+		// TODO:
+		// Sollte nur nach Manipulation (e.g. curl) erreicht werden:
+		// User versucht, eine wishlist zu verändern, für die er nicht als giver
+		// registriert ist
+		return "redirect:/under_construction";
+	}
+	
 	@PostMapping("/giver")
 	public String updateWish(@RequestParam(required = false) Long wishId, @RequestParam(required = false) boolean hide,
 			@RequestParam(required = false) boolean sort) {
