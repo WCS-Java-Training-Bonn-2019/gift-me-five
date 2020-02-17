@@ -46,8 +46,8 @@ public class AdminController {
 	@GetMapping("/admin/user")
 	public String getUser(Model model) {
 		
-		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
-		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+		model.addAttribute("myWishlists", userArtifactsService.getAllMyWishlistsAsReceiver());
+		model.addAttribute("friendWishlists", userArtifactsService.getAllMyWishlistsAsGiver());
 		
 		model.addAttribute("users", userRepository.findAll());
 		return "/admin/get_all_user";
