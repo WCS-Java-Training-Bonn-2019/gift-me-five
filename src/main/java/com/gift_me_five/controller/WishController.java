@@ -37,6 +37,7 @@ public class WishController {
 			if (myWish == null) {
 				// is it a public wish?
 				myWish = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
+				model.addAttribute("visibility", "public");
 				if (myWish == null) {
 					// TODO:
 					// Fehlermeldung - Zugriff nicht erlaubt
@@ -50,6 +51,7 @@ public class WishController {
 			if (wishlist == null) {
 				// is it a public wishlist?
 				wishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
+				model.addAttribute("visibility", "public");
 				if (wishlist == null) {
 					// TODO:
 					// Fehlermeldung - Zugriff nicht erlaubt
@@ -173,7 +175,7 @@ public class WishController {
 			if (uniqueUrlReceiver == null) {
 				return "redirect:/wish?id=" + id;
 			} else {
-				return "redirect:/public/wish/" + uniqueUrlReceiver;
+				return "redirect:/public/wish/" + uniqueUrlReceiver + "?id=" + id;
 			}
 		}
 	}

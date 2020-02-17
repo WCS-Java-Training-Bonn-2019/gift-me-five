@@ -69,7 +69,9 @@
 					<img id="output" class="GM5giftImage" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? (@{'/'} + (${uniqueUrlReceiver} != null ? 'public/wish/' + ${uniqueUrlReceiver} + '/' : 'wish/') + ${wish.id} + '/picture') : @{''}" alt="" th:title="WishImage.jpg" />
 
 					<!-- Delete picture -->
-					<a th:href="@{/wish/delete_picture(id=${wish.id})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete picture" onclick="if (!(confirm('Are you sure?'))) return false">
+<!-- 					<a th:href="@{/wish/delete_picture(id=${wish.id})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete picture" onclick="if (!(confirm('Are you sure?'))) return false"> -->
+
+					<a th:href="(${visibility} == 'public' ? @{/public/wish/delete_picture/} + ${uniqueUrlReceiver} : @{/wish/delete_picture}) + '?id=' + ${wish.id}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete picture" onclick="if (!(confirm('Are you sure?'))) return false">
 
 						<img class="GM5icon" th:src="@{/pics/icons/cross2.png}">
 					</a>
