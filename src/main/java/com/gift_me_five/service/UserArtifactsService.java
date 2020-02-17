@@ -50,7 +50,7 @@ public class UserArtifactsService {
 		User currentUser = getCurrentUser();
 		if (currentUser != null) {
 			Optional<Wish> optionalWish = wishRepository.findById(id);
-			if (optionalWish.isPresent() && optionalWish.get().getWishlist().getReceiver().equals(currentUser)) {
+			if (optionalWish.isPresent() && ( optionalWish.get().getWishlist().getReceiver().equals(currentUser) || "admin".equals(currentUser.getEmail()))) {
 				return optionalWish.get();
 			}
 		}
@@ -64,13 +64,13 @@ public class UserArtifactsService {
 		// Returns null otherwise.
 
 		Optional<Wish> optionalWish = wishRepository.findById(id);
-		if (optionalWish.isPresent() && friendWishlist(optionalWish.get().getWishlist().getId()) != null) {
+		if (optionalWish.isPresent() && (optionalWish.get().getWishlist().getReceiver().getId() == 2 || friendWishlist(optionalWish.get().getWishlist().getId()) != null)) {
 			return optionalWish.get();
 		}
 		return null;
 	}
 
-	public Wish publicWishReceiver(Long id, String uniqueUrlReceiver) {
+	public Wish getPublicWishForReceiver(Long id, String uniqueUrlReceiver) {
 		if (uniqueUrlReceiver != null) {
 			Optional<Wish> optionalWish = wishRepository.findById(id);
 			if (optionalWish.isPresent()
@@ -81,27 +81,20 @@ public class UserArtifactsService {
 		return null;
 	}
 	
-	//*************************************************************************************
-	//TODO:
-	//publicWishGiver can also be retrieved with uniqueUrlReceiver
-	//Reason: images for wishes must be displayed on Giver and Receiver wishlists
-	//Is this a problem?
-	//*************************************************************************************
 	
-	public Wish publicWishGiver(Long id, String uniqueUrl) {
+	public Wish getPublicWishForGiver(Long id, String uniqueUrlGiver) {
 		// TODO Auto-generated method stub
-		if (uniqueUrl != null) {
+		if (uniqueUrlGiver != null) {
 			Optional<Wish> optionalWish = wishRepository.findById(id);
 			if (optionalWish.isPresent()
-					&& (uniqueUrl.equals(optionalWish.get().getWishlist().getUniqueUrlGiver()))
-					|| uniqueUrl.equals(optionalWish.get().getWishlist().getUniqueUrlReceiver())) {
+					&& uniqueUrlGiver.equals(optionalWish.get().getWishlist().getUniqueUrlGiver())) {
 				return optionalWish.get();
 			}
 		}
 		return null;
 	}
 
-	public List<Wish> unSelectedWishes(Wishlist wishlist, boolean sort) {
+	public List<Wish> listUnSelectedWishesForGiver(Wishlist wishlist, boolean sort) {
 		// Returns a list of all wishes on a wishlist, sorted so that
 		// all wishes with current user as giver are at the beginning.
 		// TODO:
@@ -197,6 +190,29 @@ public class UserArtifactsService {
 		if (authentication != null) {
 			return wishlistRepository.findByGiversEmail(authentication.getName());
 		}
+		return null;
+	}
+	
+	/**
+	 * Will deliver a picture from the wish table in the DB for logged-in givers and receivers
+	 * or for givers and receivers authenticated by the appropriate UUID.
+	 * 
+	 * @param wishId The id of the wish
+	 * @param uniqueUrl UUID for unregistered wish receiver or giver; can be null
+	 * @return the picture stored for a wish if the requester is allowed to see it; null otherwise
+	 */
+	public byte[] fetchWishPicture(Long wishId, String uniqueUrl) {
+		
+		Wish wish;
+		if (uniqueUrl == null) {
+			wish = this.ownWish(wishId);
+			if (wish == null) wish = this.friendWish(wishId);
+		} else {
+			wish = this.getPublicWishForReceiver(wishId, uniqueUrl);
+			if (wish == null) wish = this.getPublicWishForGiver(wishId, uniqueUrl);
+		}
+		if (wish != null) return wish.getPicture();
+
 		return null;
 	}
 

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<header th:fragment="navigation">
+	<!-- (view, myWishlists, thisWishlistId) -->
+	<nav class="GM5_header_left_nav navbar navbar-expand-lg navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="navbar-brand" href="/">Gift me five</a>
+				<a sec:authorize="isAuthenticated()" th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')" th:href="@{/wishlist}">New Wishlist</a>
+				<a sec:authorize="isAnonymous()" th:class="'nav-item nav-link ' +(${view=='newWishlist'} ? 'active GM5_header_left_nav_active')" th:href="@{/public/wishlist}">New Wishlist</a>
+
+				<div sec:authorize="isAuthenticated()">
+					<!-- Dropdown for My Wishlists -->
+					<a th:class="'nav-item nav-link dropdown-toggle ' + (${view=='receiver'} ? 'active GM5_header_left_nav_active')" data-toggle="dropdown" href="#">My Wishlists</a>
+					<div class="dropdown-menu">
+						<a th:each="wishlist : ${myWishlists}" th:object="${wishlist}" th:class="'dropdown-item' + ((${view=='receiver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')" th:text="*{title}" th:href="@{/receiver(id=*{id})}">Ben's Xmas</a>
+					</div>
+				</div>
+				<div sec:authorize="isAuthenticated()">
+					<!-- Dropdown for Friend's Wishlists -->
+					<a th:class="'nav-item nav-link dropdown-toggle ' + (${view=='giver'} ? 'active GM5_header_left_nav_active')" data-toggle="dropdown" href="#">Friend's Wishlists</a>
+					<div class="dropdown-menu">
+						<a th:each="wishlist : ${friendWishlists}" th:object="${wishlist}" th:class="'dropdown-item' + ((${view=='giver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')" th:text="*{title}" th:href="@{/giver(id=*{id})}">Ben's Xmas</a>
+					</div>
+				</div>
+				<div sec:authorize="hasRole('ROLE_admin')">
+					<!-- Dropdown for Admin -->
+					<!-- class="navbar-nav dropdown " -->
+					<a th:class="(${view=='admin'} ? 'nav-item nav-link active GM5_header_left_nav_active' : 'nav-item nav-link') + ' dropdown-toggle'" href="#" role="button" data-toggle="dropdown">Admin</a>
+					<!-- aria-haspopup="true" id="dropdownMenuLink" aria-expanded="false" -->
+					<div class="dropdown-menu">
+						<!-- aria-labelledby="dropdownMenuLink" -->
+						<a class="dropdown-item" href="/admin/user">User</a>
+						<a class="dropdown-item" href="/admin/wish">Wish</a>
+						<a class="dropdown-item" href="/admin/wishlist">Wishlist</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<nav class="GM5_header_right_nav">
+		<div class="GM5_header_right_nav_logged_in" sec:authorize="isAuthenticated()">
+			<span sec:authentication="name"></span>
+		</div>
+
+		<!-- do not show role  <br> Role(s): <span sec:authentication="principal.authorities"></span> <br> -->
+		<!-- Print loginFailure -->
+		<div class="GM5_header_right_nav_logged_in">
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 1}">Invalid credentials.</span>
+
+		</div>
+		<!-- Print User is locked -->
+		<div class="GM5_header_right_nav_logged_in">
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 2}">User account is locked.</span>
+		</div>
+		<!-- Print Registration failed, user already exists. -->
+		<div class="GM5_header_right_nav_logged_in">
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 3}">Registration failed, user already exists.</span>
+		</div>
+		<!-- Print Confirm error, no parameters. -->
+		<div class="GM5_header_right_nav_logged_in">
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 4}">Confirm error, no parameters.</span>
+		</div>
+		<!-- Print Please confirm E-Mail. -->
+		<div class="GM5_header_right_nav_logged_in">
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 5}">Please confirm E-Mail.</span>
+		</div>
+		<!-- Print Reset error, no parameters. -->
+		<div class="GM5_header_right_nav_logged_in">
+			<span class="alert alert-danger col-xs-offset-1 col-xs-10" th:if="${loginFailure == 6}">Reset error, no parameters.</span>
+		</div>
+
+		<div>
+			<div th:fragment="loginButton" class="btn-group dropleft">
+				<button type="button" class="GM5login_frame btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Login">
+					<img th:src="@{/pics/icons/user_account_login_free.png}">
+				</button>
+				<div class="dropdown-menu">
+					<form th:action="@{/authenticateTheUser}" method="POST" class="px-4 py-3">
+
+						<div sec:authorize="isAnonymous()" class="form-group">
+							<!-- Add User Name Login -->
+							<input type="text" class="form-control" id="exampleDropdownFormEmail1" placeholder="E-Mail" name="username">
+						</div>
+
+						<div sec:authorize="isAnonymous()" class="form-group">
+							<!-- Add Password Login -->
+							<input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password" name="password">
+						</div>
+
+						<div sec:authorize="isAnonymous()" class="form-check">
+							<input type="checkbox" class="form-check-input" name="remember-me" id="dropdownCheck">
+							<label class="form-check-label" for="dropdownCheck">Remember me </label>
+						</div>
+
+						<button sec:authorize="isAnonymous()" type="submit" class="btn btn-primary GM5buttonGreen">
+							<img src="/pics/icons/login_white.png">
+						</button>
+					</form>
+
+					<div class="logged_in_dropdown">
+						<!-- Add a logout -->
+						<form th:action="@{/logout}" method="POST" title="Logout">
+							<button sec:authorize="isAuthenticated()" type="submit" class="GM5buttonGreen">
+								<img src="/pics/icons/logout_white.png">
+							</button>
+						</form>
+
+						<div class="dropdown-divider"></div>
+						<div sec:authorize="isAnonymous()">
+							<a class="dropdown-item" method="GET" th:href="@{/showRegistrationForm}">New around here? Sign up</a>
+							<a class="dropdown-item" title="Password Recovery" href="/forgot_password">Forgot password?</a>
+						</div>
+						<div sec:authorize="isAuthenticated()">
+							<a class="dropdown-item" title="Profile" href="/profile">Edit Profile</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<footer th:fragment="footer">
+	<span>Copyright Gift Me Five</span>
+	<div>
+		Icons from
+		<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+	</div>
+</footer>
+
+</html>

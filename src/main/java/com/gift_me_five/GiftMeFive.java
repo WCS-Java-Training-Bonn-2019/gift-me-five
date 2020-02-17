@@ -18,7 +18,12 @@ public class GiftMeFive {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
+	
+	/**
+	 * Outputs a message to console (*** message ***) and waits for timeout seconds
+	 * @param message for output
+	 * @param timeout in seconds (optional)
+	 */
 	public static void debugOut(Object message) {
 		System.out.println();
 		System.out.println();
@@ -29,7 +34,12 @@ public class GiftMeFive {
 		System.out.println();
 	}
 
-	public static void debugOut(Object message, int i) {
+	/**
+	 * Outputs a message to console (*** message ***) and waits for timeout seconds
+	 * @param message for output
+	 * @param timeout in seconds (optional)
+	 */
+	public static void debugOut(Object message, int timeout) {
 		System.out.println();
 		System.out.println();
 		System.out.println("*".repeat(120));
@@ -39,7 +49,7 @@ public class GiftMeFive {
 		System.out.println();
 
 		try {
-			Thread.sleep(i * 1000);
+			Thread.sleep(timeout * 1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
