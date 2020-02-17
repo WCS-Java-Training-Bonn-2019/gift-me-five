@@ -151,9 +151,31 @@ public class WishController {
 					.contentType(MediaType.IMAGE_JPEG)//
 					.body(wish.getPicture());
 		}
-
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)//
 				.build();
+	}
+	
+	@GetMapping({"/wish/delete_picture", "/public/wish/delete_picture/{uniqueUrlReceiver}"})
+	public String wishDeletePicture(@RequestParam(required = true) Long id, @PathVariable(required = false) String uniqueUrlReceiver) {
+		Wish wish;
+		if (uniqueUrlReceiver == null) {
+			wish = userArtifactsService.ownWish(id);
+		} else {
+			wish = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
+		}
+		if (wish == null) {
+			// TODO:
+			// Fehlermeldung - Zugriff nicht erlaubt
+			return "redirect:/under_construction";
+		} else {
+			wish.setPicture(null);
+			repository.save(wish);
+			if (uniqueUrlReceiver == null) {
+				return "redirect:/wish?id=" + id;
+			} else {
+				return "redirect:/public/wish/" + uniqueUrlReceiver;
+			}
+		}
 	}
 
 }
