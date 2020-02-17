@@ -23,7 +23,7 @@ import com.gift_me_five.repository.WishlistRepository;
 import com.gift_me_five.service.UserArtifactsService;
 
 @Controller
-public class adminController {
+public class AdminController {
 	
 	@Autowired
 	private UserArtifactsService userArtifactsService;
