@@ -1,6 +1,6 @@
 package com.gift_me_five.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +12,10 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -38,13 +42,17 @@ public class Wish {
 	
 	private Float price;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+//	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	@CreationTimestamp
 	@Column(name = "createDate", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	private Date createDate;
+	private LocalDate createDate;
 
-	@Temporal(TemporalType.TIMESTAMP)
+//	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	@UpdateTimestamp
 	@Column(name = "modifyDate", updatable = false, nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-	private Date modifyDate;
+	private LocalDate modifyDate;
 
 	@ManyToOne
     @JoinColumn(name = "giverId")

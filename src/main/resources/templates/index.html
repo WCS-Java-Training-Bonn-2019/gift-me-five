@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <title>Gift Me Five</title>
 <meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
@@ -33,7 +33,8 @@
 				</p>
 				<!-- Button "Create a wish" -->
 				<p>
-					<a href="/newwishlist" class="btn btn-success">Create a wishlist</a>
+					<a sec:authorize="isAuthenticated()" href="/wishlist" class="btn btn-success">Create a wishlist</a>
+					<a sec:authorize="isAnonymous()" href="/public/wishlist" class="btn btn-success">Create a wishlist</a>
 				</p>
 				<p>If you need to manage multiple wishlists or want to ensure privacy of your wishlists, it is recommended to
 					create an account.</p>

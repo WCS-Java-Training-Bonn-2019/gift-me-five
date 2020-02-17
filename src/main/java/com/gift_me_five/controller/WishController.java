@@ -36,7 +36,7 @@ public class WishController {
 
 			if (myWish == null) {
 				// is it a public wish?
-				myWish = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
+				myWish = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 				if (myWish == null) {
 					// TODO:
 					// Fehlermeldung - Zugriff nicht erlaubt
@@ -91,7 +91,7 @@ public class WishController {
 			Wish wishOld = userArtifactsService.ownWish(id);
 			if (wishOld == null && publicWishlist != null) {
 				// Is it a wish from a public wishlist?
-				wishOld = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
+				wishOld = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 			}
 			if (wishOld == null) {
 				// TODO:
@@ -120,7 +120,7 @@ public class WishController {
 		if (uniqueUrlReceiver == null) {
 			wish = userArtifactsService.ownWish(id);
 		} else {
-			wish = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
+			wish = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 		}
 		if (wish == null) {
 			// TODO:
@@ -137,19 +137,15 @@ public class WishController {
 		}
 	}
 
-	// sample /wish/25/picture
-
 	@GetMapping({ "/wish/{wishId}/picture", "/public/wish/{uniqueUrl}/{wishId}/picture" })
 	public ResponseEntity<byte[]> loadImage(@PathVariable(required = false) String uniqueUrl,
 			@PathVariable Long wishId) {
 
-		Wish wish = (uniqueUrl == null ? userArtifactsService.ownWish(wishId)
-				: userArtifactsService.publicWishGiver(wishId, uniqueUrl));
-
-		if (wish != null && wish.getPicture() != null) {
+        byte[] picture = userArtifactsService.fetchWishPicture(wishId, uniqueUrl);
+		if (picture != null) {
 			return ResponseEntity.status(HttpStatus.OK)//
 					.contentType(MediaType.IMAGE_JPEG)//
-					.body(wish.getPicture());
+					.body(picture);
 		}
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)//
