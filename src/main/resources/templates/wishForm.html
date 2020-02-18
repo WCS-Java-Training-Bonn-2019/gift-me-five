@@ -4,10 +4,14 @@
 <title>Gift Me Five - Create/Edit Wish</title>
 <meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
 <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/wishStyle.css">
 
@@ -20,7 +24,9 @@
 			<section>
 
 				<!-- enctype="multipart/form-data" for fileupload -->
-				<form enctype="multipart/form-data" method="post" th:action="@{/} + (${uniqueUrlReceiver} != null ? 'public/wish/' +${uniqueUrlReceiver} : 'wish')" th:object="${wish}">
+				<form enctype="multipart/form-data" method="post"
+					th:action="@{/} + (${uniqueUrlReceiver} != null ? 'public/wish/' +${uniqueUrlReceiver} : 'wish')"
+					th:object="${wish}">
 					<div class="headline_buttons">
 						<h1 th:text="(${wish.id} ? 'Update a wish on ' : 'Create a wish on: ') + ${wish.wishlist.title}">My Wish</h1>
 						<div id="buttons">
@@ -48,7 +54,8 @@
 					<input name="uniqueUrlReceiver" th:field="${wish.wishlist.uniqueUrlReceiver}" type="hidden">
 					<label for="wish-title">Short Description:</label>
 					<br>
-					<input id="wish-title" name="title" placeholder="X-Box One" required th:field="*{title}" type="text" class="GM5input">
+					<input id="wish-title" name="title" placeholder="X-Box One" required th:field="*{title}" type="text"
+						class="GM5input">
 					<br>
 					<label for="wish-description">Additional Information:</label>
 					<br>
@@ -58,24 +65,35 @@
 					<br>
 					<label for="wish-link">Link:</label>
 					<br>
-					<input id="wish-link" name="link" placeholder="https://www.idealo.de/preisvergleich/OffersOfProduct/3922755_-xbox-one-microsoft.html" th:field="*{link}" type="url" class="GM5input">
+					<input id="wish-link" name="link"
+						placeholder="https://www.idealo.de/preisvergleich/OffersOfProduct/3922755_-xbox-one-microsoft.html"
+						th:field="*{link}" type="url" class="GM5input">
 					<br>
 					<!-- New Image Loader -->
 					<label for="file-upload">Image:</label>
 					<br>
-					<label for="file-upload" class="btn GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Image upload">
-						<img class="GM5icon" src="/pics/icons/upload_white.png" />
-					</label>
-					<img id="output" class="GM5giftImage" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? (@{'/'} + (${uniqueUrlReceiver} != null ? 'public/wish/' + ${uniqueUrlReceiver} + '/' : 'wish/') + ${wish.id} + '/picture') : @{''}" alt="" th:title="WishImage.jpg" />
 
-					<!-- Delete picture -->
-					<a th:if="${wish.picture} != null and ${wish.picture.length} > 0" th:href="(${visibility} == 'public' ? @{/public/wish/delete_picture/} + ${uniqueUrlReceiver} : @{/wish/delete_picture}) + '?id=' + ${wish.id}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete picture"
-						onclick="if (!(confirm('Are you sure?'))) return false">
+					<img id="output" class="GM5giftImage"
+						th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? (@{'/'} + (${uniqueUrlReceiver} != null ? 'public/wish/' + ${uniqueUrlReceiver} + '/' : 'wish/') + ${wish.id} + '/picture') : @{/pics/icons/gift.png}"
+						alt="" th:title="WishImage.jpg" />
+<!-- 					<div> -->
+						<label for="file-upload" class="btn GM5buttonGreen" data-toggle="tooltip" data-placement="right"
+							title="Image upload">
+							<img class="GM5icon" src="/pics/icons/upload_white.png" />
+						</label>
 
-						<img class="GM5icon" th:src="@{/pics/icons/cross2.png}">
-					</a>
+						<!-- Delete picture -->
+						<a th:if="${wish.picture} != null and ${wish.picture.length} > 0"
+							th:href="(${visibility} == 'public' ? @{/public/wish/delete_picture/} + ${uniqueUrlReceiver} : @{/wish/delete_picture}) + '?id=' + ${wish.id}"
+							class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete picture"
+							onclick="if (!(confirm('Are you sure?'))) return false">
+
+							<img class="GM5icon" th:src="@{/pics/icons/cross2.png}">
+						</a>
+<!-- 					</div> -->
 					<br>
-					<input id="file-upload" type="file" accept="image/*" onchange="loadFile(event)" th:field="*{picture}" th:value="*{picture}">
+					<input id="file-upload" type="file" accept="image/*" onchange="loadFile(event)" th:field="*{picture}"
+						th:value="*{picture}">
 					<script>
 						var loadFile = function(event) {
 							var output = document.getElementById('output');

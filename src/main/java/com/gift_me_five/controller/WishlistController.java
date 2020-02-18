@@ -358,7 +358,7 @@ public class WishlistController {
 			}
 			model.addAttribute("wishlistId", id);
 			model.addAttribute("giversList", giversList);
-			return "invite-givers-form";
+			return "invite_givers_form";
 		}
 
 	return"redirect:/not_authorized";
@@ -398,31 +398,3 @@ public class WishlistController {
 	}
 
 }
-
-
-//String[] giversEmails = giversList.strip().split("[,;]");
-//List<String> malformedEmails = new ArrayList<>();
-//for (String email : giversEmails) {
-//	email = email.strip();
-//	if (!simpleEmailService.emailAddressFormatCheck(email)) {
-//		malformedEmails.add(email);
-//	}
-//}
-//
-//if (malformedEmails.size() == 0) {
-//	// Send out emails to givers
-//	String uuid = wishlist.getUniqueUrlGiver();
-//	String subject = "Please check out my wishlist!";
-//	String messageBody = "Hi,\n" + "I'm " + userArtifactsService.getCurrentUser().getFirstname()
-//			+ " and I would like to invite you to my new wishlist: \n\n" + "http://"
-//			+ request.getLocalName() + ":" + request.getLocalPort()
-//			+ "/wishlist/invite/" + uuid + "/";
-//
-//	for (String email : giversEmails) {
-//		try {
-//			simpleEmailService.emailDummy(email, subject, messageBody);
-//		} catch (Exception ex) {
-//			System.out.println("Error in sending email: " + ex);
-//		}
-//	}
-//	// Inform user about success
