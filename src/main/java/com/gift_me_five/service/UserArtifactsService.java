@@ -183,8 +183,8 @@ public class UserArtifactsService {
 
 	public Wishlist getWishlistIfPublic(String uniqueUrlReceiver) {
 
-		if (uniqueUrlReceiver != null) {
-			Wishlist wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver);
+		if (uniqueUrlReceiver != null && wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).isPresent()) {
+			Wishlist wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).get();
 			if (wishlist != null && wishlist.getReceiver().getId() == 2L) {
 				return wishlist;
 			}

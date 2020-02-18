@@ -190,12 +190,14 @@ public class WishlistController {
 		model.addAttribute("visibility", "public");
 		model.addAttribute("themes", themeRepository.findAll());
 
-		if (uniqueUrlReceiver != null
-				&& wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).getReceiver().getId() == 2) {
-			// edit wishlist uniqueUrlReceiver
-			Wishlist wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver);
-			model.addAttribute("wishlist", wishlist);
-			return "wishlist";
+		if (uniqueUrlReceiver != null && wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).isPresent()) {
+			Wishlist wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).get();
+			if (wishlist.getReceiver().getId() == 2) {
+				model.addAttribute("wishlist", wishlist);
+				return "wishlist";
+			} else {
+				return "redirect:/not_authorized";
+			}
 		}
 
 		// new public wishlist

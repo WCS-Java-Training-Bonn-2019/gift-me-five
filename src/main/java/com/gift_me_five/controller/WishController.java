@@ -32,7 +32,7 @@ public class WishController {
 //		System.out.println("WishlistId" + wishlistId);
 		Wish wish = new Wish();
 		if (id != null) {
-			Wish myWish = userArtifactsService.ownWish(id);
+			Wish myWish = userArtifactsService.getWishIfReceiver(id);
 
 			if (myWish == null) {
 				// is it a public wish?
@@ -88,7 +88,7 @@ public class WishController {
 		// If it is an existing wish being edited, it has an id
 		Long id = wish.getId();
 		if (id != null) {
-			Wish wishOld = userArtifactsService.ownWish(id);
+			Wish wishOld = userArtifactsService.getWishIfReceiver(id);
 			if (wishOld == null && publicWishlist != null) {
 				// Is it a wish from a public wishlist?
 				wishOld = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
@@ -118,7 +118,7 @@ public class WishController {
 
 		Wish wish;
 		if (uniqueUrlReceiver == null) {
-			wish = userArtifactsService.ownWish(id);
+			wish = userArtifactsService.getWishIfReceiver(id);
 		} else {
 			wish = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 		}

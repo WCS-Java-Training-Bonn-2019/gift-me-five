@@ -128,8 +128,7 @@ public class SimpleEmailService {
 					System.out.println("Error in sending email: " + ex);
 				}
 			}
-		}
-		
+		}		
 		return malformedEmails;
 
 	}
