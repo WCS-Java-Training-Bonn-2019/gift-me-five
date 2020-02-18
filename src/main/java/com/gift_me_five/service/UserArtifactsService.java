@@ -42,29 +42,35 @@ public class UserArtifactsService {
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @param wishId
+	 * @return the wish specified by wishId if the current user is the receiver of this wish, otherwise null.
+	 */
 
-	public Wish ownWish(Long id) {
-		// Returns the wish specified by id if the current user is the receiver of this
-		// wish
-		// Returns null otherwise.
+	public Wish getWishIfReceiver(Long wishId) {
+
 		User currentUser = getCurrentUser();
 		if (currentUser != null) {
-			Optional<Wish> optionalWish = wishRepository.findById(id);
+			Optional<Wish> optionalWish = wishRepository.findById(wishId);
 			if (optionalWish.isPresent() && ( optionalWish.get().getWishlist().getReceiver().equals(currentUser) || "admin".equals(currentUser.getEmail()))) {
 				return optionalWish.get();
 			}
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @param wishId
+	 * @return the wish specified by wishId if the current user is registered as giver for the wish's wishlist, otherwise null
+	 */
 
-	public Wish friendWish(Long id) {
-		// Returns the wish specified by id if the current user is registered as giver
-		// for the
-		// wishlist of this wish.
-		// Returns null otherwise.
+	public Wish getWishIfGiver(Long wishId) {
 
-		Optional<Wish> optionalWish = wishRepository.findById(id);
-		if (optionalWish.isPresent() && (optionalWish.get().getWishlist().getReceiver().getId() == 2 || friendWishlist(optionalWish.get().getWishlist().getId()) != null)) {
+		Optional<Wish> optionalWish = wishRepository.findById(wishId);
+		if (optionalWish.isPresent() && (optionalWish.get().getWishlist().getReceiver().getId() == 2 || getWishlistIfGiver(optionalWish.get().getWishlist().getId()) != null)) {
 			return optionalWish.get();
 		}
 		return null;
@@ -93,6 +99,8 @@ public class UserArtifactsService {
 		}
 		return null;
 	}
+	
+	
 
 	public List<Wish> listUnSelectedWishesForGiver(Wishlist wishlist, boolean sort) {
 		// Returns a list of all wishes on a wishlist, sorted so that
@@ -130,62 +138,79 @@ public class UserArtifactsService {
 		wishes.addAll(unselectedWishes);
 		return wishes;
 	}
+	
+	/**
+	 * 
+	 * @param wishlistId
+	 * @return the wishlist specified by wishlistId if the current user is the receiver of this wishlist, otherwise null.
+	 */
 
-	public Wishlist ownWishlist(Long id) {
-
-		// Returns the wishlist specified by id if the current user is the receiver of
-		// this wishlist
-		// Returns null otherwise.
+	public Wishlist getWishlistIfReceiver(Long wishlistId) {
 
 		User currentUser = getCurrentUser();
 		if (currentUser != null) {
-			List<Wishlist> listWishlist = wishlistRepository.findByIdAndReceiver(id, currentUser);
+			List<Wishlist> listWishlist = wishlistRepository.findByIdAndReceiver(wishlistId, currentUser);
 			if (!listWishlist.isEmpty()) {
 				return listWishlist.get(0);
 			}
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @param wishlistId
+	 * @return the wishlist specified by wishlistId if the current user is one of the givers of this wishlist, otherwise null
+	 */
 
-	public Wishlist friendWishlist(Long id) {
-		// Returns the wishlist specified by id if the current user is one of the givers
-		// of this wishlist
-		// Returns null otherwise.
+	public Wishlist getWishlistIfGiver(Long wishlistId) {
 
 		User currentUser = getCurrentUser();
 		if (currentUser != null) {
-			List<Wishlist> listWishlist = wishlistRepository.findByIdAndGivers(id, currentUser);
+			List<Wishlist> listWishlist = wishlistRepository.findByIdAndGivers(wishlistId, currentUser);
 			if (!listWishlist.isEmpty()) {
 				return listWishlist.get(0);
 			}
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @param uniqueUrlReceiver
+	 * @return the wishlist specified by uniqueUrlReceiver if it is a public wishlist (User Id==2L), otherwise null
+	 */
 
-	public Wishlist publicWishlist(String uniqueUrlReceiver) {
-		// Returns the wishlist specified by uniqueUrlReceiver if it is a public
-		// wishlist
-		// Returns null otherwise.
-		// Assumes the public user exists and has Id 2!
+	public Wishlist getWishlistIfPublic(String uniqueUrlReceiver) {
 
-		if (uniqueUrlReceiver != null) {
-			Wishlist wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver);
+		if (uniqueUrlReceiver != null && wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).isPresent()) {
+			Wishlist wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).get();
 			if (wishlist != null && wishlist.getReceiver().getId() == 2L) {
 				return wishlist;
 			}
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @return all wishlists where the authenticated user is registered as receiver (may be empty); if not authenticated, return null.
+	 */
 
-	public List<Wishlist> allOwnWishlists() {
+	public List<Wishlist> getAllMyWishlistsAsReceiver() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
 			return wishlistRepository.findByReceiverEmail(authentication.getName());
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @return all wishlists where the authenticated user is registered as giver (may be empty); if not authenticated, return null.
+	 */
 
-	public List<Wishlist> allFriendWishlists() {
+	public List<Wishlist> getAllMyWishlistsAsGiver() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
 			return wishlistRepository.findByGiversEmail(authentication.getName());
@@ -205,8 +230,8 @@ public class UserArtifactsService {
 		
 		Wish wish;
 		if (uniqueUrl == null) {
-			wish = this.ownWish(wishId);
-			if (wish == null) wish = this.friendWish(wishId);
+			wish = this.getWishIfReceiver(wishId);
+			if (wish == null) wish = this.getWishIfGiver(wishId);
 		} else {
 			wish = this.getPublicWishForReceiver(wishId, uniqueUrl);
 			if (wish == null) wish = this.getPublicWishForGiver(wishId, uniqueUrl);
