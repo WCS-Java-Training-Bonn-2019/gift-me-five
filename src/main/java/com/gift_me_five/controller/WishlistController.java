@@ -56,9 +56,9 @@ public class WishlistController {
 	@ModelAttribute
 	public void addMenuItems(Model model) {
 		// Populate menu item for own wishlists (titles needed)
-		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+		model.addAttribute("myWishlists", userArtifactsService.getAllMyWishlistsAsReceiver());
 		// Populate menu item for friends wishlists (titles needed)
-		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+		model.addAttribute("friendWishlists", userArtifactsService.getAllMyWishlistsAsGiver());
 
 	}
 
@@ -67,7 +67,7 @@ public class WishlistController {
 			@RequestParam(required = false) Long id, @RequestParam(required = false) boolean hide,
 			@RequestParam(required = false) boolean sort, @PathVariable(required = false) String uniqueUrlGiver) {
 
-		Wishlist wishlist = userArtifactsService.friendWishlist(id);
+		Wishlist wishlist = userArtifactsService.getWishlistIfGiver(id);
 
 		if (id == null && uniqueUrlGiver != null) {
 			model.addAttribute("visibility", "public");
@@ -104,7 +104,7 @@ public class WishlistController {
 
 		System.out.println("Wish ID = " + wishId);
 
-		Wish wish = userArtifactsService.friendWish(wishId);
+		Wish wish = userArtifactsService.getWishIfGiver(wishId);
 		if (wish != null) {
 //			Wishlist wishlist = wish.getWishlist();
 			if (wish.getGiver() == null) {
@@ -126,7 +126,7 @@ public class WishlistController {
 			@RequestParam(required = false) boolean sort) {
 		 System.out.println("Wish ID = " + wishId);
 
-		Wish wish = userArtifactsService.friendWish(wishId);
+		Wish wish = userArtifactsService.getWishIfGiver(wishId);
 		if (wish != null) {
 			Wishlist wishlist = wish.getWishlist();
 			if (wish.getGiver() == null) {
@@ -146,7 +146,7 @@ public class WishlistController {
 			@PathVariable(required = false) String uniqueUrlReceiver) {
 
 		model.addAttribute("visibility", "public");
-		Wishlist wishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
+		Wishlist wishlist = userArtifactsService.getWishlistIfPublic(uniqueUrlReceiver);
 
 		if (wishlist == null) {
 			return "redirect:/not_authorized";
@@ -169,8 +169,8 @@ public class WishlistController {
 	public String displayWishlist(Model model, @RequestParam(required = false) Long id, HttpServletRequest request) {
 
 		Wishlist wishlist = new Wishlist();
-		if (id != null && userArtifactsService.ownWishlist(id) != null) {
-			wishlist = userArtifactsService.ownWishlist(id);
+		if (id != null && userArtifactsService.getWishlistIfReceiver(id) != null) {
+			wishlist = userArtifactsService.getWishlistIfReceiver(id);
 		} else {
 			return ("redirect:/wishlist");
 		}
@@ -190,12 +190,14 @@ public class WishlistController {
 		model.addAttribute("visibility", "public");
 		model.addAttribute("themes", themeRepository.findAll());
 
-		if (uniqueUrlReceiver != null
-				&& wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).getReceiver().getId() == 2) {
-			// edit wishlist uniqueUrlReceiver
-			Wishlist wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver);
-			model.addAttribute("wishlist", wishlist);
-			return "wishlist";
+		if (uniqueUrlReceiver != null && wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).isPresent()) {
+			Wishlist wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).get();
+			if (wishlist.getReceiver().getId() == 2) {
+				model.addAttribute("wishlist", wishlist);
+				return "wishlist";
+			} else {
+				return "redirect:/not_authorized";
+			}
 		}
 
 		// new public wishlist
@@ -213,8 +215,8 @@ public class WishlistController {
 
 		// If wishlist exists and belongs to logged in user, update it. Else create a
 		// new one.
-		if (id != null && userArtifactsService.ownWishlist(id) != null) {
-			wishlist = userArtifactsService.ownWishlist(id);
+		if (id != null && userArtifactsService.getWishlistIfReceiver(id) != null) {
+			wishlist = userArtifactsService.getWishlistIfReceiver(id);
 		} else {
 			id = null;
 			Long themeId = 1L; // theme Id default value for new wishlist
@@ -230,7 +232,7 @@ public class WishlistController {
 	@PostMapping("/wishlist")
 	public String savePrivateWishList(@ModelAttribute Wishlist wishlist, @RequestParam("submit") String submit) {
 
-		Wishlist myWishlist = userArtifactsService.ownWishlist(wishlist.getId());
+		Wishlist myWishlist = userArtifactsService.getWishlistIfReceiver(wishlist.getId());
 
 		if (myWishlist == null) {
 
@@ -280,7 +282,7 @@ public class WishlistController {
 		} else if (uniqueUrlReceiver != null) {
 			// Check if own wishlist; only then modify.
 			// Only take over title and theme
-			Wishlist myWishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
+			Wishlist myWishlist = userArtifactsService.getWishlistIfPublic(uniqueUrlReceiver);
 
 			if (myWishlist != null && myWishlist.getId().equals(wishlist.getId())) {
 				myWishlist.setTheme(wishlist.getTheme());
@@ -306,13 +308,13 @@ public class WishlistController {
 	public String deleteWishList(@RequestParam Long id) {
 		// Check if own wishlist - otherwise don't delete
 		// unless its public
-		if (userArtifactsService.ownWishlist(id) != null
+		if (userArtifactsService.getWishlistIfReceiver(id) != null
 				|| wishlistRepository.findById(id).get().getReceiver().getId() == 2) {
 			wishlistRepository.deleteById(id);
 		}
 		// redirect to another own wishlist if exists,
 		// otherwise to new wishlist page.
-		List<Wishlist> myWishlist = userArtifactsService.allOwnWishlists();
+		List<Wishlist> myWishlist = userArtifactsService.getAllMyWishlistsAsReceiver();
 		if (myWishlist.size() > 0) {
 			return "redirect:/receiver?id=" + myWishlist.get(0).getId();
 		} else {
@@ -327,7 +329,7 @@ public class WishlistController {
 
 	@GetMapping("/wishlist/invite")
 	public String inviteWishlistGivers(Model model, Principal principal, @RequestParam Long id) {
-		Wishlist wishlist = userArtifactsService.ownWishlist(id);
+		Wishlist wishlist = userArtifactsService.getWishlistIfReceiver(id);
 		if (wishlist != null) {
 			model.addAttribute("wishlistId", id);
 			return "invite-givers-form";
@@ -340,7 +342,7 @@ public class WishlistController {
 	public String addWishlistGivers(Model model, Principal principal, HttpServletRequest request,
 			@RequestParam String giversList, @RequestParam Long id) {
 
-		Wishlist wishlist = userArtifactsService.ownWishlist(id);
+		Wishlist wishlist = userArtifactsService.getWishlistIfReceiver(id);
 
 		if (wishlist != null) {
 			

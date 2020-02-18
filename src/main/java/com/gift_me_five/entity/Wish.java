@@ -2,8 +2,10 @@ package com.gift_me_five.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -63,6 +65,7 @@ public class Wish {
     private  Wishlist wishlist;
 	
 	@Lob
+	@Basic(fetch=FetchType.LAZY)
 	private byte[] picture;
 
 	

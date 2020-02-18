@@ -46,8 +46,8 @@ public class AdminController {
 	@GetMapping("/admin/user")
 	public String getUser(Model model) {
 		
-		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
-		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+		model.addAttribute("myWishlists", userArtifactsService.getAllMyWishlistsAsReceiver());
+		model.addAttribute("friendWishlists", userArtifactsService.getAllMyWishlistsAsGiver());
 		
 		model.addAttribute("users", userRepository.findAll());
 		return "/admin/get_all_user";
@@ -138,19 +138,11 @@ public class AdminController {
 	public String upsertWishlist(Model model, @Valid Wishlist wishlist) {
 		//if null or empty, create UUID as uniqueUrlReceiver
 		if (wishlist.getUniqueUrlReceiver() == null || wishlist.getUniqueUrlReceiver().isEmpty()) {
-			String uniqueUrlReceiver;
-			do {
-			uniqueUrlReceiver = UUID.randomUUID().toString();
-			} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver) != null); 
-			wishlist.setUniqueUrlReceiver(uniqueUrlReceiver);
+			wishlist.setUniqueUrlReceiver(UUID.randomUUID().toString());
 		}
 		//if null or empty, create UUID as uniqueUrlGiver
 		if (wishlist.getUniqueUrlGiver() == null || wishlist.getUniqueUrlGiver().isEmpty()) {
-			String uniqueUrlGiver;
-			do {
-			uniqueUrlGiver = UUID.randomUUID().toString();
-			} while (wishlistRepository.findByUniqueUrlReceiver(uniqueUrlGiver) != null); 
-			wishlist.setUniqueUrlGiver(uniqueUrlGiver);
+			wishlist.setUniqueUrlGiver( UUID.randomUUID().toString());
 		}
 		wishlist = wishlistRepository.save(wishlist);
 		return "redirect:/admin/wishlist";

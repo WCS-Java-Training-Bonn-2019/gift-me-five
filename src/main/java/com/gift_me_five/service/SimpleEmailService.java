@@ -28,7 +28,7 @@ public class SimpleEmailService {
     @Value(value = "${location.port}")	
 	private String locationPort;
 
-	public void email(String receiver, String subject, String message) {
+	public void tryToSendEmail(String receiver, String subject, String message) {
 		try {
 			sendEmail(receiver, subject, message);
 		} catch (Exception ex) {
@@ -47,7 +47,7 @@ public class SimpleEmailService {
 		sender.send(mail);
 	}
 
-	public String emailDummy(String receiver, String subject, String message) {
+	public String dumpEmailAsText(String receiver, String subject, String message) {
 
 		String emailText = "\n\n" + "*".repeat(50) + "\n" + "SendTo: |" + receiver + "|\n" + "Subject: " + subject
 				+ "\n" + "Message: \n" + message + "\n" + "*".repeat(50) + "\n\n";
@@ -55,7 +55,7 @@ public class SimpleEmailService {
 		return emailText;
 	}
 
-	public boolean emailAddressFormatCheck(String emailAddress) {
+	public boolean checkEmailAddressFormat(String emailAddress) {
 
 		String[] emailComponents = emailAddress.split("@");
 		if (emailComponents.length != 2) {
@@ -106,7 +106,7 @@ public class SimpleEmailService {
 		List<String> malformedEmails = new ArrayList<>();
 		for (String email : giversEmails) {
 			email = email.strip();
-			if (!emailAddressFormatCheck(email)) {
+			if (!checkEmailAddressFormat(email)) {
 				malformedEmails.add(email);
 			}
 		}
@@ -123,13 +123,12 @@ public class SimpleEmailService {
 			for (String email : giversEmails) {
 				try {
 					// Can be changed to 'real' email()
-					emailDummy(email, subject, messageBody);
+					dumpEmailAsText(email, subject, messageBody);
 				} catch (Exception ex) {
 					System.out.println("Error in sending email: " + ex);
 				}
 			}
-		}
-		
+		}		
 		return malformedEmails;
 
 	}
