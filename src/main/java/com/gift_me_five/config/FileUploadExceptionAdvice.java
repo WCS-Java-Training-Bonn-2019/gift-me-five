@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class FileUploadExceptionAdvice {
@@ -17,8 +16,6 @@ public class FileUploadExceptionAdvice {
       HttpServletRequest request,
       HttpServletResponse response) {
   
-        ModelAndView modelAndView = new ModelAndView("file");
-        modelAndView.getModel().put("message", "File too large!");
         return "redirect:/error/file_too_big";
     }
 }
