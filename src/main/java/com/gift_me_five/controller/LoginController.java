@@ -65,7 +65,7 @@ public class LoginController {
 				Cookie removeCookie = new Cookie("invite", "");
 				removeCookie.setMaxAge(0);
 				response.addCookie(removeCookie);
-				return "redirect:/wishlist/invite/" + optionalInviteUuid.get();
+				return "redirect:/public/wishlist/invite/" + optionalInviteUuid.get();
 			}
 		}
 
