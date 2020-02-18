@@ -36,7 +36,7 @@ public class GiftMeFiveSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/", "/css/**", "/pics/**", "/showRegistrationForm/**",
 						"/processRegistrationForm/**", "/under_construction/**", "/confirm/**",
-						"/forgot_password/**", "/reset/**", "/public/**").permitAll()//
+						"/forgot_password/**", "/reset/**", "/public/**", "/error/**").permitAll()//
 				.antMatchers("/admin/**").hasRole("admin")//
 				.anyRequest().authenticated()//
 				.and()//
