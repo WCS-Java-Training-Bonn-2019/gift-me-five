@@ -89,7 +89,8 @@
 <!-- 								<img class="GM5giftImage" alt="" -->
 <!-- 									th:src="@{'/'} + (${visibility} == 'public' ? 'public/wish/' + ${wishlist.uniqueUrlReceiver} + '/' : 'wish/') + *{id} + '/picture'" -->
 									
-									<img class="GM5giftImage" alt="" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? @{'/'} + (${visibility} == 'public' ? 'public/wish/' + ${wishlist.uniqueUrlGiver}  + '/' : 'wish/') + ${wish.id} + '/picture' : @{''}" th:title="WishImage.jpg" />
+<!-- 									<img class="GM5giftImage" alt="" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? @{'/'} + (${visibility} == 'public' ? 'public/wish/' + ${wishlist.uniqueUrlGiver}  + '/' : 'wish/') + ${wish.id} + '/picture' : @{''}" th:title="WishImage.jpg" /> -->
+									<img class="GM5giftImage" alt="" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? @{'/'} + ${imagePath} + ${wish.id} + '/picture' : @{''}" th:title="WishImage.jpg" />
 									
 									
 <!-- 									th:title="WishImage.jpg" /> -->

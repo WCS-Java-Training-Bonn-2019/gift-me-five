@@ -71,6 +71,7 @@ public class WishlistController {
 
 		if (id == null && uniqueUrlGiver != null) {
 			model.addAttribute("visibility", "public");
+			model.addAttribute("imagePath", "public/wish/" + uniqueUrlGiver + "/");
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findByUniqueUrlGiver(uniqueUrlGiver);
 			if (optionalWishlist.isPresent() && optionalWishlist.get().getReceiver().getId() == 2) {
 				wishlist = optionalWishlist.get();
@@ -80,9 +81,10 @@ public class WishlistController {
 		if (wishlist != null) {
 			if (principal != null) {
 				model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
-			} else {
-				model.addAttribute("visibility", "public");
-			}
+				model.addAttribute("imagePath", "wish/");
+			} // else {
+//				model.addAttribute("visibility", "public");
+//			}
 			// Flag to indicate whether wishes should be sorted by price
 			model.addAttribute("sort", sort);
 			// Flag to indicate whether wishes selected by other friends shall be hidden
@@ -114,11 +116,8 @@ public class WishlistController {
 			}
 			wishRepository.save(wish);
 			return "redirect:/public/giver/" + uniqueUrlGiver + "?hide=" + hide + "&sort=" + sort;		}
-		// TODO:
-		// Sollte nur nach Manipulation (e.g. curl) erreicht werden:
-		// User versucht, eine wishlist zu verändern, für die er nicht als giver
-		// registriert ist
-		return "redirect:/under_construction";
+
+		return "redirect:/not_authorized";
 	}
 	
 	@PostMapping("/giver")
@@ -152,13 +151,11 @@ public class WishlistController {
 			return "redirect:/not_authorized";
 		}
 
+		model.addAttribute("imagePath", "public/wish/" + uniqueUrlReceiver + "/");
 		model.addAttribute("thisWishlistId", wishlist.getId());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
-
-		model.addAttribute("thisWishlistId", wishlist.getId());
-		model.addAttribute("wishlist", wishlist);
-		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+		
 		// todo: add protocol to model (invite url, receiver.html)
 		model.addAttribute("hostname", request.getLocalName());
 		model.addAttribute("port", request.getLocalPort());
@@ -174,6 +171,7 @@ public class WishlistController {
 		} else {
 			return ("redirect:/wishlist");
 		}
+		model.addAttribute("imagePath", "wish/");
 		model.addAttribute("thisWishlistId", wishlist.getId());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));

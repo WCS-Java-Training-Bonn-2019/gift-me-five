@@ -70,27 +70,24 @@
 						th:field="*{link}" type="url" class="GM5input">
 					<br>
 					<!-- New Image Loader -->
-					<label for="file-upload">Image:</label>
+					<label for="file-upload">Image (allowed filesize: 512kB!):</label>
 					<br>
 
-					<img id="output" class="GM5giftImage"
-						th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? (@{'/'} + (${uniqueUrlReceiver} != null ? 'public/wish/' + ${uniqueUrlReceiver} + '/' : 'wish/') + ${wish.id} + '/picture') : @{/pics/icons/gift.png}"
-						alt="" th:title="WishImage.jpg" />
-<!-- 					<div> -->
-						<label for="file-upload" class="btn GM5buttonGreen" data-toggle="tooltip" data-placement="right"
-							title="Image upload">
-							<img class="GM5icon" src="/pics/icons/upload_white.png" />
-						</label>
+					<img id="output" class="GM5giftImage" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? @{'/'} + ${imagePath} : @{/pics/icons/gift_grey.png}"
+						alt="" th:title="WishImage.jpg">
+					<label for="file-upload" class="btn GM5buttonGreen" data-toggle="tooltip" data-placement="right"
+						title="Image upload">
+						<img class="GM5icon" src="/pics/icons/upload_white.png" />
+					</label>
 
-						<!-- Delete picture -->
-						<a th:if="${wish.picture} != null and ${wish.picture.length} > 0"
-							th:href="(${visibility} == 'public' ? @{/public/wish/delete_picture/} + ${uniqueUrlReceiver} : @{/wish/delete_picture}) + '?id=' + ${wish.id}"
-							class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete picture"
-							onclick="if (!(confirm('Are you sure?'))) return false">
+					<!-- Delete picture -->
+					<a th:if="${wish.picture} != null and ${wish.picture.length} > 0"
+						th:href="(${uniqueUrlReceiver} != null ? @{/public/wish/delete_picture/} + ${uniqueUrlReceiver} : @{/wish/delete_picture}) + '?id=' + ${wish.id}"
+						class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete picture"
+						onclick="if (!(confirm('Are you sure?'))) return false">
 
-							<img class="GM5icon" th:src="@{/pics/icons/cross2.png}">
-						</a>
-<!-- 					</div> -->
+						<img class="GM5icon" th:src="@{/pics/icons/cross2.png}">
+					</a>
 					<br>
 					<input id="file-upload" type="file" accept="image/*" onchange="loadFile(event)" th:field="*{picture}"
 						th:value="*{picture}">
