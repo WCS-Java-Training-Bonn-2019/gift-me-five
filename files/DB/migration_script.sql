@@ -2,7 +2,7 @@
 -- MySQL Workbench Migration
 -- Migrated Schemata: gift_me_five
 -- Source Schemata: gift_me_five
--- Created: Wed Feb  5 14:34:19 2020
+-- Created: Wed Feb 19 17:03:43 2020
 -- Workbench Version: 6.3.8
 -- ----------------------------------------------------------------------------
 
@@ -13,24 +13,6 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------------------------------------------------------
 DROP SCHEMA IF EXISTS `gift_me_five` ;
 CREATE SCHEMA IF NOT EXISTS `gift_me_five` ;
-
--- ----------------------------------------------------------------------------
--- Table gift_me_five.giver_see_wishlist
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `gift_me_five`.`giver_see_wishlist` (
-  `user_id` BIGINT(20) NOT NULL,
-  `wishlist_id` BIGINT(20) NOT NULL,
-  PRIMARY KEY (`user_id`, `wishlist_id`),
-  INDEX `FKtjfxrvecq90uwwktkpmxbsbsd` (`wishlist_id` ASC),
-  CONSTRAINT `FKri67425we0dxvars2jtrhcc6m`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `gift_me_five`.`user` (`id`),
-  CONSTRAINT `FKtjfxrvecq90uwwktkpmxbsbsd`
-    FOREIGN KEY (`wishlist_id`)
-    REFERENCES `gift_me_five`.`wishlist` (`id`)
-    ON DELETE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 -- ----------------------------------------------------------------------------
 -- Table gift_me_five.role
@@ -51,7 +33,6 @@ DEFAULT CHARACTER SET = latin1;
 CREATE TABLE IF NOT EXISTS `gift_me_five`.`theme` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `background_picture` VARCHAR(255) NULL DEFAULT NULL,
-  `category` VARCHAR(255) NULL DEFAULT NULL,
   `modify_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
@@ -72,10 +53,11 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`user` (
   `modify_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `password` VARCHAR(255) NOT NULL,
   `role` VARCHAR(255) NULL DEFAULT NULL,
+  `reason` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `UK_ob8kqyqqgmefl0aco34akdtpe` (`email` ASC))
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
+AUTO_INCREMENT = 29
 DEFAULT CHARACTER SET = utf8;
 
 -- ----------------------------------------------------------------------------
@@ -85,14 +67,13 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`wish` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `description` TEXT NULL DEFAULT NULL,
-  `image` VARCHAR(255) NULL DEFAULT NULL,
-  `item` TEXT NULL DEFAULT NULL,
   `link` TEXT NULL DEFAULT NULL,
   `modify_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `price` FLOAT NULL DEFAULT NULL,
   `title` VARCHAR(255) NULL DEFAULT NULL,
   `giver_id` BIGINT(20) NULL DEFAULT NULL,
   `wishlist_id` BIGINT(20) NOT NULL,
+  `picture` LONGBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `FKaoudos8e3i8b1b5mt2fr7ami` (`giver_id` ASC),
   INDEX `FKf2656374n9at6vxifmpphd9fr` (`wishlist_id` ASC),
@@ -104,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`wish` (
     REFERENCES `gift_me_five`.`wishlist` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 25
+AUTO_INCREMENT = 119
 DEFAULT CHARACTER SET = utf8;
 
 -- ----------------------------------------------------------------------------
@@ -130,6 +111,23 @@ CREATE TABLE IF NOT EXISTS `gift_me_five`.`wishlist` (
     REFERENCES `gift_me_five`.`user` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 77
 DEFAULT CHARACTER SET = utf8;
+
+-- ----------------------------------------------------------------------------
+-- Table gift_me_five.wishlist_givers
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gift_me_five`.`wishlist_givers` (
+  `wishlist_id` BIGINT(20) NOT NULL,
+  `user_id` BIGINT(20) NOT NULL,
+  INDEX `FKfildxaat5jyo9ugd5ukuvdxt4` (`user_id` ASC),
+  INDEX `FK4lo563o1asoldh3cla4e9vddv` (`wishlist_id` ASC),
+  CONSTRAINT `FK4lo563o1asoldh3cla4e9vddv`
+    FOREIGN KEY (`wishlist_id`)
+    REFERENCES `gift_me_five`.`wishlist` (`id`),
+  CONSTRAINT `FKfildxaat5jyo9ugd5ukuvdxt4`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `gift_me_five`.`user` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 SET FOREIGN_KEY_CHECKS = 1;
