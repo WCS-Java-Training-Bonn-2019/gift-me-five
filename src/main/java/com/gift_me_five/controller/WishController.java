@@ -71,7 +71,12 @@ public class WishController {
 		return "wishForm";
 
 	}
-
+	
+    @GetMapping("/error/file_too_big")
+    public String fileTooBig() {
+    	return "/error/file_too_big";
+    }
+    
 	@PostMapping({ "/wish", "/public/wish/{uniqueUrlReceiver}" })
 	public String saveWish(@PathVariable(required = false) String uniqueUrlReceiver, @ModelAttribute Wish wish) {
 
