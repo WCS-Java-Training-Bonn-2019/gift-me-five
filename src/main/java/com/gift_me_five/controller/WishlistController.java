@@ -344,7 +344,7 @@ public class WishlistController {
 
 		if (wishlist != null) {
 			
-			List<String> malformedEmails = simpleEmailService.sendInviteEmails(wishlist, giversList);
+			List<String> malformedEmails = simpleEmailService.sendInviteEmails(request, wishlist, giversList);
 						
 			if (malformedEmails.isEmpty()) {
 				model.addAttribute("invitationSent", true);
