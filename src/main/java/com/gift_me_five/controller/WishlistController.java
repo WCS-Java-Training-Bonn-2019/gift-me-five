@@ -71,6 +71,7 @@ public class WishlistController {
 
 		if (id == null && uniqueUrlGiver != null) {
 			model.addAttribute("visibility", "public");
+			model.addAttribute("imagePath", "public/wish/" + uniqueUrlGiver + "/");
 			Optional<Wishlist> optionalWishlist = wishlistRepository.findByUniqueUrlGiver(uniqueUrlGiver);
 			if (optionalWishlist.isPresent() && optionalWishlist.get().getReceiver().getId() == 2) {
 				wishlist = optionalWishlist.get();
@@ -80,9 +81,10 @@ public class WishlistController {
 		if (wishlist != null) {
 			if (principal != null) {
 				model.addAttribute("myUserId", userArtifactsService.getCurrentUser().getId());
-			} else {
-				model.addAttribute("visibility", "public");
-			}
+				model.addAttribute("imagePath", "wish/");
+			} // else {
+//				model.addAttribute("visibility", "public");
+//			}
 			// Flag to indicate whether wishes should be sorted by price
 			model.addAttribute("sort", sort);
 			// Flag to indicate whether wishes selected by other friends shall be hidden
@@ -114,11 +116,8 @@ public class WishlistController {
 			}
 			wishRepository.save(wish);
 			return "redirect:/public/giver/" + uniqueUrlGiver + "?hide=" + hide + "&sort=" + sort;		}
-		// TODO:
-		// Sollte nur nach Manipulation (e.g. curl) erreicht werden:
-		// User versucht, eine wishlist zu verändern, für die er nicht als giver
-		// registriert ist
-		return "redirect:/under_construction";
+
+		return "redirect:/not_authorized";
 	}
 	
 	@PostMapping("/giver")
@@ -152,13 +151,11 @@ public class WishlistController {
 			return "redirect:/not_authorized";
 		}
 
+		model.addAttribute("imagePath", "public/wish/" + uniqueUrlReceiver + "/");
 		model.addAttribute("thisWishlistId", wishlist.getId());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
-
-		model.addAttribute("thisWishlistId", wishlist.getId());
-		model.addAttribute("wishlist", wishlist);
-		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
+		
 		// todo: add protocol to model (invite url, receiver.html)
 		model.addAttribute("hostname", request.getLocalName());
 		model.addAttribute("port", request.getLocalPort());
@@ -174,6 +171,7 @@ public class WishlistController {
 		} else {
 			return ("redirect:/wishlist");
 		}
+		model.addAttribute("imagePath", "wish/");
 		model.addAttribute("thisWishlistId", wishlist.getId());
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
@@ -358,7 +356,7 @@ public class WishlistController {
 			}
 			model.addAttribute("wishlistId", id);
 			model.addAttribute("giversList", giversList);
-			return "invite-givers-form";
+			return "invite_givers_form";
 		}
 
 	return"redirect:/not_authorized";
@@ -398,31 +396,3 @@ public class WishlistController {
 	}
 
 }
-
-
-//String[] giversEmails = giversList.strip().split("[,;]");
-//List<String> malformedEmails = new ArrayList<>();
-//for (String email : giversEmails) {
-//	email = email.strip();
-//	if (!simpleEmailService.emailAddressFormatCheck(email)) {
-//		malformedEmails.add(email);
-//	}
-//}
-//
-//if (malformedEmails.size() == 0) {
-//	// Send out emails to givers
-//	String uuid = wishlist.getUniqueUrlGiver();
-//	String subject = "Please check out my wishlist!";
-//	String messageBody = "Hi,\n" + "I'm " + userArtifactsService.getCurrentUser().getFirstname()
-//			+ " and I would like to invite you to my new wishlist: \n\n" + "http://"
-//			+ request.getLocalName() + ":" + request.getLocalPort()
-//			+ "/wishlist/invite/" + uuid + "/";
-//
-//	for (String email : giversEmails) {
-//		try {
-//			simpleEmailService.emailDummy(email, subject, messageBody);
-//		} catch (Exception ex) {
-//			System.out.println("Error in sending email: " + ex);
-//		}
-//	}
-//	// Inform user about success

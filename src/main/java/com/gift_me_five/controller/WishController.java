@@ -29,22 +29,22 @@ public class WishController {
 	@GetMapping({ "/wish", "/public/wish/{uniqueUrlReceiver}" })
 	public String upsertWish(Model model, @PathVariable(required = false) String uniqueUrlReceiver,
 			@RequestParam(required = false) Long wishlistId, @RequestParam(required = false) Long id) {
-//		System.out.println("WishlistId" + wishlistId);
+
 		Wish wish = new Wish();
 		if (id != null) {
 			Wish myWish = userArtifactsService.getWishIfReceiver(id);
+			String imagePath = "wish/" + id + "/picture";
 
 			if (myWish == null) {
 				// is it a public wish?
 				model.addAttribute("visibility", "public");
+				imagePath = "public/wish/" + uniqueUrlReceiver + "/" + id + "/picture";
 				myWish = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 				if (myWish == null) {
-					// TODO:
-					// Fehlermeldung - Zugriff nicht erlaubt
-					return "redirect:/under_construction";
+					return "redirect:/not_authorized";
 				}
-				// model.addAttribute("visibility", "public");
 			}
+			model.addAttribute("imagePath", imagePath);
 			wish = myWish;
 		} else { // no wish id -- try with wishlist id resp. uniqueUrlReceiver for public wish
 			Wishlist wishlist = userArtifactsService.getWishlistIfReceiver(wishlistId);
@@ -53,13 +53,10 @@ public class WishController {
 				wishlist = userArtifactsService.getWishlistIfPublic(uniqueUrlReceiver);
                 model.addAttribute("visibility", "public");
 				if (wishlist == null) {
-					// TODO:
-					// Fehlermeldung - Zugriff nicht erlaubt
-					return "redirect:/under_construction";
+					return "redirect:/not_authorized";
 				}
-				// model.addAttribute("visibility", "public");
 			}
-			// wish will be a new wish on the found wishlist
+			// wish will be a new wish on the found wishlist. No picture to display!
 			wish.setWishlist(wishlist);
 		}
 
@@ -88,9 +85,7 @@ public class WishController {
 		Wishlist publicWishlist = userArtifactsService.getWishlistIfPublic(uniqueUrlReceiver);
 
 		if (privateWishlist == null && publicWishlist == null) {
-			// TODO:
-			// Fehlermeldung - Zugriff nicht erlaubt
-			return "redirect:/under_construction";
+			return "redirect:/not_authorized";
 		}
 		// If it is an existing wish being edited, it has an id
 		Long id = wish.getId();
@@ -101,9 +96,7 @@ public class WishController {
 				wishOld = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 			}
 			if (wishOld == null) {
-				// TODO:
-				// Fehlermeldung - Zugriff nicht erlaubt
-				return "redirect:/under_construction";
+				return "redirect:/not_authorized";
 			}
 			// Found an allowed existing wish.
 			// keep picture if no picture in posted wish ?
@@ -111,7 +104,6 @@ public class WishController {
 				wish.setPicture(wishOld.getPicture());
 			}
 		}
-//		GiftMeFive.debugOut(wish, 30);
 		repository.save(wish);
 		if (uniqueUrlReceiver == null) {
 			return "redirect:/receiver?id=" + wish.getWishlist().getId();
@@ -130,9 +122,7 @@ public class WishController {
 			wish = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 		}
 		if (wish == null) {
-			// TODO:
-			// Fehlermeldung - Zugriff nicht erlaubt
-			return "redirect:/under_construction";
+			return "redirect:/not_authorized";
 		} else {
 			Long wishlistId = wish.getWishlist().getId();
 			repository.deleteById(id);
