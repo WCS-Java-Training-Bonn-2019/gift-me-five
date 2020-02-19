@@ -33,7 +33,6 @@ public class Theme {
 	private Long id;
 
 	private String backgroundPicture;
-	private String category;
 
 //	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

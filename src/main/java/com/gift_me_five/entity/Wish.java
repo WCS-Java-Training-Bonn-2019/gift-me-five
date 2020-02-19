@@ -34,9 +34,6 @@ public class Wish {
 	private String title;
 	
 	@Column(columnDefinition = "TEXT")
-	private String item;
-	
-	@Column(columnDefinition = "TEXT")
 	private String description;
 	
 	@Column(columnDefinition = "TEXT")
