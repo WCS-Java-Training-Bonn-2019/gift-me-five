@@ -96,7 +96,7 @@ public class LoginController {
 			User existing = user.get();
 			existing.setReason(UUID.randomUUID().toString());
 			userRepository.save(existing);
-			simpleEmailSerive.tryToSendEmail(existing.getEmail(), "Reset PW", "http://" + request.getLocalName() + ":"
+			simpleEmailSerive.tryToSendEmail(existing.getEmail(), "Reset PW", request.getScheme() + "://" + request.getLocalName() + ":"
 					+ request.getLocalPort() + "/reset/" + existing.getEmail() + "/" + existing.getReason() + "/");
 
 		}
