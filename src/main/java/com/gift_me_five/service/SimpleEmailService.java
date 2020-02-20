@@ -58,7 +58,7 @@ public class SimpleEmailService {
 	public boolean checkEmailAddressFormat(String emailAddress) {
 
 		String[] emailComponents = emailAddress.split("@");
-		if (emailComponents.length != 2) {
+		if (emailComponents.length != 2 || emailAddress.endsWith("@")) {
 			// Must contain exactly one @ character
 			System.out.println("Too many @ or name or domain missing");
 			return false;
@@ -100,7 +100,7 @@ public class SimpleEmailService {
 	 * @param recipientList Comma or semicolon separated list of email addresses
 	 * @return the list of recipientList components that could not be interpreted as valid email addresses (may be empty)
 	 */
-	public List<String> sendInviteEmails(Wishlist wishlist, String recipientList) {
+	public List<String> sendInviteEmails(Wishlist wishlist, String receiverName, String recipientList) {
 
 		String[] giversEmails = recipientList.strip().split("[,;]");
 		List<String> malformedEmails = new ArrayList<>();
@@ -115,18 +115,15 @@ public class SimpleEmailService {
 			// Send out emails to givers
 			String uuid = wishlist.getUniqueUrlGiver();
 			String subject = "Please check out my wishlist!";
-			String messageBody = "Hi,\n" + "I'm " + userArtifactsService.getCurrentUser().getFirstname()
+			String messageBody = "Hi,\n" + "I'm " + receiverName
 					+ " and I would like to invite you to my new wishlist: " + wishlist.getTitle() + ". \n\n"
-					+ "http://" + this.locationName + ":" + this.locationPort + "/public/wishlist/invite/" + uuid
+					+ "http://" + this.locationName + ":" + this.locationPort + "/public/wishlist/accept/" + uuid
 					+ "/";
             
 			for (String email : giversEmails) {
-				try {
-					// Can be changed to 'real' email()
+					// Select whether a 'real' email shall be sent or only dump email on console
 					dumpEmailAsText(email, subject, messageBody);
-				} catch (Exception ex) {
-					System.out.println("Error in sending email: " + ex);
-				}
+					//tryToSendEmail(email, subject, messageBody);
 			}
 		}		
 		return malformedEmails;

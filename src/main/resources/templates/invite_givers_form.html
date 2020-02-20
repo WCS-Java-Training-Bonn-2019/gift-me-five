@@ -17,21 +17,26 @@
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="fragments.html :: navigation(view='receiver', myWishlists=null, thisWishlistId=${wishlistId})">
+		<header th:replace="fragments.html :: navigation(view='receiver', thisWishlistId=${wishlist.id})">
 		</header>
 		<main>
 
 			<div class="GM5spacer"></div>
 			<section>
 				<!-- todo edit or register! -->
-				<h3>Enter Your Friend's E-mail Addresses:</h3>
+				<h3 th:text="'Invite friends to see your wishlist: ' + ${wishlist.title}">Invite friends to see your wishlist:</h3>
 				<br>
-				<p>Separate email addresses by commas (,)</p>
 				<br>
+				<!-- 				<form th:action="${uniqueUrlReceiver} != null ? @{/public/wishlist/invite/} + ${uniqueUrlReceiver} : @{/wishlist/invite}" method="post"> -->
 				<form th:action="@{/wishlist/invite}" method="post">
-					<input name="id" th:value="${wishlistId}" type="hidden">
-					<textarea rows="4" cols="20" name="giversList" th:value="${giversList}" class="GM5input" th:text="${giversList}"> Beispieltext
-				    </textarea>
+					<input th:name="id" th:value="${wishlist.id}" type="hidden">
+					<div th:if="${uniqueUrlReceiver} != null">
+						Enter your name if it should be provided in the invitation mail:
+						<input name="receiverName" th:value="${receiverName}" class="GM5input">
+						<br>
+					</div>
+					Enter your friend's email addresses separated by semicolon or comma (;,):
+					<input name="giversList" th:value="${giversList}" class="GM5input">
 					<br>
 					<input type="submit" value="Invite" id="invite" class="GM5invisible">
 					<label for="invite">
@@ -47,7 +52,7 @@
 					</label>
 					<a th:href="@{/receiver(id=${wishlistId})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
 						data-placement="top" title="Go to wishlist">
-						<img class="GM5icon" th:src="@{/pics/icons/go_back.png}">
+						<img class="GM5icon" th:src="@{/pics/icons/go_back_white.png}">
 					</a>
 				</form>
 				<div th:if="${not #lists.isEmpty(malformed)}">

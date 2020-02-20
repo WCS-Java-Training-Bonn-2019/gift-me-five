@@ -50,7 +50,7 @@ public class WishController {
 			Wishlist wishlist = userArtifactsService.getWishlistIfReceiver(wishlistId);
 			if (wishlist == null) {
 				// is it a public wishlist?
-				wishlist = userArtifactsService.getWishlistIfPublic(uniqueUrlReceiver);
+				wishlist = userArtifactsService.getWishlistIfPublicReceiver(uniqueUrlReceiver);
                 model.addAttribute("visibility", "public");
 				if (wishlist == null) {
 					return "redirect:/not_authorized";
@@ -82,7 +82,7 @@ public class WishController {
 
 		// Find out if there is an allowed wishlist for this wish
 		Wishlist privateWishlist = userArtifactsService.getWishlistIfReceiver(wish.getWishlist().getId());
-		Wishlist publicWishlist = userArtifactsService.getWishlistIfPublic(uniqueUrlReceiver);
+		Wishlist publicWishlist = userArtifactsService.getWishlistIfPublicReceiver(uniqueUrlReceiver);
 
 		if (privateWishlist == null && publicWishlist == null) {
 			return "redirect:/not_authorized";
