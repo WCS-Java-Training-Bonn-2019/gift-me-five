@@ -23,7 +23,7 @@
 					<!-- Dropdown for Friend's Wishlists -->
 					<a th:class="'nav-item nav-link dropdown-toggle ' + (${view=='giver'} ? 'active GM5_header_left_nav_active')" data-toggle="dropdown" href="#">Friend's Wishlists</a>
 					<div class="dropdown-menu">
-						<a th:each="wishlist : ${friendWishlists}" th:object="${wishlist}" th:class="'dropdown-item' + ((${view=='giver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')" th:text="*{title}" th:href="@{/giver(id=*{id})}">Ben's Xmas</a>
+						<a th:each="wishlist : ${friendWishlists}" th:object="${wishlist}" th:class="'dropdown-item' + ((${view=='giver'} and *{id}==${thisWishlistId}) ? ' active' : ' ')" th:text="*{title} + ' (' + ${wishlist.receiver.firstname} +  ')'" th:href="@{/giver(id=*{id})}">Ben's Xmas</a>
 					</div>
 				</div>
 				<div sec:authorize="hasRole('ROLE_admin')">

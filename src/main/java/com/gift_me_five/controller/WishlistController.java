@@ -1,7 +1,6 @@
 package com.gift_me_five.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -157,6 +156,7 @@ public class WishlistController {
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
 		
 		// todo: add protocol to model (invite url, receiver.html)
+		model.addAttribute("protocol", request.getScheme());
 		model.addAttribute("hostname", request.getLocalName());
 		model.addAttribute("port", request.getLocalPort());
 		return ("receiver");
@@ -344,7 +344,7 @@ public class WishlistController {
 
 		if (wishlist != null) {
 			
-			List<String> malformedEmails = simpleEmailService.sendInviteEmails(wishlist, giversList);
+			List<String> malformedEmails = simpleEmailService.sendInviteEmails(request, wishlist, giversList);
 						
 			if (malformedEmails.isEmpty()) {
 				model.addAttribute("invitationSent", true);
