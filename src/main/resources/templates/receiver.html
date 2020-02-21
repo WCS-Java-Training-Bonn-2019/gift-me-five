@@ -34,9 +34,9 @@
 				<div class="GM5wishlistBlock">
 					<div class="GM5wishlistElement GM5wishlistTitle">
 						<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
-						<div class="GM5button_holder">
+						<div>
 							<!-- Modify wishlist -->
-							<div>
+							<div class="GM5button_holder">
 								<a
 									th:href="${visibility} == 'public' ? @{/public/wishlist/} + ${wishlist.uniqueUrlReceiver} : @{/wishlist(id=${wishlist.id})}"
 									class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="top" title="Modify wishlist">
@@ -50,7 +50,7 @@
 									<img class="GM5icon" th:src="@{/pics/icons/cross2.png}">
 								</a>
 							</div>
-							<div>
+							<div class="GM5button_holder">
 								<a th:href="(${visibility} == 'public' ? @{/public/wish/} + ${uniqueUrlReceiver} : @{/wish?wishlistId=} + ${wishlist.id})"
 									class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add wish">
 									<img class="GM5icon" th:src="@{/pics/icons/plus_white.png}">

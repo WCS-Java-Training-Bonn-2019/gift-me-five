@@ -122,8 +122,8 @@ public class SimpleEmailService {
             
 			for (String email : giversEmails) {
 					// Select whether a 'real' email shall be sent or only dump email on console
-					dumpEmailAsText(email, subject, messageBody);
-					//tryToSendEmail(email, subject, messageBody);
+					//dumpEmailAsText(email, subject, messageBody);
+					tryToSendEmail(email, subject, messageBody);
 			}
 		}		
 		return malformedEmails;

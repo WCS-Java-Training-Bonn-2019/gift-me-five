@@ -20,6 +20,10 @@
 	flex-wrap: wrap;
 }
 
+.GM5button_holder div {
+
+}
+
 #GM5uniqueUrlReceiverHideInput {
 	/* 	display: none is not working because no copy of value possible */
 	opacity: 0;
