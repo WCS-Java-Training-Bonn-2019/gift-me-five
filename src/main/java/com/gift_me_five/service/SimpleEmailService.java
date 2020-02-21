@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,6 @@ public class SimpleEmailService {
 
 	@Autowired
 	private JavaMailSender sender;
-
-	@Autowired
-	private UserArtifactsService userArtifactsService;
-	
-    @Value(value = "${location.name}")
-	private String locationName;
-	
-    @Value(value = "${location.port}")	
-	private String locationPort;
 
 	public void tryToSendEmail(String receiver, String subject, String message) {
 		try {
@@ -42,6 +33,7 @@ public class SimpleEmailService {
 
 		helper.setTo(receiver);
 		helper.setText(message);
+		System.out.println("*****" + message + "*****");
 		helper.setSubject(subject);
 
 		sender.send(mail);
@@ -92,15 +84,20 @@ public class SimpleEmailService {
 		// further checks to be added!
 		return true;
 	}
-	
+
 	/**
-	 * Sends out an invitation mail to become giver for a specified wishlist to a list of of recipients.
-	 * No email will be sent if any of the addresses is malformed.  
-	 * @param wishlist the wishlist for which the recipients shall be invited as givers
+	 * Sends out an invitation mail to become giver for a specified wishlist to a
+	 * list of of recipients. No email will be sent if any of the addresses is
+	 * malformed.
+	 * 
+	 * @param wishlist      the wishlist for which the recipients shall be invited
+	 *                      as givers
 	 * @param recipientList Comma or semicolon separated list of email addresses
-	 * @return the list of recipientList components that could not be interpreted as valid email addresses (may be empty)
+	 * @return the list of recipientList components that could not be interpreted as
+	 *         valid email addresses (may be empty)
 	 */
-	public List<String> sendInviteEmails(Wishlist wishlist, String receiverName, String recipientList) {
+
+	public List<String> sendInviteEmails(HttpServletRequest request, Wishlist wishlist, String receiverName, String recipientList) {
 
 		String[] giversEmails = recipientList.strip().split("[,;]");
 		List<String> malformedEmails = new ArrayList<>();
@@ -117,15 +114,14 @@ public class SimpleEmailService {
 			String subject = "Please check out my wishlist!";
 			String messageBody = "Hi,\n" + "I'm " + receiverName
 					+ " and I would like to invite you to my new wishlist: " + wishlist.getTitle() + ". \n\n"
-					+ "http://" + this.locationName + ":" + this.locationPort + "/public/wishlist/accept/" + uuid
-					+ "/";
-            
+					+ request.getScheme() +"://" + request.getLocalName() + ":" + request.getLocalPort() + "/public/wishlist/accept/" + uuid + "/";
+
 			for (String email : giversEmails) {
 					// Select whether a 'real' email shall be sent or only dump email on console
 					//dumpEmailAsText(email, subject, messageBody);
 					tryToSendEmail(email, subject, messageBody);
 			}
-		}		
+		}
 		return malformedEmails;
 
 	}

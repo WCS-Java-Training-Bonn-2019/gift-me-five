@@ -1,7 +1,6 @@
 package com.gift_me_five.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -159,6 +158,7 @@ public class WishlistController {
 		model.addAttribute("wishes", wishRepository.findByWishlist(wishlist));
 
 		// todo: add protocol to model (invite url, receiver.html)
+		model.addAttribute("protocol", request.getScheme());
 		model.addAttribute("hostname", request.getLocalName());
 		model.addAttribute("port", request.getLocalPort());
 		return ("receiver");
@@ -322,10 +322,6 @@ public class WishlistController {
 		}
 	}
 
-	// ***********************************************************************************
-	// TODO:
-	// Invite for public wishlists
-	// ***********************************************************************************
 
 	@GetMapping("/public/wishlist/invite/{uniqueUrlReceiver}")
 	public String test(Model model, @PathVariable String uniqueUrlReceiver) {
@@ -357,7 +353,7 @@ public class WishlistController {
 	}
 
 	@PostMapping({ "/wishlist/invite", "/public/wishlist/invite/{uniqueUrlReceiver}" })
-	public String addWishlistGivers(Model model, @PathVariable(required = false) String uniqueUrlReceiver,
+	public String addWishlistGivers(HttpServletRequest request, Model model, @PathVariable(required = false) String uniqueUrlReceiver,
 			@RequestParam(required = false) String receiverName, @RequestParam String giversList,
 			@RequestParam Long id) {
 		Wishlist wishlist;
@@ -372,7 +368,7 @@ public class WishlistController {
 			if (receiverName == null) {
 				receiverName = "Somebody";
 			}
-			List<String> malformedEmails = simpleEmailService.sendInviteEmails(wishlist, receiverName, giversList);
+			List<String> malformedEmails = simpleEmailService.sendInviteEmails(request, wishlist, receiverName, giversList);
 
 			if (malformedEmails.isEmpty()) {
 				model.addAttribute("invitationSent", true);

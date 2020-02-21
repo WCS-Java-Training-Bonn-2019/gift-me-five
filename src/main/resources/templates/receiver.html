@@ -26,11 +26,11 @@
 		<main>
 			<section id="GM5wishlist_details">
 				<a th:if="${visibility} == 'public'"
-					th:href="'http://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}"
-					th:text="'Admin URL = http://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}">uniqueUrlReceiver</a>
+					th:href="${protocol} + '://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}"
+					th:text="'Admin URL = ' + ${protocol} + '://' + ${hostname} + ':' + ${port} + @{/public/receiver/} + ${wishlist.uniqueUrlReceiver}">uniqueUrlReceiver</a>
 				<a th:if="${visibility} == 'public'"
-					th:href="'http://' + ${hostname} + ':' + ${port} + @{/public/giver/} + ${wishlist.uniqueUrlGiver}"
-					th:text="'Giver URL = http://' + ${hostname} + ':' + ${port} + @{/public/giver/} + ${wishlist.uniqueUrlGiver}">uniqueUrlGiver</a>
+					th:href="${protocol} + '://' + ${hostname} + ':' + ${port} + @{/public/giver/} + ${wishlist.uniqueUrlGiver}"
+					th:text="'Giver URL = ' + ${protocol} + '://' + ${hostname} + ':' + ${port} + @{/public/giver/} + ${wishlist.uniqueUrlGiver}">uniqueUrlGiver</a>
 				<div class="GM5wishlistBlock">
 					<div class="GM5wishlistElement GM5wishlistTitle">
 						<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
