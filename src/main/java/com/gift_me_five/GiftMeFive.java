@@ -34,14 +34,15 @@ public class GiftMeFive {
                 context.addConstraint(securityConstraint);
             }
         };
-        tomcat.addAdditionalTomcatConnectors(redirectConnector());
+        tomcat.addAdditionalTomcatConnectors(redirectConnector(8080));
+        tomcat.addAdditionalTomcatConnectors(redirectConnector(8082));
         return tomcat;
     }
 
-    private Connector redirectConnector() {
+    private Connector redirectConnector(int port) {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setScheme("http");
-        connector.setPort(8080);
+        connector.setPort(port);
         connector.setSecure(false);
         connector.setRedirectPort(8443);
         return connector;
