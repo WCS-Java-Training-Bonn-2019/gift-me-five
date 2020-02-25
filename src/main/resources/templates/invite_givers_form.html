@@ -4,21 +4,16 @@
 <title>Gift Me Five</title>
 <meta content="text/html" charset="UTF-8" http-equiv="Content-Type" />
 <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/wishStyle.css">
 </head>
 <body>
 	<div id="GM5wrapper">
-		<header th:replace="fragments.html :: navigation(view='receiver', thisWishlistId=${wishlist.id})">
-		</header>
+		<header th:replace="fragments.html :: navigation(view='receiver', thisWishlistId=${wishlist.id})"> </header>
 		<main>
 
 			<div class="GM5spacer"></div>
@@ -27,8 +22,8 @@
 				<h3 th:text="'Invite friends to see your wishlist: ' + ${wishlist.title}">Invite friends to see your wishlist:</h3>
 				<br>
 				<br>
-				<!-- 				<form th:action="${uniqueUrlReceiver} != null ? @{/public/wishlist/invite/} + ${uniqueUrlReceiver} : @{/wishlist/invite}" method="post"> -->
-				<form th:action="@{/wishlist/invite}" method="post">
+				<form th:action="${uniqueUrlReceiver} != null ? @{/public/wishlist/invite/} + ${uniqueUrlReceiver} : @{/wishlist/invite}" method="post">
+					<!-- 				<form th:action="@{/wishlist/invite}" method="post"> -->
 					<input th:name="id" th:value="${wishlist.id}" type="hidden">
 					<div th:if="${uniqueUrlReceiver} != null">
 						Enter your name if it should be provided in the invitation mail:
@@ -50,8 +45,7 @@
 							<img class="GM5icon" src="/pics/icons/cancel_white.png" />
 						</span>
 					</label>
-					<a th:href="@{/receiver(id=${wishlistId})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
-						data-placement="top" title="Go to wishlist">
+					<a th:href="@{/receiver(id=${wishlistId})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="top" title="Go to wishlist">
 						<img class="GM5icon" th:src="@{/pics/icons/go_back_white.png}">
 					</a>
 				</form>
