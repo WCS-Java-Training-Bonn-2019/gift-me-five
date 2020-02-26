@@ -318,10 +318,13 @@ public class WishlistController {
 		if (myWishlist.size() > 0) {
 			return "redirect:/receiver?id=" + myWishlist.get(0).getId();
 		} else {
-			return "redirect:/newwishlist";
+			if (userArtifactsService.getCurrentUser() == null) {
+				return "redirect:/public/wishlist";
+			} else {
+				return "redirect:/wishlist";
+			}
 		}
 	}
-
 
 	@GetMapping("/public/wishlist/invite/{uniqueUrlReceiver}")
 	public String test(Model model, @PathVariable String uniqueUrlReceiver) {
@@ -353,7 +356,8 @@ public class WishlistController {
 	}
 
 	@PostMapping({ "/wishlist/invite", "/public/wishlist/invite/{uniqueUrlReceiver}" })
-	public String addWishlistGivers(HttpServletRequest request, Model model, @PathVariable(required = false) String uniqueUrlReceiver,
+	public String addWishlistGivers(HttpServletRequest request, Model model,
+			@PathVariable(required = false) String uniqueUrlReceiver,
 			@RequestParam(required = false) String receiverName, @RequestParam String giversList,
 			@RequestParam Long id) {
 		Wishlist wishlist;
@@ -368,7 +372,8 @@ public class WishlistController {
 			if (receiverName == null) {
 				receiverName = "Somebody";
 			}
-			List<String> malformedEmails = simpleEmailService.sendInviteEmails(request, wishlist, receiverName, giversList);
+			List<String> malformedEmails = simpleEmailService.sendInviteEmails(request, wishlist, receiverName,
+					giversList);
 
 			if (malformedEmails.isEmpty()) {
 				model.addAttribute("invitationSent", true);
