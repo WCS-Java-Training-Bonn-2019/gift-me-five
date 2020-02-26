@@ -116,8 +116,8 @@ public class RegistrationController {
 
 				// create unique key for confirmation URL
 				theUser.setReason(UUID.randomUUID().toString());
-				simpleEmailSerive.email(theUser.getEmail(), "Confirm Registration",
-						"http://" + request.getLocalName() + ":" + request.getLocalPort() + "/confirm/"
+				simpleEmailSerive.tryToSendEmail(theUser.getEmail(), "Confirm Registration",
+						request.getScheme() + "://" + request.getLocalName() + ":" + request.getLocalPort() + "/confirm/"
 								+ theUser.getEmail() + "/" + theUser.getReason() + "/");
 			} catch (Exception ex) {
 				return "Error in sending email: " + ex;

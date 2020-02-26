@@ -65,12 +65,12 @@ public class LoginController {
 				Cookie removeCookie = new Cookie("invite", "");
 				removeCookie.setMaxAge(0);
 				response.addCookie(removeCookie);
-				return "redirect:/wishlist/invite/" + optionalInviteUuid.get();
+				return "redirect:/public/wishlist/accept/" + optionalInviteUuid.get();
 			}
 		}
 
-		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
-		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+		model.addAttribute("myWishlists", userArtifactsService.getAllMyWishlistsAsReceiver());
+		model.addAttribute("friendWishlists", userArtifactsService.getAllMyWishlistsAsGiver());
 		model.addAttribute("loginFailure", loginFailure);
 
 //		if (principal != null) {
@@ -96,7 +96,7 @@ public class LoginController {
 			User existing = user.get();
 			existing.setReason(UUID.randomUUID().toString());
 			userRepository.save(existing);
-			simpleEmailSerive.email(existing.getEmail(), "Reset PW", "http://" + request.getLocalName() + ":"
+			simpleEmailSerive.tryToSendEmail(existing.getEmail(), "Reset PW", request.getScheme() + "://" + request.getLocalName() + ":"
 					+ request.getLocalPort() + "/reset/" + existing.getEmail() + "/" + existing.getReason() + "/");
 
 		}

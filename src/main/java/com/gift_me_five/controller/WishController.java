@@ -29,37 +29,34 @@ public class WishController {
 	@GetMapping({ "/wish", "/public/wish/{uniqueUrlReceiver}" })
 	public String upsertWish(Model model, @PathVariable(required = false) String uniqueUrlReceiver,
 			@RequestParam(required = false) Long wishlistId, @RequestParam(required = false) Long id) {
-//		System.out.println("WishlistId" + wishlistId);
+
 		Wish wish = new Wish();
 		if (id != null) {
-			Wish myWish = userArtifactsService.ownWish(id);
+			Wish myWish = userArtifactsService.getWishIfReceiver(id);
+			String imagePath = "wish/" + id + "/picture";
 
 			if (myWish == null) {
 				// is it a public wish?
-				myWish = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
 				model.addAttribute("visibility", "public");
+				imagePath = "public/wish/" + uniqueUrlReceiver + "/" + id + "/picture";
+				myWish = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 				if (myWish == null) {
-					// TODO:
-					// Fehlermeldung - Zugriff nicht erlaubt
-					return "redirect:/under_construction";
+					return "redirect:/not_authorized";
 				}
-				// model.addAttribute("visibility", "public");
 			}
+			model.addAttribute("imagePath", imagePath);
 			wish = myWish;
 		} else { // no wish id -- try with wishlist id resp. uniqueUrlReceiver for public wish
-			Wishlist wishlist = userArtifactsService.ownWishlist(wishlistId);
+			Wishlist wishlist = userArtifactsService.getWishlistIfReceiver(wishlistId);
 			if (wishlist == null) {
 				// is it a public wishlist?
-				wishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
-				model.addAttribute("visibility", "public");
+				wishlist = userArtifactsService.getWishlistIfPublicReceiver(uniqueUrlReceiver);
+                model.addAttribute("visibility", "public");
 				if (wishlist == null) {
-					// TODO:
-					// Fehlermeldung - Zugriff nicht erlaubt
-					return "redirect:/under_construction";
+					return "redirect:/not_authorized";
 				}
-				// model.addAttribute("visibility", "public");
 			}
-			// wish will be a new wish on the found wishlist
+			// wish will be a new wish on the found wishlist. No picture to display!
 			wish.setWishlist(wishlist);
 		}
 
@@ -67,38 +64,39 @@ public class WishController {
 		model.addAttribute("wish", wish);
 
 		// Populate menu item for own wishlists (titles needed)
-		model.addAttribute("myWishlists", userArtifactsService.allOwnWishlists());
+		model.addAttribute("myWishlists", userArtifactsService.getAllMyWishlistsAsReceiver());
 		// Populate menu item for friends wishlists (titles needed)
-		model.addAttribute("friendWishlists", userArtifactsService.allFriendWishlists());
+		model.addAttribute("friendWishlists", userArtifactsService.getAllMyWishlistsAsGiver());
 
 		return "wishForm";
 
 	}
-
+	
+    @GetMapping("/error/file_too_big")
+    public String fileTooBig() {
+    	return "/error/file_too_big";
+    }
+    
 	@PostMapping({ "/wish", "/public/wish/{uniqueUrlReceiver}" })
 	public String saveWish(@PathVariable(required = false) String uniqueUrlReceiver, @ModelAttribute Wish wish) {
 
 		// Find out if there is an allowed wishlist for this wish
-		Wishlist privateWishlist = userArtifactsService.ownWishlist(wish.getWishlist().getId());
-		Wishlist publicWishlist = userArtifactsService.publicWishlist(uniqueUrlReceiver);
+		Wishlist privateWishlist = userArtifactsService.getWishlistIfReceiver(wish.getWishlist().getId());
+		Wishlist publicWishlist = userArtifactsService.getWishlistIfPublicReceiver(uniqueUrlReceiver);
 
 		if (privateWishlist == null && publicWishlist == null) {
-			// TODO:
-			// Fehlermeldung - Zugriff nicht erlaubt
-			return "redirect:/under_construction";
+			return "redirect:/not_authorized";
 		}
 		// If it is an existing wish being edited, it has an id
 		Long id = wish.getId();
 		if (id != null) {
-			Wish wishOld = userArtifactsService.ownWish(id);
+			Wish wishOld = userArtifactsService.getWishIfReceiver(id);
 			if (wishOld == null && publicWishlist != null) {
 				// Is it a wish from a public wishlist?
-				wishOld = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
+				wishOld = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 			}
 			if (wishOld == null) {
-				// TODO:
-				// Fehlermeldung - Zugriff nicht erlaubt
-				return "redirect:/under_construction";
+				return "redirect:/not_authorized";
 			}
 			// Found an allowed existing wish.
 			// keep picture if no picture in posted wish ?
@@ -106,7 +104,6 @@ public class WishController {
 				wish.setPicture(wishOld.getPicture());
 			}
 		}
-//		GiftMeFive.debugOut(wish, 30);
 		repository.save(wish);
 		if (uniqueUrlReceiver == null) {
 			return "redirect:/receiver?id=" + wish.getWishlist().getId();
@@ -120,14 +117,12 @@ public class WishController {
 
 		Wish wish;
 		if (uniqueUrlReceiver == null) {
-			wish = userArtifactsService.ownWish(id);
+			wish = userArtifactsService.getWishIfReceiver(id);
 		} else {
-			wish = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
+			wish = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 		}
 		if (wish == null) {
-			// TODO:
-			// Fehlermeldung - Zugriff nicht erlaubt
-			return "redirect:/under_construction";
+			return "redirect:/not_authorized";
 		} else {
 			Long wishlistId = wish.getWishlist().getId();
 			repository.deleteById(id);
@@ -139,19 +134,15 @@ public class WishController {
 		}
 	}
 
-	// sample /wish/25/picture
-
 	@GetMapping({ "/wish/{wishId}/picture", "/public/wish/{uniqueUrl}/{wishId}/picture" })
 	public ResponseEntity<byte[]> loadImage(@PathVariable(required = false) String uniqueUrl,
 			@PathVariable Long wishId) {
 
-		Wish wish = (uniqueUrl == null ? userArtifactsService.ownWish(wishId)
-				: userArtifactsService.publicWishGiver(wishId, uniqueUrl));
-
-		if (wish != null && wish.getPicture() != null) {
+        byte[] picture = userArtifactsService.fetchWishPicture(wishId, uniqueUrl);
+		if (picture != null) {
 			return ResponseEntity.status(HttpStatus.OK)//
 					.contentType(MediaType.IMAGE_JPEG)//
-					.body(wish.getPicture());
+					.body(picture);
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)//
 				.build();
@@ -161,9 +152,9 @@ public class WishController {
 	public String wishDeletePicture(@RequestParam(required = true) Long id, @PathVariable(required = false) String uniqueUrlReceiver) {
 		Wish wish;
 		if (uniqueUrlReceiver == null) {
-			wish = userArtifactsService.ownWish(id);
+			wish = userArtifactsService.getWishIfReceiver(id);
 		} else {
-			wish = userArtifactsService.publicWishReceiver(id, uniqueUrlReceiver);
+			wish = userArtifactsService.getPublicWishForReceiver(id, uniqueUrlReceiver);
 		}
 		if (wish == null) {
 			// TODO:
