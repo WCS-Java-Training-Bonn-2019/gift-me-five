@@ -43,6 +43,14 @@ public class UserArtifactsService {
 		return null;
 	}
 	
+	public User getPublicUser() {
+		Optional<User> optionalUser = userRepository.findById(2L);
+		if (!optionalUser.isPresent()) {
+			throw new UsernameNotFoundException("No public user found !!!");
+		}
+		return optionalUser.get();
+	}
+	
 	/**
 	 * 
 	 * @param wishId
@@ -178,13 +186,30 @@ public class UserArtifactsService {
 	/**
 	 * 
 	 * @param uniqueUrlReceiver
-	 * @return the wishlist specified by uniqueUrlReceiver if it is a public wishlist (User Id==2L), otherwise null
+	 * @return the wishlist specified by the receiver uuid uniqueUrlReceiver if it is a public wishlist (User Id==2L), otherwise null
 	 */
 
-	public Wishlist getWishlistIfPublic(String uniqueUrlReceiver) {
+	public Wishlist getWishlistIfPublicReceiver(String uniqueUrlReceiver) {
 
 		if (uniqueUrlReceiver != null && wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).isPresent()) {
 			Wishlist wishlist = wishlistRepository.findByUniqueUrlReceiver(uniqueUrlReceiver).get();
+			if (wishlist != null && wishlist.getReceiver().getId() == 2L) {
+				return wishlist;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param uniqueUrlGiver
+	 * @return the wishlist specified by the giver uuid uniqueUrlGiver if it is a public wishlist (User Id==2L), otherwise null
+	 */
+
+	public Wishlist getWishlistIfPublicGiver(String uniqueUrlGiver) {
+
+		if (uniqueUrlGiver != null && wishlistRepository.findByUniqueUrlGiver(uniqueUrlGiver).isPresent()) {
+			Wishlist wishlist = wishlistRepository.findByUniqueUrlGiver(uniqueUrlGiver).get();
 			if (wishlist != null && wishlist.getReceiver().getId() == 2L) {
 				return wishlist;
 			}

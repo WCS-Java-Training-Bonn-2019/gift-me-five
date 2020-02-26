@@ -19,9 +19,6 @@ public class SimpleEmailService {
 	@Autowired
 	private JavaMailSender sender;
 
-	@Autowired
-	private UserArtifactsService userArtifactsService;
-
 	public void tryToSendEmail(String receiver, String subject, String message) {
 		try {
 			sendEmail(receiver, subject, message);
@@ -53,7 +50,7 @@ public class SimpleEmailService {
 	public boolean checkEmailAddressFormat(String emailAddress) {
 
 		String[] emailComponents = emailAddress.split("@");
-		if (emailComponents.length != 2) {
+		if (emailComponents.length != 2 || emailAddress.endsWith("@")) {
 			// Must contain exactly one @ character
 			System.out.println("Too many @ or name or domain missing");
 			return false;
@@ -99,7 +96,8 @@ public class SimpleEmailService {
 	 * @return the list of recipientList components that could not be interpreted as
 	 *         valid email addresses (may be empty)
 	 */
-	public List<String> sendInviteEmails(HttpServletRequest request, Wishlist wishlist, String recipientList) {
+
+	public List<String> sendInviteEmails(HttpServletRequest request, Wishlist wishlist, String receiverName, String recipientList) {
 
 		String[] giversEmails = recipientList.strip().split("[,;]");
 		List<String> malformedEmails = new ArrayList<>();
@@ -114,17 +112,14 @@ public class SimpleEmailService {
 			// Send out emails to givers
 			String uuid = wishlist.getUniqueUrlGiver();
 			String subject = "Please check out my wishlist!";
-			String messageBody = "Hi,\n" + "I'm " + userArtifactsService.getCurrentUser().getFirstname()
+			String messageBody = "Hi,\n" + "I'm " + receiverName
 					+ " and I would like to invite you to my new wishlist: " + wishlist.getTitle() + ". \n\n"
-					+ request.getScheme() +"://" + request.getLocalName() + ":" + request.getLocalPort() + "/public/wishlist/invite/" + uuid + "/";
+					+ request.getScheme() +"://" + request.getLocalName() + ":" + request.getLocalPort() + "/public/wishlist/accept/" + uuid + "/";
 
 			for (String email : giversEmails) {
-				try {
-					// Can be changed to 'real' email()
-					dumpEmailAsText(email, subject, messageBody);
-				} catch (Exception ex) {
-					System.out.println("Error in sending email: " + ex);
-				}
+					// Select whether a 'real' email shall be sent or only dump email on console
+					//dumpEmailAsText(email, subject, messageBody);
+					tryToSendEmail(email, subject, messageBody);
 			}
 		}
 		return malformedEmails;

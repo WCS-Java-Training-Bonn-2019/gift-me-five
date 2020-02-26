@@ -34,29 +34,28 @@
 				<div class="GM5wishlistBlock">
 					<div class="GM5wishlistElement GM5wishlistTitle">
 						<h1 th:text="${wishlist.title}">My Christmas Wishes</h1>
-						<div class="GM5button_holder">
+						<div>
 							<!-- Modify wishlist -->
-							<div>
+							<div class="GM5button_holder">
 								<a
 									th:href="${visibility} == 'public' ? @{/public/wishlist/} + ${wishlist.uniqueUrlReceiver} : @{/wishlist(id=${wishlist.id})}"
 									class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="top" title="Modify wishlist">
 									<img class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
 								</a>
 								<!-- Delete wishlist -->
-								<a th:href="(${visibility} == 'public' ? '/public' : '') + @{/wishlist/delete(id=${wishlist.id})}"
+								<a th:href="(${visibility} == 'public' ? @{/public/} : @{/}) + '/wishlist/delete?id=' + ${wishlist.id}"
 									class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete wishlist"
 									onclick="if (!(confirm('Are you sure?'))) return false">
 
 									<img class="GM5icon" th:src="@{/pics/icons/cross2.png}">
 								</a>
 							</div>
-							<div>
-								<a th:href="(${visibility} == 'public' ? '/public/wish/' + ${uniqueUrlReceiver} : @{/wish?wishlistId=} + ${wishlist.id})"
+							<div class="GM5button_holder">
+								<a th:href="(${visibility} == 'public' ? @{/public/wish/} + ${uniqueUrlReceiver} : @{/wish?wishlistId=} + ${wishlist.id})"
 									class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Add wish">
 									<img class="GM5icon" th:src="@{/pics/icons/plus_white.png}">
 								</a>
-								<!-- todo addPerson -->
-								<a th:href="@{/wishlist/invite(id=${wishlist.id})}" class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
+								<a th:href="(${visibility} == 'public' ? @{/public/wishlist/invite/} + ${wishlist.uniqueUrlReceiver} : @{/wishlist/invite(id=${wishlist.id})})" class="btn btn-success GM5buttonGreen" data-toggle="tooltip"
 									data-placement="right" title="Add friend">
 									<img class="GM5icon" th:src="@{/pics/icons/addPerson_white.png}">
 								</a>
@@ -86,14 +85,7 @@
 							<p class="GM5_description_optional_details">
 								<a th:if="${wish.link != ''} and ${wish.link != null}" th:href="@{${wish.link}}">Link</a>
 								<span th:if="${wish.link == ''} or ${wish.link == null}"> &nbsp; </span>
-<!-- 								<img class="GM5giftImage" alt="" -->
-<!-- 									th:src="@{'/'} + (${visibility} == 'public' ? 'public/wish/' + ${wishlist.uniqueUrlReceiver} + '/' : 'wish/') + *{id} + '/picture'" -->
-									
-<!-- 									<img class="GM5giftImage" alt="" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? @{'/'} + (${visibility} == 'public' ? 'public/wish/' + ${wishlist.uniqueUrlGiver}  + '/' : 'wish/') + ${wish.id} + '/picture' : @{''}" th:title="WishImage.jpg" /> -->
 									<img class="GM5giftImage" alt="" th:src="(${wish.picture} != null and ${wish.picture.length} > 0) ? @{'/'} + ${imagePath} + ${wish.id} + '/picture' : @{''}" th:title="WishImage.jpg" />
-									
-									
-<!-- 									th:title="WishImage.jpg" /> -->
 								<span th:text="'$: ' + ${#numbers.formatDecimal(wish.price, 1, 'COMMA', 2, 'POINT')}">Price: </span>
 							</p>
 						</li>
