@@ -105,7 +105,8 @@ public class User implements UserDetails {
 //	@OnDelete(action = OnDeleteAction.CASCADE)
 //	private List<GiverSeeWishlist> giverSeeWishLists = new ArrayList<>();
 
-	@ManyToMany(mappedBy = "givers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(mappedBy = "givers", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Wishlist> friendWishlists = new ArrayList<>();
 	
 	public User() {
@@ -136,7 +137,7 @@ public class User implements UserDetails {
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO locked if failedLogins > 3
-		if (this.getFailedLogins() > 3) {
+		if (this.getFailedLogins() > 1) {
 			return false;
 		} else
 			return true;
