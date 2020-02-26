@@ -43,7 +43,7 @@
 									<img class="GM5icon" th:src="@{/pics/icons/pen_white.png}">
 								</a>
 								<!-- Delete wishlist -->
-								<a th:href="(${visibility} == 'public' ? @{/public/} : @{/}) + '/wishlist/delete?id=' + ${wishlist.id}"
+								<a th:href="(${visibility} == 'public' ? @{/public/} : @{/}) + 'wishlist/delete?id=' + ${wishlist.id}"
 									class="btn btn-success GM5buttonGreen" data-toggle="tooltip" data-placement="right" title="Delete wishlist"
 									onclick="if (!(confirm('Are you sure?'))) return false">
 
